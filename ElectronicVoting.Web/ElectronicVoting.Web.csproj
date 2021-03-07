@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ElectronicVoting.Infrastructure\ElectronicVoting.Infrastructure.csproj" />
+      <ProjectReference Include="..\ElectronicVoting.Persistence\ElectronicVoting.Persistence.csproj" />
+      <ProjectReference Include="..\ElectronicVoting.SignalR\ElectronicVoting.SignalR.csproj" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers\Api" />
+    </ItemGroup>
+
+</Project>
