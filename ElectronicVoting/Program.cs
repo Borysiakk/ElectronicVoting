@@ -20,7 +20,15 @@ namespace ElectronicVoting
             Connection connection = new Connection();
             await connection.InitializationAsync(authorizationResult);
 
-            //connection.ManagementConnectionsValidation.SendMessageToAll("Witaj");
+            var managementConnections = connection.ManagementConnectionsValidation;
+
+            managementConnections.PriorityQueue.ReadingNodes += () =>
+            {
+                
+            };
+            
+            if(args[0] == "szymaborys@gmail.com")
+            
             await connection.Close();
         }
     }

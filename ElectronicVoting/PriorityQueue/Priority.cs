@@ -1,4 +1,4 @@
-﻿namespace KolejkaPriorytetowa
+﻿namespace ElectronicVoting.PriorityQueue
 {
     public enum Priority
     {

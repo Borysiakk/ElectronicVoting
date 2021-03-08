@@ -1,65 +1,66 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Concurrent;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace KolejkaPriorytetowa
+namespace ElectronicVoting.PriorityQueue
 {
-    public class PriorityQueueAsync<T> where T:ItemPriorityQueue
+    public sealed class PriorityQueueAsync<T> :IPriorityQueueAsync<T> where T:ItemPriorityQueue
     {
+        public Action ReadingNodes;
+        
         private Task _task;
-        public List<ItemPriorityQueue> Heap;
         private CancellationToken _cancellationToken;
+        private readonly List<ItemPriorityQueue> _heap;
         
         public PriorityQueueAsync()
         {
-            Heap = new List<ItemPriorityQueue>();
+            _heap = new List<ItemPriorityQueue>();
             _cancellationToken = new CancellationToken();
-            
-            // _task = new Task(async() =>
-            // {
-            //     while (!IsEmpty())
-            //     {
-            //         var t = Pop();
-            //         await Console.Out.WriteLineAsync(t.Priority.ToString());
-            //     }
-            // },_cancellationToken);
         }
 
-        public T Pop()
+        public async Task<T> Pop()
         {
-            ItemPriorityQueue item = Heap[0];
-            Heap[0] = Heap[^1];
-            Heap.RemoveAt(Heap.Count - 1);
-            Repair();
-            return (T) item;
-        }
-
-        public  void Push(T node, Priority priority = Priority.Normal)
-        {
-            int count = Heap.Count;
-            node.Priority = priority;
-            Heap.Add(node);
-
-            while (count != 0 && Heap[Parent(count)].Priority <Heap[count].Priority)
+            return await Task.Run(() =>
             {
-                ItemPriorityQueue item = Heap[count];
-                Heap[count] = Heap[Parent(count)];
-                Heap[Parent(count)] = item;
+                ItemPriorityQueue item = _heap[0];
+                _heap[0] = _heap[^1];
+                _heap.RemoveAt(_heap.Count - 1);
+                Repair();
+                return (T) item;
+            }, _cancellationToken);
+
+        }
+
+        public void Push(T node, Priority priority = Priority.Normal)
+        {
+            int count = _heap.Count;
+            node.Priority = priority;
+            _heap.Add(node);
+
+            while (count != 0 && _heap[Parent(count)].Priority <_heap[count].Priority)
+            {
+                ItemPriorityQueue item = _heap[count];
+                _heap[count] = _heap[Parent(count)];
+                _heap[Parent(count)] = item;
                 count = Parent(count);
             }
+            
+            if (_task == null || _task.Status == TaskStatus.RanToCompletion)
+            {
+                _task = new Task(ReadingNodes,_cancellationToken);
+            }
 
-            // if (_task.Status == TaskStatus.Created)
-            // {
-            //     _task.Start();
-            // }
-            //
-            // if (_task.Status != TaskStatus.Running && _task.Status != TaskStatus.WaitingToRun)
-            // {
-            //     _task.Wait(_cancellationToken);
-            // }
+            if (_task.Status == TaskStatus.Created)
+            {
+                _task.Start();
+            }
+
+            if (_task.Status != TaskStatus.Running && _task.Status != TaskStatus.WaitingToRun)
+            {
+                _task.Wait(_cancellationToken);
+            }
         }
 
         private void Repair(int i = 0)
@@ -68,21 +69,21 @@ namespace KolejkaPriorytetowa
             int left = Left(i);
             int right = Right(i);
 
-            if (left < Heap.Count && Heap[left].Priority > Heap[temp].Priority)
+            if (left < _heap.Count && _heap[left].Priority > _heap[temp].Priority)
             {
                 temp = left;
             }
             
-            if (right < Heap.Count && Heap[right].Priority > Heap[temp].Priority)
+            if (right < _heap.Count && _heap[right].Priority > _heap[temp].Priority)
             {
                 temp = right;
             }
 
             if (temp != i)
             {
-                ItemPriorityQueue item = Heap[temp];
-                Heap[temp] = Heap[i];
-                Heap[i] = item;
+                ItemPriorityQueue item = _heap[temp];
+                _heap[temp] = _heap[i];
+                _heap[i] = item;
                 
                 Repair(temp);
             }
@@ -90,7 +91,7 @@ namespace KolejkaPriorytetowa
 
         public bool IsEmpty()
         {
-            return Heap.Count == 0 ? true : false;
+            return _heap.Count == 0 ? true : false;
         }
         
         private int Parent(int i)
@@ -106,6 +107,11 @@ namespace KolejkaPriorytetowa
         private int Right(int i)
         {
             return (2 * i) + 2;
+        }
+
+        private void OnReadingNodes()
+        {
+            ReadingNodes?.Invoke();
         }
     }
 }

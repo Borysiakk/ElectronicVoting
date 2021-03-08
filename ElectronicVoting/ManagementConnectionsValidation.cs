@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using ElectronicVoting.Builder;
 using ElectronicVoting.Interface;
-using KolejkaPriorytetowa;
+using ElectronicVoting.PriorityQueue;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.MixedReality.WebRTC;
 
@@ -13,13 +12,13 @@ namespace ElectronicVoting
     public class ManagementConnectionsValidation :IManagementConnectionsValidation
     {
         private Dictionary<string, PeerConnection> _peers;
-        private readonly PriorityQueueAsync<NodePriorityQueue> _priorityQueue;
+        public readonly PriorityQueueAsync<NodePriorityQueue> PriorityQueue;
         public PeerConnection this[string organization] => _peers.ContainsKey(organization) ? _peers[organization] : null;
 
         public ManagementConnectionsValidation()
         {
             _peers = new Dictionary<string, PeerConnection>();
-            _priorityQueue = new PriorityQueueAsync<NodePriorityQueue>();
+            PriorityQueue = new PriorityQueueAsync<NodePriorityQueue>();
         }
 
         public async Task<PeerConnection> Create(string organization, HubConnection hubConnection)
@@ -30,7 +29,9 @@ namespace ElectronicVoting
             {
                 channel.MessageReceived += bytes =>
                 {
-                    Console.WriteLine(Encoding.ASCII.GetString(bytes));
+                    var task = SerializationTask.DeserializePreparatory(bytes);
+                    PriorityQueue.Push(task.Value,task.Key);
+                    Console.WriteLine("Priorytet o ważności {0}",task.Key);
                 };
             };
             
