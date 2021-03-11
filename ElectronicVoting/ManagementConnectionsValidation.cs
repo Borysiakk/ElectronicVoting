@@ -19,6 +19,15 @@ namespace ElectronicVoting
         {
             _peers = new Dictionary<string, PeerConnection>();
             PriorityQueue = new PriorityQueueAsync<NodePriorityQueue>();
+
+            PriorityQueue.ActionAutoReadNode = async () =>
+            {
+                while (PriorityQueue.IsEmpty())
+                {
+                    NodePriorityQueue node = await PriorityQueue.Pop();
+                    
+                }
+            };
         }
 
         public async Task<PeerConnection> Create(string organization, HubConnection hubConnection)
@@ -31,6 +40,7 @@ namespace ElectronicVoting
                 {
                     var task = SerializationTask.DeserializePreparatory(bytes);
                     PriorityQueue.Push(task.Value,task.Key);
+                    
                     Console.WriteLine("Priorytet o ważności {0}",task.Key);
                 };
             };

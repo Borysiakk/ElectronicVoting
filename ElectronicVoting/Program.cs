@@ -17,12 +17,13 @@ namespace ElectronicVoting
 
             var authorizationLogin = new AuthorizationLogin(loginViewModel);
             HttpAuthorizationResult authorizationResult = await authorizationLogin.LoginAsync();
+            
             Connection connection = new Connection();
             await connection.InitializationAsync(authorizationResult);
 
             var managementConnections = connection.ManagementConnectionsValidation;
 
-            managementConnections.PriorityQueue.ReadingNodes += () =>
+            managementConnections.PriorityQueue.ActionAutoReadNode += () =>
             {
                 
             };

@@ -8,11 +8,11 @@ namespace ElectronicVoting.PriorityQueue
 {
     public sealed class PriorityQueueAsync<T> :IPriorityQueueAsync<T> where T:ItemPriorityQueue
     {
-        public Action ReadingNodes;
-        
-        private Task _task;
+        private Task _autoReadTask;
         private CancellationToken _cancellationToken;
         private readonly List<ItemPriorityQueue> _heap;
+
+        public Action ActionAutoReadNode { get;set; }
         
         public PriorityQueueAsync()
         {
@@ -47,19 +47,19 @@ namespace ElectronicVoting.PriorityQueue
                 count = Parent(count);
             }
             
-            if (_task == null || _task.Status == TaskStatus.RanToCompletion)
+            if (_autoReadTask == null || _autoReadTask.Status == TaskStatus.RanToCompletion)
             {
-                _task = new Task(ReadingNodes,_cancellationToken);
+                _autoReadTask = new Task(ActionAutoReadNode,_cancellationToken);
             }
 
-            if (_task.Status == TaskStatus.Created)
+            if (_autoReadTask.Status == TaskStatus.Created)
             {
-                _task.Start();
+                _autoReadTask.Start();
             }
 
-            if (_task.Status != TaskStatus.Running && _task.Status != TaskStatus.WaitingToRun)
+            if (_autoReadTask.Status != TaskStatus.Running && _autoReadTask.Status != TaskStatus.WaitingToRun)
             {
-                _task.Wait(_cancellationToken);
+                _autoReadTask.Wait(_cancellationToken);
             }
         }
 
@@ -107,11 +107,6 @@ namespace ElectronicVoting.PriorityQueue
         private int Right(int i)
         {
             return (2 * i) + 2;
-        }
-
-        private void OnReadingNodes()
-        {
-            ReadingNodes?.Invoke();
         }
     }
 }

@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Infrastruc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Test", "ElectronicVoting.Test\ElectronicVoting.Test.csproj", "{630C2319-F235-4FFE-9D0C-813EA138E142}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaillierCryptoSystem", "PaillierCryptoSystem\PaillierCryptoSystem.csproj", "{8FC6A8AE-2AE6-4582-BC9E-94917AC25552}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{630C2319-F235-4FFE-9D0C-813EA138E142}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{630C2319-F235-4FFE-9D0C-813EA138E142}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{630C2319-F235-4FFE-9D0C-813EA138E142}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FC6A8AE-2AE6-4582-BC9E-94917AC25552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FC6A8AE-2AE6-4582-BC9E-94917AC25552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FC6A8AE-2AE6-4582-BC9E-94917AC25552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FC6A8AE-2AE6-4582-BC9E-94917AC25552}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
