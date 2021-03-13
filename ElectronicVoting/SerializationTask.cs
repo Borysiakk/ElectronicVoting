@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ElectronicVoting.PriorityQueue;
 using ElectronicVoting.Serialization;
@@ -11,6 +12,12 @@ namespace ElectronicVoting
         public static void SerializationPreparatory(byte[] bytes)
         {
             
+        }
+
+        public static byte[] SerializeTaskObjectToByte(TaskObject task)
+        {
+            string json = JsonConvert.SerializeObject(task);
+            return Convert.FromBase64String(json);
         }
         
         public static KeyValuePair<Priority,NodePriorityQueue> DeserializePreparatory(byte[] bytes)

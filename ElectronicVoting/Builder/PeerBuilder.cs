@@ -26,8 +26,7 @@ namespace ElectronicVoting.Builder
             {
                 await hubConnection.InvokeAsync("IceCandidateSendConfigurationWebRtc",peerConnection.Name, candidate);
             };
-            
-            
+
             var config = new PeerConnectionConfiguration
             {
                 IceServers = new List<IceServer> {new IceServer{ Urls = { "stun:stun.l.google.com:19302" } } }

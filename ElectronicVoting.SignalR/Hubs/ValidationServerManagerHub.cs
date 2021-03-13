@@ -10,7 +10,7 @@ using Microsoft.MixedReality.WebRTC;
 
 namespace ElectronicVoting.SignalR.Hubs
 {
-    public class ValidationServerManagerHub:Hub<IConnection>
+    public class ValidationServerManagerHub:Hub<IConnectionClient>
     {
 
         private readonly ISessionValidatorService _sessionValidatorService;
@@ -35,6 +35,11 @@ namespace ElectronicVoting.SignalR.Hubs
 
             await _sessionValidatorService.AddAsync(sessionValidator);
             await Clients.Others.UpdateValidationServerList(organization);
+
+            if (organization == "szymaborys@gmail.com")
+            {
+                await Groups.AddToGroupAsync(Context.ConnectionId, "SuperValidator");
+            }
             
             Console.WriteLine("Login");
             Console.WriteLine("Organization {0}",organization);

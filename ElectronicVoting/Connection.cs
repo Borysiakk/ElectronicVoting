@@ -2,9 +2,11 @@
 using System.Threading;
 using ElectronicVoting.Domain.Contract.Result;
 using ElectronicVoting.Interface;
+using ElectronicVoting.Serialization;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.MixedReality.WebRTC;
+using Newtonsoft.Json;
 
 namespace ElectronicVoting
 {
@@ -23,6 +25,7 @@ namespace ElectronicVoting
             _hubConnection = new HubConnectionBuilder().WithUrl(Routes.SignalR.Connection, options =>
             {
                 options.Headers.Add("Organization", authorization.Organization);
+                options.Headers.Add("OrganizationId", authorization.OrganizationId);
                 options.AccessTokenProvider = () => System.Threading.Tasks.Task.FromResult(authorization.Token);
             }).AddMessagePackProtocol().Build();
             
@@ -56,6 +59,7 @@ namespace ElectronicVoting
                             peerConnection.CreateAnswer();
                         }
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -69,6 +73,18 @@ namespace ElectronicVoting
             {
                 var peer = ManagementConnectionsValidation[organization];
                 peer.AddIceCandidate(iceCandidate);
+            });
+
+            _hubConnection.On("ReceiveToSuperValidatorVoting", (string text) =>
+            {
+                Console.WriteLine("Odbieranie głosu");
+                TaskObject task = new TaskObject()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Operation = TaskOperation.Validation,
+                    
+                };
+                ManagementConnectionsValidation.SendMessageToAll(SerializationTask.SerializeTaskObjectToByte(task),PriorityMessage.Normal);
             });
             await _hubConnection.StartAsync();
         }

@@ -28,8 +28,9 @@ namespace ElectronicVoting
                 
             };
             
-            if(args[0] == "szymaborys@gmail.com")
-            
+            //if(args[0] == "szymaborys@gmail.com")
+
+            Console.ReadKey();
             await connection.Close();
         }
     }

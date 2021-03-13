@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Infrastruc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Test", "ElectronicVoting.Test\ElectronicVoting.Test.csproj", "{630C2319-F235-4FFE-9D0C-813EA138E142}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaillierCryptoSystem", "PaillierCryptoSystem\PaillierCryptoSystem.csproj", "{8FC6A8AE-2AE6-4582-BC9E-94917AC25552}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Paillier", "ElectronicVoting.Paillier\ElectronicVoting.Paillier.csproj", "{8FC6A8AE-2AE6-4582-BC9E-94917AC25552}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
