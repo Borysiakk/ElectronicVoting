@@ -9,24 +9,21 @@ namespace ElectronicVoting
 {
     public class SerializationTask
     {
-        public static void SerializationPreparatory(byte[] bytes)
-        {
-            
-        }
-
-        public static byte[] SerializeTaskObjectToByte(TaskObject task)
-        {
-            string json = JsonConvert.SerializeObject(task);
-            return Convert.FromBase64String(json);
-        }
-        
-        public static KeyValuePair<Priority,NodePriorityQueue> DeserializePreparatory(byte[] bytes)
+        public static KeyValuePair<PriorityMessage,NodePriorityQueue> SerializePreparatory(byte[] bytes)
         {
             string json = System.Text.Encoding.UTF8.GetString(bytes);
-            var task = JsonConvert.DeserializeObject<TaskJson>(json);
+            var task = JsonConvert.DeserializeObject<TaskIntroductory>(json);
 
-            return new KeyValuePair<Priority, NodePriorityQueue>
-            (task.Priority,new NodePriorityQueue() {TaskJson = task.TaskPacked});
+            return new KeyValuePair<PriorityMessage, NodePriorityQueue> (task.Priority,new NodePriorityQueue() {TaskJson = task.Task});
+        }
+
+        
+        public static KeyValuePair<PriorityMessage,NodePriorityQueue> DeserializePreparatory(byte[] bytes)
+        {
+            string json = System.Text.Encoding.UTF8.GetString(bytes);
+            var task = JsonConvert.DeserializeObject<TaskIntroductory>(json);
+
+            return new KeyValuePair<PriorityMessage, NodePriorityQueue>(task.Priority,new NodePriorityQueue() {TaskJson = task.Task});
         }
 
         public async Task<TaskObject> DeserializeTask(string task)

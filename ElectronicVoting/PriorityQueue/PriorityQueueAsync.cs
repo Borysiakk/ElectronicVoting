@@ -33,7 +33,7 @@ namespace ElectronicVoting.PriorityQueue
 
         }
 
-        public void Push(T node, Priority priority = Priority.Normal)
+        public void Push(T node, PriorityMessage priority = PriorityMessage.Normal)
         {
             int count = _heap.Count;
             node.Priority = priority;

@@ -1,16 +1,12 @@
-﻿namespace ElectronicVoting.Interface
-{
+﻿using ElectronicVoting.PriorityQueue;
+using ElectronicVoting.Serialization;
 
-    public enum PriorityMessage
-    {
-        Low,
-        Normal,
-        High
-    }
+namespace ElectronicVoting.Interface
+{
     
     public interface IManagementConnectionsValidation
     {
-        public void SendMessageToAll(byte[] message,PriorityMessage priority = PriorityMessage.Normal);
-        public void SendMessage(string organization, byte[] message,PriorityMessage priority = PriorityMessage.Normal);
+        public void SendMessageToAll(TaskObject task,PriorityMessage priority = PriorityMessage.Normal);
+        public void SendMessage(string organization, string task,PriorityMessage priority = PriorityMessage.Normal);
     }
 }

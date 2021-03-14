@@ -2,6 +2,7 @@
 using System.Threading;
 using ElectronicVoting.Domain.Contract.Result;
 using ElectronicVoting.Interface;
+using ElectronicVoting.PriorityQueue;
 using ElectronicVoting.Serialization;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,11 +13,13 @@ namespace ElectronicVoting
 {
     public class Connection :IConnectionValidator
     {
+        private readonly CancellationToken _cancellationToken;
         public ManagementConnectionsValidation ManagementConnectionsValidation { get; }
         
         private HubConnection _hubConnection;
         public Connection()
         {
+            _cancellationToken = new CancellationToken();
             ManagementConnectionsValidation = new ManagementConnectionsValidation();
         }
 
@@ -32,7 +35,9 @@ namespace ElectronicVoting
             _hubConnection.On("UpdateValidationServerList", async (string organization) =>
             {
                 var peerConnection = await ManagementConnectionsValidation.Create(organization, _hubConnection);
-                await peerConnection.AddDataChannelAsync(Guid.NewGuid().ToString(), true, true, new CancellationToken());
+                await peerConnection.AddDataChannelAsync("Low", false, true, _cancellationToken);
+                await peerConnection.AddDataChannelAsync("Normal", false, true, _cancellationToken);
+                await peerConnection.AddDataChannelAsync("High", false, true, _cancellationToken);
                 bool result = peerConnection.CreateOffer();
             });
             
@@ -84,14 +89,14 @@ namespace ElectronicVoting
                     Operation = TaskOperation.Validation,
                     
                 };
-                ManagementConnectionsValidation.SendMessageToAll(SerializationTask.SerializeTaskObjectToByte(task),PriorityMessage.Normal);
+                ManagementConnectionsValidation.SendMessageToAll(task,PriorityMessage.Normal);
             });
-            await _hubConnection.StartAsync();
+            await _hubConnection.StartAsync(_cancellationToken);
         }
 
         public async System.Threading.Tasks.Task Close()
         {
-            await _hubConnection.StopAsync();
+            await _hubConnection.StopAsync(_cancellationToken);
             ManagementConnectionsValidation.Close();
         }
     }

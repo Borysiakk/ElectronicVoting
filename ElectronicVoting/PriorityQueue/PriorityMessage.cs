@@ -1,6 +1,6 @@
 ﻿namespace ElectronicVoting.PriorityQueue
 {
-    public enum Priority
+    public enum PriorityMessage
     {
         Low = 0,
         Normal = 1,

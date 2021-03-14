@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using ElectronicVoting.Builder;
 using ElectronicVoting.Interface;
 using ElectronicVoting.PriorityQueue;
+using ElectronicVoting.Serialization;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.MixedReality.WebRTC;
+using Newtonsoft.Json;
 
 namespace ElectronicVoting
 {
@@ -25,7 +27,6 @@ namespace ElectronicVoting
                 while (PriorityQueue.IsEmpty())
                 {
                     NodePriorityQueue node = await PriorityQueue.Pop();
-                    
                 }
             };
         }
@@ -50,14 +51,27 @@ namespace ElectronicVoting
             return peerConnection;
         }
         
-        public void SendMessage(string organization, byte[] message, PriorityMessage priority = PriorityMessage.Normal)
+        public void SendMessage(string organization, string task, PriorityMessage priority = PriorityMessage.Normal)
         {
             throw new System.NotImplementedException();
         }
         
-        public void SendMessageToAll(byte[] message, PriorityMessage priority = PriorityMessage.Normal)
+        public void SendMessageToAll(TaskObject task, PriorityMessage priority = PriorityMessage.Normal)
         {
-            throw new System.NotImplementedException();
+            TaskIntroductory introductory = new TaskIntroductory()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Priority = priority,
+                Task = JsonConvert.SerializeObject(task),
+            };
+
+            string jsonTask = JsonConvert.SerializeObject(introductory);
+            byte[] bytesTask = Convert.FromBase64String(jsonTask);
+
+            foreach (var peer in _peers.Values)
+            {
+                peer.DataChannels[(int)priority].SendMessage(bytesTask);
+            }
         }
         
         public void Close()
