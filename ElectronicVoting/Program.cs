@@ -11,12 +11,12 @@ namespace ElectronicVoting
         {
             LoginViewModel loginViewModel = new LoginViewModel()
             {
-                Email = args[0],
+                Login = args[0],
                 Password = "string",
             };
 
             var authorizationLogin = new AuthorizationLogin(loginViewModel);
-            HttpAuthorizationResult authorizationResult = await authorizationLogin.LoginAsync();
+            HttpOrganizationAuthorizationResult authorizationResult = await authorizationLogin.LoginAsync();
             
             Connection connection = new Connection();
             await connection.InitializationAsync(authorizationResult);
@@ -28,7 +28,6 @@ namespace ElectronicVoting
                 
             };
             
-            //if(args[0] == "szymaborys@gmail.com")
 
             Console.ReadKey();
             await connection.Close();

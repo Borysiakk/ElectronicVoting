@@ -22,7 +22,6 @@ namespace ElectronicVoting.Persistence
             });
             
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(DbConnection));
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             return services;
         }
     }

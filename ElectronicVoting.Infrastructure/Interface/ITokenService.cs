@@ -1,5 +1,6 @@
 ﻿
 
+using ElectronicVoting.Domain.Contract.Requests;
 using ElectronicVoting.Domain.Entities;
 
 namespace ElectronicVoting.Infrastructure.Interface

@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ElectronicVoting.Domain.Contract.Requests;
 using ElectronicVoting.Domain.Entities;
 using ElectronicVoting.Infrastructure.Interface;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,7 @@ namespace ElectronicVoting.Infrastructure.Services
             {
                 Subject = new ClaimsIdentity(new []
                 {
+                    new Claim(JwtRegisteredClaimNames.NameId,user.Id),
                     new Claim(JwtRegisteredClaimNames.Email,user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 }),

@@ -14,9 +14,9 @@ namespace ElectronicVoting
             _loginViewModel = loginViewModel;
         }
 
-        public async Task<HttpAuthorizationResult> LoginAsync()
+        public async Task<HttpOrganizationAuthorizationResult> LoginAsync()
         {
-            return await HttpHelper.Post<HttpAuthorizationResult, LoginViewModel>(Routes.Identity.Login,_loginViewModel);
+            return await HttpHelper.Post<HttpOrganizationAuthorizationResult, LoginViewModel>(Routes.Identity.Login,_loginViewModel);
         }
     }
 }

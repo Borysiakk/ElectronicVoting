@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using PaillierCryptoSystem;
 
 namespace ElectronicVoting.Infrastructure
 {
@@ -14,9 +15,11 @@ namespace ElectronicVoting.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
+            services.AddSingleton<KeyBuilder>();
             services.AddSingleton<ITokenService, JwtTokenService>();
-            services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<ISessionValidatorService, SessionValidatorService>();
+            services.AddScoped<IValidatorAccountService,ValidatorAccountService>();
+            services.AddScoped<IVotingAccountService,VotingAccountService>();
             return services;
         }
         

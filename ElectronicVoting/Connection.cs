@@ -23,7 +23,7 @@ namespace ElectronicVoting
             ManagementConnectionsValidation = new ManagementConnectionsValidation();
         }
 
-        public async System.Threading.Tasks.Task InitializationAsync(HttpAuthorizationResult authorization)
+        public async System.Threading.Tasks.Task InitializationAsync(HttpOrganizationAuthorizationResult authorization)
         {
             _hubConnection = new HubConnectionBuilder().WithUrl(Routes.SignalR.Connection, options =>
             {

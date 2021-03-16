@@ -1,20 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ElectronicVoting.Domain.Contract.Requests
+﻿namespace ElectronicVoting.Domain.Contract.Requests
 {
     public class LoginViewModel
     {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        public string Login { get; set; }
         public string Password { get; set; }
-
-        [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
     }
 }

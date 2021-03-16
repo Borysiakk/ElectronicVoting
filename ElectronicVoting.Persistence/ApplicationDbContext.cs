@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ElectronicVoting.Persistence
 {
-    public class ApplicationDbContext :IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext :DbContext
     {
+        
+        public DbSet<VotingUser> VotingUsers { get; set; }
+        public DbSet<ValidatorUser> ValidatorUsers { get; set; }
         public DbSet<SessionValidator> SessionValidators { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
