@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.SignalR", "ElectronicVoting.SignalR\ElectronicVoting.SignalR.csproj", "{656221D5-01C0-47E6-934A-F9D9862B913D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting", "ElectronicVoting\ElectronicVoting.csproj", "{8397BF3A-FD8E-4634-90EB-56E64023C657}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Validator", "ElectronicVoting.Validator\ElectronicVoting.Validator.csproj", "{8397BF3A-FD8E-4634-90EB-56E64023C657}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Domain", "ElectronicVoting.Domain\ElectronicVoting.Domain.csproj", "{718F2208-9B46-4846-99F4-2FB4D82C237B}"
 EndProject

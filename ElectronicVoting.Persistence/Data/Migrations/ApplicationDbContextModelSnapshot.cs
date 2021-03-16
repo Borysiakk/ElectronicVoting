@@ -19,7 +19,7 @@ namespace ElectronicVoting.Persistence.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ElectronicVoting.Domain.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("ElectronicVoting.Validator.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -84,7 +84,7 @@ namespace ElectronicVoting.Persistence.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("ElectronicVoting.Domain.Entities.SessionValidator", b =>
+            modelBuilder.Entity("ElectronicVoting.Validator.Domain.Entities.SessionValidator", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -240,9 +240,9 @@ namespace ElectronicVoting.Persistence.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ElectronicVoting.Domain.Entities.SessionValidator", b =>
+            modelBuilder.Entity("ElectronicVoting.Validator.Domain.Entities.SessionValidator", b =>
                 {
-                    b.HasOne("ElectronicVoting.Domain.Entities.ApplicationUser", "User")
+                    b.HasOne("ElectronicVoting.Validator.Domain.Entities.ApplicationUser", "User")
                         .WithMany("User")
                         .HasForeignKey("OrganizationId");
 
@@ -260,7 +260,7 @@ namespace ElectronicVoting.Persistence.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ElectronicVoting.Domain.Entities.ApplicationUser", null)
+                    b.HasOne("ElectronicVoting.Validator.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -269,7 +269,7 @@ namespace ElectronicVoting.Persistence.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ElectronicVoting.Domain.Entities.ApplicationUser", null)
+                    b.HasOne("ElectronicVoting.Validator.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -284,7 +284,7 @@ namespace ElectronicVoting.Persistence.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ElectronicVoting.Domain.Entities.ApplicationUser", null)
+                    b.HasOne("ElectronicVoting.Validator.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -293,14 +293,14 @@ namespace ElectronicVoting.Persistence.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ElectronicVoting.Domain.Entities.ApplicationUser", null)
+                    b.HasOne("ElectronicVoting.Validator.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ElectronicVoting.Domain.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("ElectronicVoting.Validator.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("User");
                 });
