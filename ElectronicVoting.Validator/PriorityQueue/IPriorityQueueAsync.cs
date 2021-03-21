@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-namespace ElectronicVoting.PriorityQueue
+namespace ElectronicVoting.Validator.PriorityQueue
 {
     public interface IPriorityQueueAsync<T>
     {
-        public Task<T> Pop();
+        public T Pop();
         public bool IsEmpty();
         public void Push(T node, PriorityMessage priority = PriorityMessage.Normal);
 

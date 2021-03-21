@@ -13,7 +13,6 @@ namespace ElectronicVoting.Infrastructure.Services
 {
     public class VotingAccountService :IVotingAccountService
     {
-
         private readonly KeyPublic _keyPublic;
         private readonly ITokenService _tokenService;
         private readonly ApplicationDbContext _dbContext;

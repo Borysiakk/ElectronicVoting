@@ -8,10 +8,10 @@ namespace ElectronicVoting.Persistence
     public class ApplicationDbContext : DbContext
     {
         
-        public DbSet<VotingUser> VotingUsers { get;}
-        public DbSet<ValidatorUser> ValidatorUsers { get;}
-        public DbSet<ElectionCandidate> Candidates { get; }
-        public DbSet<SessionValidator> SessionValidators { get;}
+        public DbSet<VotingUser> VotingUsers { get; set; }
+        public DbSet<ValidatorUser> ValidatorUsers { get; set; }
+        public DbSet<ElectionCandidate> Candidates { get; set; }
+        public DbSet<SessionValidator> SessionValidators { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
             

@@ -12,8 +12,7 @@ namespace ElectronicVoting
         {
             Candidates = new List<Candidate>(candidates.Count);
             int countVotersBits = BigIntegerUtils.ToBinaryString(voters).Length;
-
-
+            
             foreach (var candidate in candidates)
             {
                 Candidates.Add(new Candidate()

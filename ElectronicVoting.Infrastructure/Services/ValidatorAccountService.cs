@@ -28,7 +28,7 @@ namespace ElectronicVoting.Infrastructure.Services
         
         public async Task<HttpOrganizationAuthorizationResult> LoginAsync(LoginViewModel loginViewModel)
         {
-            var organization = await _dbContext.ValidatorUsers.FirstOrDefaultAsync();
+            var organization = await _dbContext.ValidatorUsers.FirstOrDefaultAsync(a=>a.Email == loginViewModel.Login);
             if (organization == null || !Authorization(loginViewModel.Password, organization.PasswordHash))
             {
                 return new HttpOrganizationAuthorizationResult()

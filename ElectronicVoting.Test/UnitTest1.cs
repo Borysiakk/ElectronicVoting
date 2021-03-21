@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace ElectronicVoting.Test
 {
-    public class Tests
+    public class PaillierCryptoSystemTest
     {
         [SetUp]
         public void Setup()
@@ -12,7 +12,7 @@ namespace ElectronicVoting.Test
         [Test]
         public void Test1()
         {
-            Assert.Pass();
+            
         }
     }
 }

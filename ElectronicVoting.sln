@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.SignalR", "ElectronicVoting.SignalR\ElectronicVoting.SignalR.csproj", "{656221D5-01C0-47E6-934A-F9D9862B913D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Validator", "ElectronicVoting.Validator\ElectronicVoting.Validator.csproj", "{8397BF3A-FD8E-4634-90EB-56E64023C657}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Domain", "ElectronicVoting.Domain\ElectronicVoting.Domain.csproj", "{718F2208-9B46-4846-99F4-2FB4D82C237B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Persistence", "ElectronicVoting.Persistence\ElectronicVoting.Persistence.csproj", "{BA9CFECB-6CBF-49B1-B6A1-67DEFF7B7ED8}"
@@ -18,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Api", "Ele
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting", "ElectronicVoting\ElectronicVoting.csproj", "{D9D9D421-8C06-44F3-833D-2AF24D2F00F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Validator", "ElectronicVoting.Validator\ElectronicVoting.Validator.csproj", "{F8FCD0E3-BC30-4A7B-9461-BE56FC51BD16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,10 +28,6 @@ Global
 		{656221D5-01C0-47E6-934A-F9D9862B913D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{656221D5-01C0-47E6-934A-F9D9862B913D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{656221D5-01C0-47E6-934A-F9D9862B913D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8397BF3A-FD8E-4634-90EB-56E64023C657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8397BF3A-FD8E-4634-90EB-56E64023C657}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8397BF3A-FD8E-4634-90EB-56E64023C657}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8397BF3A-FD8E-4634-90EB-56E64023C657}.Release|Any CPU.Build.0 = Release|Any CPU
 		{718F2208-9B46-4846-99F4-2FB4D82C237B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{718F2208-9B46-4846-99F4-2FB4D82C237B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{718F2208-9B46-4846-99F4-2FB4D82C237B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,5 +56,9 @@ Global
 		{D9D9D421-8C06-44F3-833D-2AF24D2F00F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9D9D421-8C06-44F3-833D-2AF24D2F00F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9D9D421-8C06-44F3-833D-2AF24D2F00F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8FCD0E3-BC30-4A7B-9461-BE56FC51BD16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8FCD0E3-BC30-4A7B-9461-BE56FC51BD16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8FCD0E3-BC30-4A7B-9461-BE56FC51BD16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8FCD0E3-BC30-4A7B-9461-BE56FC51BD16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

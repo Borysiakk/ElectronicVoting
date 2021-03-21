@@ -1,12 +1,11 @@
-﻿using ElectronicVoting.PriorityQueue;
+﻿using ElectronicVoting.Validator.PriorityQueue;
 
-namespace ElectronicVoting.Serialization
+namespace ElectronicVoting.Validator.MessageTask
 {
-    public class TaskIntroductory
+    public class Envelope
     {
         public string Id { get; set; }
         public PriorityMessage Priority { get; set; }
-        
         public string Task { get; set; }
     }
 }

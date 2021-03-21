@@ -12,6 +12,7 @@
       <ProjectReference Include="..\ElectronicVoting.Domain\ElectronicVoting.Domain.csproj" />
       <ProjectReference Include="..\ElectronicVoting.Infrastructure\ElectronicVoting.Infrastructure.csproj" />
       <ProjectReference Include="..\ElectronicVoting.SignalR\ElectronicVoting.SignalR.csproj" />
+      <ProjectReference Include="..\ElectronicVoting\ElectronicVoting.csproj" />
     </ItemGroup>
 
 </Project>

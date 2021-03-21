@@ -15,11 +15,12 @@ namespace ElectronicVoting.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
-            services.AddSingleton<KeyBuilder>();
             services.AddSingleton<ITokenService, JwtTokenService>();
             services.AddScoped<ISessionValidatorService, SessionValidatorService>();
             services.AddScoped<IValidatorAccountService,ValidatorAccountService>();
             services.AddScoped<IVotingAccountService,VotingAccountService>();
+            services.AddScoped<IElectionsService, ElectionsService>();
+            
             return services;
         }
         

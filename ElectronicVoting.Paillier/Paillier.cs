@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using PaillierCryptosystem;
 using PaillierCryptoSystem.Model;
 
@@ -11,14 +12,17 @@ namespace PaillierCryptoSystem
             BigInteger r = 0;
             BigInteger g = keyPublic.g;
             BigInteger n = keyPublic.n;
-            
+
             do
             {
-                r = BigIntegerRandom.NextBigInteger(1,n);
+                r = 16191327;
             } while (BigInteger.GreatestCommonDivisor(r,n) != 1);
             
+            Console.WriteLine(r);
             BigInteger C = BigInteger.Pow(n, 2);
-
+            Console.WriteLine("1 {0}",C);
+            Console.WriteLine("2 {0}",BigInteger.ModPow(g, msg, C));
+            Console.WriteLine("3 {0}",BigInteger.ModPow(r, n, C));
             return BigInteger.ModPow(g, msg, C) * BigInteger.ModPow(r, n, C);
 
         }

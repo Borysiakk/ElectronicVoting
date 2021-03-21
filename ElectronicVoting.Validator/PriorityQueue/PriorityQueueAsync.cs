@@ -1,10 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ElectronicVoting.PriorityQueue
+namespace ElectronicVoting.Validator.PriorityQueue
 {
     public sealed class PriorityQueueAsync<T> :IPriorityQueueAsync<T> where T:ItemPriorityQueue
     {
@@ -20,17 +19,13 @@ namespace ElectronicVoting.PriorityQueue
             _cancellationToken = new CancellationToken();
         }
 
-        public async Task<T> Pop()
+        public T Pop()
         {
-            return await Task.Run(() =>
-            {
-                ItemPriorityQueue item = _heap[0];
-                _heap[0] = _heap[^1];
-                _heap.RemoveAt(_heap.Count - 1);
-                Repair();
-                return (T) item;
-            }, _cancellationToken);
-
+            ItemPriorityQueue item = _heap[0];
+            _heap[0] = _heap[^1];
+            _heap.RemoveAt(_heap.Count - 1);
+            Repair();
+            return (T) item;
         }
 
         public void Push(T node, PriorityMessage priority = PriorityMessage.Normal)

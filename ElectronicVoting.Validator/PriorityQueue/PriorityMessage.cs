@@ -1,4 +1,4 @@
-﻿namespace ElectronicVoting.PriorityQueue
+﻿namespace ElectronicVoting.Validator.PriorityQueue
 {
     public enum PriorityMessage
     {

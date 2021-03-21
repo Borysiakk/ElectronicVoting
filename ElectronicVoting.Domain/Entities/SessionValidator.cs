@@ -16,7 +16,5 @@ namespace ElectronicVoting.Domain.Entities
         public string OrganizationId { get; set; }
         public Boolean StatusConnection { get; set; }
         
-        [ForeignKey("Id")]
-        public virtual ValidatorUser User { get; set; }
     }
 }

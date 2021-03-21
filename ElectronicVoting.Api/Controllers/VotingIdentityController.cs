@@ -11,7 +11,6 @@ namespace ElectronicVoting.Api.Controllers
     [Route("api/VotingIdentity")]
     public class VotingIdentityController :ControllerBase
     {
-
         private readonly IVotingAccountService _votingAccountService;
 
         public VotingIdentityController(IVotingAccountService votingAccountService)

@@ -31,15 +31,12 @@ namespace ElectronicVoting.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            KeyBuilder keyBuilder = new KeyBuilder();
-            keyBuilder.Generate(80,100);
+            ElectronicVotingManagement electronicVotingManagement = new ElectronicVotingManagement();
             
-            KeyPrivate keyPrivate = keyBuilder.KeyPrivate;
-            KeyPublic keyPublic = keyBuilder.KeyPublic;
-
-            services.AddSingleton<KeyPublic>(keyPublic);
-            services.AddSingleton<KeyPrivate>(keyPrivate);
-
+            services.AddSingleton<KeyPublic>(electronicVotingManagement.KeyPublic);
+            services.AddSingleton<KeyPrivate>(electronicVotingManagement.KeyPrivate);
+            services.AddSingleton<ElectronicVotingManagement>(electronicVotingManagement);
+            
             services.AddSignalRHubs();
             services.AddPersistence();
             services.AddServiceToken(Configuration);
@@ -56,6 +53,12 @@ namespace ElectronicVoting.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(x=>x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -68,7 +71,7 @@ namespace ElectronicVoting.Api
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSignalR();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

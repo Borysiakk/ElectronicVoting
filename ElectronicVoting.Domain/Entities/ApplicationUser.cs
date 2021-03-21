@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ElectronicVoting.Domain.Entities
 {
-    public class ApplicationUser
+    public abstract class ApplicationUser
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

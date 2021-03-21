@@ -8,6 +8,7 @@
       <ProjectReference Include="..\ElectronicVoting.Domain\ElectronicVoting.Domain.csproj" />
       <ProjectReference Include="..\ElectronicVoting.Paillier\ElectronicVoting.Paillier.csproj" />
       <ProjectReference Include="..\ElectronicVoting.Persistence\ElectronicVoting.Persistence.csproj" />
+      <ProjectReference Include="..\ElectronicVoting\ElectronicVoting.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
