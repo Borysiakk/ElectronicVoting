@@ -13,6 +13,7 @@ namespace ElectronicVoting.Validator.PriorityQueue
 
         public Action ActionAutoReadNode { get;set; }
         
+        
         public PriorityQueueAsync()
         {
             _heap = new List<ItemPriorityQueue>();

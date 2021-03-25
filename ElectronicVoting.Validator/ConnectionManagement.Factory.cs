@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.Threading;
 using ElectronicVoting.Domain.Contract.Result;
+using ElectronicVoting.Validator.Consensus;
 using ElectronicVoting.Validator.Factory;
+using ElectronicVoting.Validator.Interface;
 using ElectronicVoting.Validator.MessageTask;
 using ElectronicVoting.Validator.MessageTask.Serialization;
 using ElectronicVoting.Validator.PriorityQueue;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.MixedReality.WebRTC;
+using Newtonsoft.Json;
+
 namespace ElectronicVoting.Validator
 {
-    public partial class ConnectionManagement
+    public partial class ConnectionManagement :IConnectionManagement
     {
         public static class Factory
         {
@@ -19,19 +23,23 @@ namespace ElectronicVoting.Validator
             {
                 ConnectionManagement connectionManagement = new ConnectionManagement()
                 {
+                    Organization = authorization.Organization,
+                    Blockchain = new Blockchain(),
                     _cancellationToken = new CancellationToken(),
                     _peers = new Dictionary<string, PeerConnection>(),
                     _priorityQueueAsync = new PriorityQueueAsync<NodePriorityQueue>(),
                 };
                 
-                Execution execution = new Execution(connectionManagement);
                 
                 connectionManagement._priorityQueueAsync.ActionAutoReadNode += () =>
                 {
-                    while (connectionManagement._priorityQueueAsync.IsEmpty())
+                    Console.WriteLine("Wykonywanie Zadan");
+                    while (!connectionManagement._priorityQueueAsync.IsEmpty())
                     {
                         var node = connectionManagement._priorityQueueAsync.Pop();
-
+                        MessageBlock messageBlock = JsonConvert.DeserializeObject<MessageBlock>(node.Task);
+                        TaskCommand taskCommand = new TaskCommand(connectionManagement, messageBlock);
+                        taskCommand.Call();
                     }
                 };
                 
@@ -65,28 +73,39 @@ namespace ElectronicVoting.Validator
 
                 connectionManagement._hubConnection.On("SdpMessageReceivedConfigurationWebRtc", async (string organization, SdpMessage message) =>
                 {
-                    var peerConnection = connectionManagement._peers[organization];
-                    
-                    if (peerConnection == null)
+                    try
                     {
-                        var configuration = CreateConfiguration(organization, connectionManagement);
-                        peerConnection = await PeerConnectionFactory.Create(configuration);
-                        await peerConnection.SetRemoteDescriptionAsync(message);
-                        if (message.Type == SdpMessageType.Offer)
-                        {
-                            peerConnection.CreateAnswer();
-                        }
+                        var isPeerConnection = connectionManagement._peers.ContainsKey(organization);
                         
-                        connectionManagement._peers.Add(organization,peerConnection);
-                    }
-                    else
-                    {
-                        await peerConnection.SetRemoteDescriptionAsync(message);
-                        if (message.Type == SdpMessageType.Offer)
+                        if (!isPeerConnection)
                         {
-                            peerConnection.CreateAnswer();
+                            var configuration = CreateConfiguration(organization, connectionManagement);
+                            var peerConnection = await PeerConnectionFactory.Create(configuration);
+                            await peerConnection.SetRemoteDescriptionAsync(message);
+                            if (message.Type == SdpMessageType.Offer)
+                            {
+                                peerConnection.CreateAnswer();
+                            }
+                        
+                            connectionManagement._peers.Add(organization,peerConnection);
+                        }
+                        else
+                        {
+                            var peerConnection = connectionManagement._peers[organization];
+                            
+                            await peerConnection.SetRemoteDescriptionAsync(message);
+                            if (message.Type == SdpMessageType.Offer)
+                            {
+                                peerConnection.CreateAnswer();
+                            }
                         }
                     }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+                    
                 });
 
                 connectionManagement._hubConnection.On("IceCandidateReceivedConfigurationWebRtc", (string organization, IceCandidate iceCandidate) =>
@@ -98,7 +117,23 @@ namespace ElectronicVoting.Validator
 
                 connectionManagement._hubConnection.On("ReceiveToSuperValidatorVoting", (string text) =>
                 {
-                    Console.WriteLine("ReceiveToSuperValidatorVoting");
+                    try
+                    {
+                        Console.WriteLine("ReceiveToSuperValidatorVoting");
+                        MessageBlock messageBlock = new MessageBlock
+                        {
+                            Stage = Stage.PrePrepare,
+                            Validators = connectionManagement.GetAllConnectionValidatorsName(),
+                        };
+                    
+                        TaskCommand taskCommand = new TaskCommand(connectionManagement, messageBlock);
+                        taskCommand.Call();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
                 });
 
                 

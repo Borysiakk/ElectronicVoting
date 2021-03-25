@@ -1,7 +1,9 @@
-﻿namespace ElectronicVoting.Validator.PriorityQueue
+﻿using ElectronicVoting.Validator.MessageTask;
+
+namespace ElectronicVoting.Validator.PriorityQueue
 {
     public class NodePriorityQueue :ItemPriorityQueue
     {
-        public string TaskJson { get; set; }
+        public string Task { get; set; }
     }
 }

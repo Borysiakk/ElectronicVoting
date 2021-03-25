@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using ElectronicVoting.Domain.Contract.Requests;
 using ElectronicVoting.Domain.Contract.Result;
+using ElectronicVoting.Validator.PriorityQueue;
 
 namespace ElectronicVoting.Validator
 {
@@ -9,21 +11,30 @@ namespace ElectronicVoting.Validator
     {
         static async Task Main(string[] args)
         {
-            LoginViewModel loginViewModel = new LoginViewModel()
+            try
             {
-                Login = args.Length == 0 ? "borys59@onet.eu" :args[0],
-                Password = "string",
-            };
+                LoginViewModel loginViewModel = new LoginViewModel()
+                {
+                    Login = args.Length == 0 ? "borys59@onet.eu" :args[0],
+                    Password = "string",
+                };
 
-            var authorizationLogin = new AuthorizationLogin(loginViewModel);
-            HttpOrganizationAuthorizationResult authorizationResult = await authorizationLogin.LoginAsync();
-            ConnectionManagement connectionManagement = ConnectionManagement.Factory.Create(authorizationResult);
+                var authorizationLogin = new AuthorizationLogin(loginViewModel);
+                HttpOrganizationAuthorizationResult authorizationResult = await authorizationLogin.LoginAsync();
 
-            await connectionManagement.StartAsync();
-            Console.WriteLine("Validator rozpoczał działanie");
-            Console.ReadKey();
+                ConnectionManagement connectionManagement = ConnectionManagement.Factory.Create(authorizationResult);
 
-            await connectionManagement.StopAsync();
+                await connectionManagement.StartAsync();
+                Console.WriteLine("Działanie Validatora");
+                Console.ReadKey();
+    
+                await connectionManagement.StopAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }

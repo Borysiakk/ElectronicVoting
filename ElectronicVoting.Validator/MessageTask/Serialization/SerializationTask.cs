@@ -17,12 +17,13 @@ namespace ElectronicVoting.Validator.MessageTask.Serialization
             string json = System.Text.Encoding.UTF8.GetString(bytes);
             var task = JsonConvert.DeserializeObject<Envelope>(json);
 
-            return new KeyValuePair<PriorityMessage, NodePriorityQueue>(task.Priority,new NodePriorityQueue() {TaskJson = task.Task});
-        }
-        
-        public static TaskObject DeserializeTask(string task)
-        {
-            return JsonConvert.DeserializeObject<TaskObject>(task);
+            NodePriorityQueue nodePriorityQueue = new NodePriorityQueue()
+            {
+                Task = task.Task,
+                Priority = task.Priority,
+            };
+            
+            return new KeyValuePair<PriorityMessage, NodePriorityQueue>(task.Priority,nodePriorityQueue);
         }
     }
 }

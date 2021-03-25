@@ -32,7 +32,7 @@ namespace ElectronicVoting.SignalR.Hubs
                 OrganizationId = organizationId,
                 ConnectionId = Context.ConnectionId,
             };
-
+            
             await _sessionValidatorService.AddAsync(sessionValidator);
             await Clients.Others.UpdateValidationServerList(organization);
 
