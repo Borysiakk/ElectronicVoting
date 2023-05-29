@@ -5,7 +5,7 @@ using ElectronicVoting.Infrastructure.Helper;
 using ElectronicVoting.Infrastructure.Repository;
 using MediatR;
 
-namespace ElectronicVoting.API.Handler.Command
+namespace ElectronicVoting.API.Handler.Command.PbftConsensus
 {
     public class PrePrepare :IRequest
     {
@@ -27,26 +27,22 @@ namespace ElectronicVoting.API.Handler.Command
         {
             var transactionId = Guid.NewGuid().ToString();
 
-            var transaction = new RegisteredTransaction()
-            {
+            var transaction = new RegisteredTransaction() {
                 TransactionId = transactionId
             };
 
-            var item = new ItemBodyPrePrepare()
-            {
+            var item = new ItemBodyPrePrepare() {
                 Voice = request.Voice,
                 TransactionId = transactionId
             };
 
-            var operations = new PbftOperationConsensus()
-            {
+            var operations = new PbftOperationConsensus() {
                 Body = item.SerializeJson(),
                 Status = PbftOperationStatus.NotReady,
                 Operations = PbftOperationType.PrePrepare,
             };
             
-            foreach (var validator in await _validatorRepository.GetAllAsync(cancellationToken))
-            {
+            foreach (var validator in await _validatorRepository.GetAllAsync(cancellationToken)) {
                 var t = await HttpHelper.PostAsync<RegisteredTransaction>(validator.Address, Routes.TransactionRegister, transaction);
 
                 await _pbftOperationsConsensusRepository.AddAsync(operations, cancellationToken);
