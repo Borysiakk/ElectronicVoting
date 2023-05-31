@@ -7,8 +7,9 @@ namespace ElectronicVoting.Persistence
     public class ApplicationDbContext : DbContext
     {
         private readonly MainDbContext _mainDbContext;
+        public DbSet<TransactionPending> TransactionsPending { get; set; }
+        public DbSet<TransactionRegister> TransactionRegisters { get; set; }
         public DbSet<PbftOperationConsensus> PbftOperationsConsensus { get; set; }
-        public DbSet<RegisteredTransaction> RegisteredTransactions { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :base(options) { }
@@ -20,6 +21,21 @@ namespace ElectronicVoting.Persistence
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+            builder.Entity<TransactionPending>(a =>
+            {
+                a.HasKey(b => b.Id);
+                a.Property(b => b.Hash).IsRequired();
+                a.Property(b => b.TransactionId).IsRequired();
+                a.Property(b => b.Id).ValueGeneratedOnAdd();
+            });
+
+            builder.Entity<TransactionRegister>(a =>
+            {
+                a.HasKey(b => b.Id);
+                a.Property(b => b.Id).ValueGeneratedOnAdd();
+                a.Property(b => b.TransactionId).IsRequired();
+            });
 
             builder.Entity<PbftOperationConsensus>(a =>
             {

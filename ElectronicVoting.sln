@@ -11,15 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicVoting.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicVoting.Dto", "ElectronicVoting.Dto\ElectronicVoting.Dto.csproj", "{266DF15F-F7F8-43DF-94EF-E0E9303D9496}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicVoting.Commain", "ElectronicVoting.Commain\ElectronicVoting.Commain.csproj", "{024E50AF-E190-4924-8A6B-E9139D3BF654}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicVoting.Common", "ElectronicVoting.Commain\ElectronicVoting.Common.csproj", "{024E50AF-E190-4924-8A6B-E9139D3BF654}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicVoting.API", "ElectronicVoting.API\ElectronicVoting.API.csproj", "{EDB03ACB-16EF-4403-BB68-A5297190B4C0}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{686703CE-D356-4629-BDA7-7F3315428E0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Test", "ElectronicVoting.Test\ElectronicVoting.Test.csproj", "{C976A23A-3C97-4CA7-A526-6F27948CCEB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicVoting.Test", "ElectronicVoting.Test\ElectronicVoting.Test.csproj", "{C976A23A-3C97-4CA7-A526-6F27948CCEB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicVoting.Math", "ElectronicVoting.Math\ElectronicVoting.Math.csproj", "{B3AFEF61-B82E-4471-A6E6-B7CE65044F94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicVoting.Math", "ElectronicVoting.Math\ElectronicVoting.Math.csproj", "{B3AFEF61-B82E-4471-A6E6-B7CE65044F94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -35,15 +35,16 @@ namespace ElectronicVoting.API.Handler.Command.PbftConsensus
                 Voice = request.Voice,
                 TransactionId = transactionId
             };
-
-            var operations = new PbftOperationConsensus() {
-                Body = item.SerializeJson(),
-                Status = PbftOperationStatus.NotReady,
-                Operations = PbftOperationType.PrePrepare,
-            };
             
-            foreach (var validator in await _validatorRepository.GetAllAsync(cancellationToken)) {
-                var t = await HttpHelper.PostAsync<RegisteredTransaction>(validator.Address, Routes.TransactionRegister, transaction);
+            foreach (var validator in await _validatorRepository.GetAllAsync(cancellationToken)) 
+            {
+                var operations = new PbftOperationConsensus() {
+                    Body = item.SerializeJson(),
+                    Status = PbftOperationStatus.NotReady,
+                    Operations = PbftOperationType.PrePrepare,
+                };
+
+                await HttpHelper.PostAsync<RegisteredTransaction>(validator.Address, Routes.TransactionRegister, transaction);
 
                 await _pbftOperationsConsensusRepository.AddAsync(operations, cancellationToken);
                 await _pbftOperationsConsensusRepository.SaveAsync(cancellationToken);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ElectronicVoting.Domain.Table
 {
-    public class RegisteredTransaction :BaseEntity
+    public class TransactionRegister : BaseEntity
     {
         public long Index { get; set; }
         public bool IsInserted { get; set; }

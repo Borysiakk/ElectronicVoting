@@ -9,7 +9,7 @@ namespace ElectronicVoting.API.Controllers
     {
         public PbftConsensusController(IMediator mediator) : base(mediator)
         {
-
+            Console.WriteLine("Start");
         }
 
 

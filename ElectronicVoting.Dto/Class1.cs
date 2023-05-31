@@ -1,4 +1,4 @@
-﻿namespace ElectronicVoting.Commain
+﻿namespace ElectronicVoting.Dto
 {
     public class Class1
     {
