@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ElectronicVoting.Infrastructure.Repository
 {
-    public class TransactionRepository : Repository<RegisteredTransaction>
+    public class TransactionRepository : Repository<TransactionRegister>
     {
         public TransactionRepository(ApplicationDbContext dbContext) : base(dbContext)
         {

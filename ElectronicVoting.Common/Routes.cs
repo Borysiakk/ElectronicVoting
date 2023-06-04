@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace ElectronicVoting.API
+﻿namespace ElectronicVoting.Common
 {
-
     public static class Routes
     {
         public const string Reply = "api/PbftConsensus/Reply";

@@ -1,8 +1,9 @@
-﻿using ElectronicVoting.Domain.Enum;
-using ElectronicVoting.Infrastructure.Consensus;
-using ElectronicVoting.Infrastructure.Repository;
-using Microsoft.Extensions.DependencyInjection;
+﻿
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using ElectronicVoting.Infrastructure.Repository;
+using ElectronicVoting.Infrastructure.Services;
+using ElectronicVoting.Domain.Enum;
 
 namespace ElectronicVoting.Infrastructure.Queue
 {
@@ -16,7 +17,7 @@ namespace ElectronicVoting.Infrastructure.Queue
         {
             using var scope = _serviceProvider.CreateScope();
             {
-                var _pbftConsensus = scope.ServiceProvider.GetRequiredService<IPbftConsensus>();
+                var _pbftConsensus = scope.ServiceProvider.GetRequiredService<IPbftConsensusService>();
                 var _pbftOperationsConsensusRepository = scope.ServiceProvider.GetRequiredService<PbftOperationsConsensusRepository>();
 
                 while (!stoppingToken.IsCancellationRequested)

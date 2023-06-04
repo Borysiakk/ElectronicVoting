@@ -20,13 +20,12 @@ namespace ElectronicVoting.API.Handler.Command.Transaction
 
         public async Task<Unit> Handle(AddRegisteredTransaction request, CancellationToken cancellationToken)
         {
-            var transaction = new RegisteredTransaction
+            var transaction = new TransactionRegister
             {
                 TransactionId = request.TransactionId
             };
 
             await _transactionRepository.AddAsync(transaction, cancellationToken);
-            await _transactionRepository.SaveAsync(cancellationToken);
 
             return Unit.Value;
         }

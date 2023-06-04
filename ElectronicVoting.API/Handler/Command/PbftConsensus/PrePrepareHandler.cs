@@ -1,4 +1,6 @@
-﻿using ElectronicVoting.Domain.Enum;
+﻿using ElectronicVoting.Common;
+using ElectronicVoting.Domain.Enum;
+using ElectronicVoting.Domain.Handler.Command.Consensu;
 using ElectronicVoting.Domain.Models.Queue.Consensus;
 using ElectronicVoting.Domain.Table;
 using ElectronicVoting.Infrastructure.Helper;
@@ -7,11 +9,6 @@ using MediatR;
 
 namespace ElectronicVoting.API.Handler.Command.PbftConsensus
 {
-    public class PrePrepare :IRequest
-    {
-        public long Voice { get; set; }
-    }
-
     public class PrePrepareHandler : IRequestHandler<PrePrepare>
     {
         private readonly ValidatorRepository _validatorRepository;
@@ -27,7 +24,7 @@ namespace ElectronicVoting.API.Handler.Command.PbftConsensus
         {
             var transactionId = Guid.NewGuid().ToString();
 
-            var transaction = new RegisteredTransaction() {
+            var transaction = new TransactionRegister() {
                 TransactionId = transactionId
             };
 
@@ -44,7 +41,7 @@ namespace ElectronicVoting.API.Handler.Command.PbftConsensus
                     Operations = PbftOperationType.PrePrepare,
                 };
 
-                await HttpHelper.PostAsync<RegisteredTransaction>(validator.Address, Routes.TransactionRegister, transaction);
+                await HttpHelper.PostAsync<TransactionRegister>(validator.Address, Routes.TransactionRegister, transaction);
 
                 await _pbftOperationsConsensusRepository.AddAsync(operations, cancellationToken);
                 await _pbftOperationsConsensusRepository.SaveAsync(cancellationToken);
