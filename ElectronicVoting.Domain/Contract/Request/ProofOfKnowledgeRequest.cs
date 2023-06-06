@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ElectronicVoting.Domain.Contract.Request
 {
+    [ProtoContract]
     public class ProofOfKnowledgeRequest : SerializationRequest
     {
         [ProtoMember(1)]

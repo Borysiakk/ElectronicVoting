@@ -9,7 +9,7 @@ namespace ElectronicVoting.Infrastructure.Helper
 {
     public class HttpHelper
     {
-        public static async Task<RestResponse> PostAsync<T>(string serverUrl, string relativeUrl, T model) where T : class
+        public static async Task<RestResponse> PostAsync<T>(string serverUrl, string relativeUrl, T model, CancellationToken cancellationToken) where T : class
         {
             try
             {
@@ -26,7 +26,7 @@ namespace ElectronicVoting.Infrastructure.Helper
             }
         }
 
-        public static async Task<RestResponse> GetAsync(string serverUrl, string relativeUrl)
+        public static async Task<RestResponse> GetAsync(string serverUrl, string relativeUrl, CancellationToken cancellationToken)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace ElectronicVoting.Infrastructure.Helper
             }
         }
 
-        public static async Task<RestResponse> GetAsyncWithParameters(string serverUrl, string relativeUrl, Dictionary<string, string> parameters)
+        public static async Task<RestResponse> GetAsyncWithParameters(string serverUrl, string relativeUrl, Dictionary<string, string> parameters, CancellationToken cancellationToken)
         {
             try
             {

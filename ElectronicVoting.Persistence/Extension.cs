@@ -6,8 +6,6 @@ namespace ElectronicVoting.Persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services)
         {
-            services.AddDbContext<MainDbContext>();
-            services.AddDbContext<ApplicationDbContext>();
             return services;
         }
     }

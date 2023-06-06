@@ -10,9 +10,9 @@ namespace ElectronicVoting.Infrastructure.Services
 {
     public interface IPbftConsensusService
     {
-        public Task CommitAsync(PbftOperationConsensus operation);
-        public Task PrepareAsync(PbftOperationConsensus operation);
-        public Task PrePrepareAsync(PbftOperationConsensus operation);
+        public Task CommitAsync(PbftOperationConsensus operation, CancellationToken cancellationToken);
+        public Task PrepareAsync(PbftOperationConsensus operation, CancellationToken cancellationToken);
+        public Task PrePrepareAsync(PbftOperationConsensus operation, CancellationToken cancellationToken);
     }
 
     public class PbftConsesusService : IPbftConsensusService
@@ -29,16 +29,26 @@ namespace ElectronicVoting.Infrastructure.Services
         }
 
 
-        public async Task CommitAsync(PbftOperationConsensus operation)
+        public async Task CommitAsync(PbftOperationConsensus operation, CancellationToken cancellationToken)
         {
             Console.WriteLine("CommitAsync");
+            var item = ItemBodyHelper.DeserializeObject<ItemBodyCommit>(operation.Body);
+
+            TransactionPending transaction = new TransactionPending() {
+                Hash = item.Hash,
+                TransactionId = item.TransactionId
+            };
+
+
+            await _transactionPendingRepository.AddAsync(transaction, cancellationToken);
+            await _transactionPendingRepository.SaveAsync(cancellationToken);
         }
 
-        public async Task PrepareAsync(PbftOperationConsensus operation)
+        public async Task PrepareAsync(PbftOperationConsensus operation, CancellationToken cancellationToken)
         {
             Console.WriteLine("PrepareAsync");
 
-            var validators = _validatorRepository.GetAll();
+            var validators = await _validatorRepository.GetAllWithoutMe(cancellationToken);
 
             var item = ItemBodyHelper.DeserializeObject<ItemBodyPrepare>(operation.Body);
 
@@ -53,11 +63,11 @@ namespace ElectronicVoting.Infrastructure.Services
             };
 
             foreach (var validator in validators)
-                await HttpHelper.PostAsync<Commit>(validator.Address, Routes.Commit, commit);
+                await HttpHelper.PostAsync<Commit>(validator.Address, Routes.Commit, commit, cancellationToken);
 
         }
 
-        public async Task PrePrepareAsync(PbftOperationConsensus operation)
+        public async Task PrePrepareAsync(PbftOperationConsensus operation, CancellationToken cancellationToken)
         {
             Console.WriteLine("PrePrepareAsync");
 
@@ -65,14 +75,13 @@ namespace ElectronicVoting.Infrastructure.Services
 
             var item = ItemBodyHelper.DeserializeObject<ItemBodyPrePrepare>(operation.Body);
 
-            var prepare = new Prepare()
-            {
+            var prepare = new Prepare() {
                 Voice = item.Voice,
                 TransactionId = item.TransactionId
             };
 
             foreach (var validator in validators)
-                await HttpHelper.PostAsync<Prepare>(validator.Address, Routes.Prepare, prepare);
+                await HttpHelper.PostAsync<Prepare>(validator.Address, Routes.Prepare, prepare, cancellationToken);
 
         }
     }

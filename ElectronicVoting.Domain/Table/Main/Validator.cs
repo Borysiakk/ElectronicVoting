@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ElectronicVoting.Domain.Table
+namespace ElectronicVoting.Domain.Table.Main
 {
     public class Validator :BaseEntity
     {

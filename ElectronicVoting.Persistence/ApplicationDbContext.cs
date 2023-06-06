@@ -7,8 +7,10 @@ namespace ElectronicVoting.Persistence
     public class ApplicationDbContext : DbContext
     {
         private readonly MainDbContext _mainDbContext;
+
         public DbSet<TransactionPending> TransactionsPending { get; set; }
         public DbSet<TransactionRegister> TransactionRegisters { get; set; }
+        public DbSet<TransactionConfirmed> TransactionsConfirmed { get; set; }
         public DbSet<PbftOperationConsensus> PbftOperationsConsensus { get; set; }
 
 
@@ -27,6 +29,12 @@ namespace ElectronicVoting.Persistence
                 a.HasKey(b => b.Id);
                 a.Property(b => b.Hash).IsRequired();
                 a.Property(b => b.TransactionId).IsRequired();
+                a.Property(b => b.Id).ValueGeneratedOnAdd();
+            });
+
+            builder.Entity<TransactionConfirmed>(a =>
+            {
+                a.HasKey(b => b.Id);
                 a.Property(b => b.Id).ValueGeneratedOnAdd();
             });
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ElectronicVoting.Domain.Contract.Result
 {
+    [ProtoContract]
     public class ProofOfKnowledgeResult :SerializationResult
     {
         [ProtoMember(1)]

@@ -26,6 +26,7 @@ namespace ElectronicVoting.API.Handler.Command.Transaction
             };
 
             await _transactionRepository.AddAsync(transaction, cancellationToken);
+            await _transactionRepository.SaveAsync(cancellationToken);
 
             return Unit.Value;
         }

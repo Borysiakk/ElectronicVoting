@@ -1,19 +1,27 @@
 ﻿using ElectronicVoting.Domain.Table;
+using ElectronicVoting.Domain.Table.Main;
 using ElectronicVoting.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ElectronicVoting.Infrastructure.Repository
 {
-    public class ValidatorRepository : Repository<Validator>
+    public interface IValidatorRepository
+    {
+        Task<IEnumerable<Validator>> GetAllWithoutMe(CancellationToken cancellationToken);
+    }
+
+    public class ValidatorRepository : Repository<Validator>, IValidatorRepository
     {
         public ValidatorRepository(MainDbContext dbContext) : base(dbContext)
         {
 
+        }
+
+        public async Task<IEnumerable<Validator>> GetAllWithoutMe(CancellationToken cancellationToken)
+        {
+            var name = Environment.GetEnvironmentVariable("CONTAINER_NAME");
+            return await this._dbSet.Where(a => a.Name != name).ToListAsync(cancellationToken);
         }
     }
 }

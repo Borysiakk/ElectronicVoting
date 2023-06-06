@@ -41,7 +41,7 @@ namespace ElectronicVoting.API.Handler.Command.PbftConsensus
                     Operations = PbftOperationType.PrePrepare,
                 };
 
-                await HttpHelper.PostAsync<TransactionRegister>(validator.Address, Routes.TransactionRegister, transaction);
+                HttpHelper.PostAsync<TransactionRegister>(validator.Address, Routes.TransactionRegister, transaction, cancellationToken);
 
                 await _pbftOperationsConsensusRepository.AddAsync(operations, cancellationToken);
                 await _pbftOperationsConsensusRepository.SaveAsync(cancellationToken);
