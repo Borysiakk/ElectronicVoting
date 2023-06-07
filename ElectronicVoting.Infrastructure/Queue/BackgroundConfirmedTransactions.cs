@@ -1,4 +1,5 @@
 ﻿using ElectronicVoting.Infrastructure.Repository;
+using ElectronicVoting.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -7,6 +8,10 @@ namespace ElectronicVoting.Infrastructure.Queue
     public class BackgroundConfirmedTransactions : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
+
+        private IBlockService _blockService;
+        private IBlochchainService _blockChainService;
+        private ITransactionService _transactionService;
         private TransactionRegisterRepository _transactionRegisterRepository;
         private TransactionConfirmedRepository _transactionConfirmedRepository;
 
@@ -18,7 +23,13 @@ namespace ElectronicVoting.Infrastructure.Queue
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
+            var block = _blockService.Create();
             using var scope = _serviceProvider.CreateScope();
+
+            _blockService = scope.ServiceProvider.GetRequiredService<IBlockService>();
+            _blockChainService = scope.ServiceProvider.GetRequiredService<IBlochchainService>();
+            _transactionService = scope.ServiceProvider.GetRequiredService<ITransactionService>();
+
             _transactionRegisterRepository = scope.ServiceProvider.GetRequiredService<TransactionRegisterRepository>();
             _transactionConfirmedRepository = scope.ServiceProvider.GetRequiredService<TransactionConfirmedRepository>();
             while (!cancellationToken.IsCancellationRequested)
@@ -26,25 +37,32 @@ namespace ElectronicVoting.Infrastructure.Queue
                 var transactionRegisters = await _transactionRegisterRepository.GetByIsInserted(false, cancellationToken);
                 var confirmedTransactions = await _transactionConfirmedRepository.GetByIsInserted(false, cancellationToken);
 
-                foreach (var transaction in transactionRegisters)
+                foreach (var transactionR in transactionRegisters)
                 {
-                    var confirmedTransaction = confirmedTransactions.FirstOrDefault(a => a.TransactionId == transaction.TransactionId);
+                    var confirmedTransaction = confirmedTransactions.FirstOrDefault(a => a.TransactionId == transactionR.TransactionId);
                     if (confirmedTransaction == null) break;
 
-                    transaction.IsInserted = true;
+                    transactionR.IsInserted = true;
                     confirmedTransaction.IsInserted = true;
 
-                    _transactionRegisterRepository.Update(transaction);
+                    _transactionRegisterRepository.Update(transactionR);
                     _transactionConfirmedRepository.Update(confirmedTransaction);
 
                     await _transactionRegisterRepository.SaveAsync(cancellationToken);
                     await _transactionConfirmedRepository.SaveAsync(cancellationToken);
 
+                    var transaction = _transactionService.Create(confirmedTransaction.Voice);
+                    block.Transactions.Add(transaction);
+
+
                     Console.WriteLine("Głos został wstawiony");
                 }
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+            if(block.Transactions.Count > 0)
+                await _blockChainService.SaveBlock(block, cancellationToken);
+
+            await Task.Delay(TimeSpan.FromSeconds(60), cancellationToken);
         }
     }
 }

@@ -15,6 +15,9 @@ namespace ElectronicVoting.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection service)
         {
+            service.AddScoped<IBlockService, BlockService>();
+            service.AddScoped<ITransactionService, TransactionService>();
+            service.AddScoped<IBlochchainService, BlochchainService>();
             service.AddScoped<ISettingRepository,SettingRepository>();
             service.AddScoped<ValidatorRepository>();
             service.AddScoped<TransactionRepository>();
