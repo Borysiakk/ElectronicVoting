@@ -1,4 +1,5 @@
 ﻿using ElectronicVoting.Domain.Table;
+using ElectronicVoting.Domain.Table.Blockchain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -8,6 +9,8 @@ namespace ElectronicVoting.Persistence
     {
         private readonly MainDbContext _mainDbContext;
 
+        public DbSet<Block> Blocks { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionPending> TransactionsPending { get; set; }
         public DbSet<TransactionRegister> TransactionRegisters { get; set; }
         public DbSet<TransactionConfirmed> TransactionsConfirmed { get; set; }
@@ -52,6 +55,26 @@ namespace ElectronicVoting.Persistence
                 a.Property(b => b.Status).IsRequired();
                 a.Property(b => b.TransactionId).IsRequired(false);
                 a.Property(b => b.Id).ValueGeneratedOnAdd();
+            });
+
+            builder.Entity<Block>(a =>
+            {
+                a.HasKey(b => b.BlockId);
+                a.Property(b=>b.PreviousHash).IsRequired();
+                a.HasMany<Transaction>(b => b.Transactions)
+                 .WithOne(c => c.Block)
+                 .HasForeignKey(c => c.BlockId)
+                 .IsRequired();
+            });
+
+            builder.Entity<Transaction>(a =>
+            {
+                a.HasKey(b => b.TransactionId);
+                a.Property(b => b.Voice).IsRequired();
+                a.HasOne<Block>(b => b.Block)
+                 .WithMany(c => c.Transactions)
+                 .HasForeignKey(e => e.BlockId)
+                 .IsRequired();
             });
 
             base.OnModelCreating(builder);
