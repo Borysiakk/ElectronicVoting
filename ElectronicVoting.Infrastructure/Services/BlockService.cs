@@ -9,6 +9,7 @@ namespace ElectronicVoting.Infrastructure.Services
     public interface IBlockService
     {
         public Block Create();
+        public Block AddTransaction(Block block, Transaction transaction);
     }
 
     public class BlockService : IBlockService
@@ -18,6 +19,13 @@ namespace ElectronicVoting.Infrastructure.Services
         public BlockService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public Block AddTransaction(Block block, Transaction transaction)
+        {
+            block.Transactions.Add(transaction);
+
+            return block;
         }
 
         public Block Create()
@@ -33,21 +41,5 @@ namespace ElectronicVoting.Infrastructure.Services
             return block;
         }
 
-        private byte[] CalculateHash(byte[] data)
-        {
-            using(var sha512 = SHA512.Create())
-            {
-                return sha512.ComputeHash(data);
-            }
-        }
-
-        private byte[] Serialize(Block block)
-        {
-            using(var stream = new MemoryStream())
-            {
-                Serializer.Serialize(stream, block);
-                return stream.GetBuffer(); ;
-            }
-        }
     }
 }

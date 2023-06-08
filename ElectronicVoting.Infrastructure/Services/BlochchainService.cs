@@ -1,10 +1,6 @@
 ﻿using ElectronicVoting.Domain.Table.Blockchain;
 using ElectronicVoting.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ElectronicVoting.Infrastructure.Helper;
 
 namespace ElectronicVoting.Infrastructure.Services
 {
@@ -15,18 +11,17 @@ namespace ElectronicVoting.Infrastructure.Services
 
     public class BlochchainService : IBlochchainService
     {
-
-        private readonly BlockService _blockService;
         private readonly ApplicationDbContext _applicationDbContext;
 
-        public BlochchainService(ApplicationDbContext applicationDbContext, BlockService blockService)
+        public BlochchainService(ApplicationDbContext applicationDbContext)
         {
-            _blockService = blockService;
             _applicationDbContext = applicationDbContext;
         }
 
         public async Task SaveBlock(Block block, CancellationToken cancellationToken)
         {
+            block.CalculateHash();
+
             await _applicationDbContext.Blocks.AddAsync(block, cancellationToken);
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
         }

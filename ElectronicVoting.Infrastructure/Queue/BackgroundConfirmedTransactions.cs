@@ -23,7 +23,6 @@ namespace ElectronicVoting.Infrastructure.Queue
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            var block = _blockService.Create();
             using var scope = _serviceProvider.CreateScope();
 
             _blockService = scope.ServiceProvider.GetRequiredService<IBlockService>();
@@ -32,6 +31,9 @@ namespace ElectronicVoting.Infrastructure.Queue
 
             _transactionRegisterRepository = scope.ServiceProvider.GetRequiredService<TransactionRegisterRepository>();
             _transactionConfirmedRepository = scope.ServiceProvider.GetRequiredService<TransactionConfirmedRepository>();
+
+            var block = _blockService.Create();
+
             while (!cancellationToken.IsCancellationRequested)
             {
                 var transactionRegisters = await _transactionRegisterRepository.GetByIsInserted(false, cancellationToken);
@@ -52,8 +54,8 @@ namespace ElectronicVoting.Infrastructure.Queue
                     await _transactionConfirmedRepository.SaveAsync(cancellationToken);
 
                     var transaction = _transactionService.Create(confirmedTransaction.Voice);
-                    block.Transactions.Add(transaction);
 
+                    _blockService.AddTransaction(block, transaction);
 
                     Console.WriteLine("Głos został wstawiony");
                 }
