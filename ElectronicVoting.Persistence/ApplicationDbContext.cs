@@ -51,6 +51,7 @@ namespace ElectronicVoting.Persistence
             builder.Entity<PbftOperationConsensus>(a =>
             {
                 a.HasKey(b => b.Id);
+                a.HasIndex(b => b.Id);
                 a.Property(b => b.Operations).IsRequired();
                 a.Property(b => b.Status).IsRequired();
                 a.Property(b => b.TransactionId).IsRequired(false);
@@ -60,7 +61,8 @@ namespace ElectronicVoting.Persistence
             builder.Entity<Block>(a =>
             {
                 a.HasKey(b => b.BlockId);
-                a.Property(b=>b.PreviousHash).IsRequired();
+                a.HasIndex(b => b.BlockId);
+                a.Property(b => b.PreviousHash);
                 a.HasMany<Transaction>(b => b.Transactions)
                  .WithOne(c => c.Block)
                  .HasForeignKey(c => c.BlockId)

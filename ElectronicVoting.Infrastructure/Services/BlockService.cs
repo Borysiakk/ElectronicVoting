@@ -31,8 +31,9 @@ namespace ElectronicVoting.Infrastructure.Services
         public Block Create()
         {
             var block = new Block();
+            block.Transactions = new List<Transaction>();
 
-            var lastBlock = _dbContext.Blocks.LastOrDefault();
+            var lastBlock = _dbContext.Blocks.OrderBy(a=>a.BlockId).LastOrDefault();
             if (lastBlock == null)
                 block.PreviousHash = null;
             else

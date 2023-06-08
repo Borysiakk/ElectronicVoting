@@ -17,8 +17,6 @@ namespace ElectronicVoting.Domain.Table.Blockchain
         [ProtoMember(3)]
         public byte []? PreviousHash { get; set; }
         [ProtoMember(4)]
-        public Int64 TransactionsId { get; set; }
-        [ProtoMember(5)]
         public ICollection<Transaction> Transactions { get; set; }
     }
 }

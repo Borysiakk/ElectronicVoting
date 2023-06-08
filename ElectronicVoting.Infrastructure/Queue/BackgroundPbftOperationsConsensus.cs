@@ -52,10 +52,11 @@ namespace ElectronicVoting.Infrastructure.Queue
                                 throw new ArgumentOutOfRangeException();
                         }
                     }
+
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+
                 }
             }
-
-            await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
         }
     }
 }

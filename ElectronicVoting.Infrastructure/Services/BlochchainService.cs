@@ -20,7 +20,7 @@ namespace ElectronicVoting.Infrastructure.Services
 
         public async Task SaveBlock(Block block, CancellationToken cancellationToken)
         {
-            block.CalculateHash();
+            block.Hash = block.CalculateHash();
 
             await _applicationDbContext.Blocks.AddAsync(block, cancellationToken);
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
