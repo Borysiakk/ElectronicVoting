@@ -31,9 +31,6 @@ namespace ElectronicVoting.Infrastructure
             service.AddHostedService<BackgroundPbftOperationsConsensus>();
             service.AddHostedService<BackgroundConfirmedTransactions>();
 
-
-
-            service.AddDbContext<MainDbContext>();
             service.AddDbContext<ApplicationDbContext>( option =>
             {
                 option.UseTriggers(triggers =>

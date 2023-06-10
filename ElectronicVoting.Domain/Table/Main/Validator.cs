@@ -10,7 +10,5 @@ namespace ElectronicVoting.Domain.Table.Main
     {
         public string Name { get; set; }
         public string Address { get; set; }
-        public string ConnectionString { get; set; }
-        public string ConnectionStringToBuild { get; set; }
     }
 }

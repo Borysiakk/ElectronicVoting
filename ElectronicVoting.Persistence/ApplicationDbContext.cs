@@ -2,13 +2,12 @@
 using ElectronicVoting.Domain.Table.Blockchain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace ElectronicVoting.Persistence
 {
     public class ApplicationDbContext : DbContext
     {
-        private readonly MainDbContext _mainDbContext;
-
         public DbSet<Block> Blocks { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionPending> TransactionsPending { get; set; }
@@ -19,10 +18,6 @@ namespace ElectronicVoting.Persistence
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :base(options) { }
         
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, MainDbContext mainDbContext) :base(options)
-        {
-            _mainDbContext = mainDbContext;
-        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -84,11 +79,15 @@ namespace ElectronicVoting.Persistence
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            if (_mainDbContext != null)
+            var connectionStringsVariable = Environment.GetEnvironmentVariable("ConnectionStrings");
+            if (!String.IsNullOrEmpty(connectionStringsVariable))
             {
-                var name = Environment.GetEnvironmentVariable("CONTAINER_NAME");
-                var connectionString = _mainDbContext.Validators.FirstOrDefault(a => a.Name == name)?.ConnectionString;
-                builder.UseSqlServer(connectionString);
+                builder.UseSqlServer(connectionStringsVariable);
+            }
+            else
+            {
+                var connectionStrings = GetConnectionString("appsettings.json", "DefaultConnection");
+                builder.UseSqlServer(connectionStrings);
             }
 
             base.OnConfiguring(builder);
@@ -100,6 +99,13 @@ namespace ElectronicVoting.Persistence
                 var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer(args.FirstOrDefault());
                 return new ApplicationDbContext(builder.Options);
             }
+        }
+
+        private static string? GetConnectionString(string file, string name)
+        {
+            var configuration = new ConfigurationBuilder().AddJsonFile(file, false).Build();
+
+            return configuration.GetConnectionString(name);
         }
     }
 }

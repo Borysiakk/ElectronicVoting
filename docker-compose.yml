@@ -1,60 +1,45 @@
-version: '3.5'
+version: '3.4'
 
 services:
-  MainDb:
-    container_name: MainDatabase
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    ports:
-      - "8090:1433"
-    environment:
-      SA_PASSWORD: "LitwoOjczyznoMoja1234@"
-      ACCEPT_EULA: "Y"
-  electronicvoting.api:
-    container_name: ValidatorA
-    image: electronicvotingapi
-    build:
-      context: .
-      dockerfile: ElectronicVoting.API/Dockerfile
-    environment:
-      - CONTAINER_NAME=ValidatorA
-    depends_on:
-      - MainDb
-      - DatabaseA
-    ports:
-      - "9000:80"
-      - "9001:443"
-      - "5001:5000"
-  DatabaseA:
-    container_name: DatabaseA
-    ports:
-      - "8091:1433"
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    environment:
-      SA_PASSWORD: "LitwoOjczyznoMoja1234@"
-      ACCEPT_EULA: "Y"
 
-  ValidatorB:
-    container_name: ValidatorB
-    image:  electronicvotingapi
-    build:
-      context: .
-      dockerfile: ElectronicVoting.API/Dockerfile
-    environment:
-        - CONTAINER_NAME=ValidatorB
-        - ASPNETCORE_ENVIRONMENT=Development
-        - ASPNETCORE_URLS=https://+:443;http://+:80
-    ports:
-      - "9002:80"
-      - "9003:443"
-      - "5002:5000"
-    depends_on:
-      - MainDb
-      - DatabaseB
-  DatabaseB:
-    container_name: DatabaseB
-    ports:
-      - "8092:1433"
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    environment:
-      SA_PASSWORD: "LitwoOjczyznoMoja1234@"
-      ACCEPT_EULA: "Y"
+    MainDb:
+        container_name: MainDb
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+          - "8090:1433"
+        environment:
+          SA_PASSWORD: "LitwoOjczyznoMoja1234@"
+          ACCEPT_EULA: "Y"
+
+    Validator1-Database:
+        container_name: Validator1-Database
+        ports:
+          - "8091:1433"
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        environment:
+          SA_PASSWORD: "LitwoOjczyznoMoja1234@"
+          ACCEPT_EULA: "Y"
+
+    electronicvoting.main:
+        image: electronicvoting.main
+        build:
+            context: .
+            dockerfile: ElectronicVoting.Main/Dockerfile
+        depends_on:
+        - MainDb
+        environment:
+        - ConnectionStrings=Server=MainDb;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
+    electronicvoting.validator:
+        image: electronicvotingvalidator
+        build:
+            context: .
+            dockerfile: ElectronicVoting.Validator/Dockerfile
+        environment:
+            - CONTAINER_NAME=Validator1
+            - ConnectionStrings=Server=Validator1-Database;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
+        depends_on:
+            - Validator1-Database
+        ports:
+            - "9000:80"
+            - "9001:443"
+            - "5001:5000"

@@ -22,8 +22,14 @@ namespace ElectronicVoting.Persistence
         
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            var connectionStrings = GetConnectionString("appsettings.json", "DefaultConnection");
-            builder.UseSqlServer(connectionStrings);
+            var connectionStringsVariable = Environment.GetEnvironmentVariable("ConnectionStrings");
+            if(!String.IsNullOrEmpty(connectionStringsVariable))
+                builder.UseSqlServer(connectionStringsVariable);            
+            else
+            {
+                var connectionStrings = GetConnectionString("appsettings.json", "DefaultConnection");
+                builder.UseSqlServer(connectionStrings);
+            }
             
             base.OnConfiguring(builder);
         }
@@ -35,8 +41,7 @@ namespace ElectronicVoting.Persistence
                 a.HasKey(b => b.Id);
                 a.Property(b => b.Name).IsRequired();
                 a.Property(b => b.Address).IsRequired();
-                a.Property(b => b.ConnectionString).IsRequired();
-                a.Property(b => b.ConnectionStringToBuild).IsRequired();
+
                 a.Property(b => b.Id).ValueGeneratedOnAdd();
 
                 a.HasData(new Validator[]
@@ -46,16 +51,12 @@ namespace ElectronicVoting.Persistence
                         Id = 1,
                         Name = "ValidatorA",
                         Address = "http://electronicvoting.api:80",
-                        ConnectionString = "Server=DatabaseA;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true",
-                        ConnectionStringToBuild = "Server=localhost,8091;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true"
                     },
                     new Validator()
                     {
                         Id = 2,
                         Name = "ValidatorB",
                         Address = "http://ValidatorB:80",
-                        ConnectionString = "Server=DatabaseB;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true",
-                        ConnectionStringToBuild = "Server=localhost,8092;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true"
                     }
                 });
             });
@@ -91,6 +92,8 @@ namespace ElectronicVoting.Persistence
                     },
                 });
             });
+
+            base.OnModelCreating(builder);
         }
         
         public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<MainDbContext>
