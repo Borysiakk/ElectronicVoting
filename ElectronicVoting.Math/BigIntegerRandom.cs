@@ -1,5 +1,4 @@
 using System.Numerics;
-
 namespace ElectronicVoting.Math;
 
 public class BigIntegerRandom

@@ -62,4 +62,83 @@ public static class BigIntegerUtils
 
         return base2.ToString().Substring(1,base2.ToString().Length-1);
     }
+    public static BigInteger Nwd(BigInteger a, BigInteger b)
+    {
+        BigInteger t = 0;
+        while (b != 0)
+        {
+            t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
+    }
+
+    public static BigInteger Lcm(BigInteger a, BigInteger b)
+    {
+        return a * b / Nwd(a, b);
+    }
+    private static List<bool> ToBinaryArray(this BigInteger v)
+    {
+        List<bool> bins = new List<bool>();
+
+        while (v != 0)
+        {
+            if (v % 2 == 0)
+            {
+                bins.Add(false);
+            }
+            else
+            {
+                bins.Add(true);
+            }
+            v /= 2;
+        }
+        return bins;
+    }
+
+    public static BigInteger ModularExponentiation(BigInteger n, BigInteger p, BigInteger m)
+    {
+        BigInteger val = 1;
+        BigInteger x = n % m;
+
+        List<bool> bins = p.ToBinaryArray();
+
+        foreach (var bin in bins)
+        {
+            if (bin == true)
+            {
+                val = (val * x) % m;
+            }
+            x = (x * x) % m;
+        }
+        return val;
+    }
+
+    public static BigInteger ReciprocalModulo(BigInteger n, BigInteger m)
+    {
+        BigInteger w = 1;
+        BigInteger x = 0;
+        BigInteger u, z, q = 0;
+        u = 1;
+        w = n;
+        z = m;
+        while (w != 0)
+        {
+            if (w < z)
+            {
+                q = u; u = x; x = q;
+                q = w; w = z; z = q;
+            }
+            q = w / z;
+            u -= q * x;
+            w -= q * z;
+        }
+        if (z == 1)
+        {
+            if (x < 0) x += m;
+            return x;
+        }
+        return 0;
+    }
 }
