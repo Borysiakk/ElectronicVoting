@@ -1,12 +1,20 @@
-version: '3.4'
+version: '4.0'
 
 services:
-
     MainDb:
         container_name: MainDb
-        image: mcr.microsoft.com/mssql/server:2022-latest
+        image: mcr.microsoft.com/mssql/server:2017-latest
         ports:
           - "8090:1433"
+        environment:
+          SA_PASSWORD: "LitwoOjczyznoMoja1234@"
+          ACCEPT_EULA: "Y"
+
+    CommonDb:
+        container_name: CommonDb
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        ports:
+          - "8091:1433"
         environment:
           SA_PASSWORD: "LitwoOjczyznoMoja1234@"
           ACCEPT_EULA: "Y"
@@ -14,32 +22,69 @@ services:
     Validator1-Database:
         container_name: Validator1-Database
         ports:
-          - "8091:1433"
-        image: mcr.microsoft.com/mssql/server:2022-latest
+          - "8092:1433"
+        image: mcr.microsoft.com/mssql/server:2017-latest
         environment:
           SA_PASSWORD: "LitwoOjczyznoMoja1234@"
           ACCEPT_EULA: "Y"
 
-    electronicvoting.main:
-        image: electronicvoting.main
+    Validator2-Database:
+        container_name: Validator2-Database
+        ports:
+          - "8093:1433"
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        environment:
+          SA_PASSWORD: "LitwoOjczyznoMoja1234@"
+          ACCEPT_EULA: "Y"
+
+    main.api:
+        image: mainapi
         build:
             context: .
-            dockerfile: ElectronicVoting.Main/Dockerfile
+            dockerfile: Main.API/Dockerfile
         depends_on:
         - MainDb
+        - CommonDb
         environment:
-        - ConnectionStrings=Server=MainDb;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
-    electronicvoting.validator:
+        - ConnectionStrings_MainDb=Server=MainDb;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
+        - ConnectionStrings_CommonDb=Server=CommonDb;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
+
+    validatorA:
+        container_name: ValidatorA
         image: electronicvotingvalidator
         build:
-            context: .
-            dockerfile: ElectronicVoting.Validator/Dockerfile
+          context: .
+          dockerfile: Validator.API/Dockerfile
         environment:
-            - CONTAINER_NAME=Validator1
-            - ConnectionStrings=Server=Validator1-Database;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
+          - CONTAINER_NAME=ValidatorA
+          - ASPNETCORE_ENVIRONMENT=Development
+          - ASPNETCORE_URLS=https://+:443;http://+:80
+          - ConnectionStrings_CommonDb=Server=CommonDb;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
+          - ConnectionStrings_Database=Server=Validator1-Database;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
         depends_on:
-            - Validator1-Database
+          - CommonDb
+          - Validator1-Database
         ports:
-            - "9000:80"
-            - "9001:443"
-            - "5001:5000"
+          - "9000:80"
+          - "9001:443"
+          - "5001:5000"
+
+    validatorB:
+        container_name: ValidatorB
+        image: electronicvotingvalidator
+        build:
+          context: .
+          dockerfile: Validator.API/Dockerfile
+        environment:
+          - CONTAINER_NAME=ValidatorB
+          - ASPNETCORE_ENVIRONMENT=Development
+          - ASPNETCORE_URLS=https://+:443;http://+:80
+          - ConnectionStrings_CommonDb=Server=CommonDb;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
+          - ConnectionStrings_Database=Server=Validator2-Database;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
+        depends_on:
+          - CommonDb
+          - Validator2-Database
+        ports:
+          - "9002:80"
+          - "9003:443"
+          - "5002:5000"

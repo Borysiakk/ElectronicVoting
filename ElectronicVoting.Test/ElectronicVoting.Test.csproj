@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ElectronicVoting.Infrastructure\ElectronicVoting.Infrastructure.csproj" />
+    <ProjectReference Include="..\ElectronicVoting.Infrastructure\ElectronicVoting.Validator.Infrastructure.csproj" />
     <ProjectReference Include="..\ElectronicVoting.Persistence\ElectronicVoting.Persistence.csproj" />
   </ItemGroup>
 
