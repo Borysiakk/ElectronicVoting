@@ -10,8 +10,4 @@
     <ProjectReference Include="..\ElectronicVoting.Common\ElectronicVoting.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Table\" />
-  </ItemGroup>
-
 </Project>
