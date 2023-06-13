@@ -7,6 +7,11 @@ namespace Main.API.Controllers
     [ApiController]
     public class TokenContorller : ControllerBase
     {
-        
+        public TokenContorller()
+        { 
+
+        }
+
+        public 
     }
 }
