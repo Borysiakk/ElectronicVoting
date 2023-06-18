@@ -1,6 +1,7 @@
 ﻿using ElectronicVoting.Validator.Domain.Handler.Command.Consensu;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Validator.Domain.Handler.Command.Consensu;
 
 namespace ElectronicVoting.API.Controllers
 {
@@ -28,6 +29,27 @@ namespace ElectronicVoting.API.Controllers
 
         [HttpPost("Commit")]
         public async Task<IActionResult> Commit(Commit command, CancellationToken ct)
+        {
+            await Mediator.Send(command, ct);
+            return Ok();
+        }
+
+        [HttpPost("Pre-Initialization-Change-View")] 
+        public async Task<IActionResult> PreInitializationChangeView(PreInitializationChangeView command, CancellationToken ct)
+        {
+            await Mediator.Send(command, ct);
+            return Ok();
+        }
+
+        [HttpPost("Initialization-ChangeView")]
+        public async Task<IActionResult> InitializationChangeView(InitializationChangeView command, CancellationToken ct)
+        {
+            await Mediator.Send(command, ct);
+            return Ok();
+        }
+
+        [HttpPost("Commit-Initialization-Change-View")]
+        public async Task<IActionResult> CommitInitializationChangeView(CommitInitializationChangeView command, CancellationToken ct)
         {
             await Mediator.Send(command, ct);
             return Ok();

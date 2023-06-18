@@ -32,7 +32,8 @@ public class BackgroundPbftOperationsConsensus : BackgroundService
             _pbftOperationsConsensusRepository.UpdateRange(itemOperations);
             await _pbftOperationsConsensusRepository.SaveAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
-
+            
+            ///Spróbowac dodać tablice Tasków które bedą wykonywane asynchronicznie oraz wykonać to na transakcji w bazie danych -- przyszłość
             foreach (var item in itemOperations) 
             {
                 switch (item.Operations)
@@ -45,6 +46,12 @@ public class BackgroundPbftOperationsConsensus : BackgroundService
                         break;
                     case PbftOperationType.Commit:
                         await _pbftConsensus.CommitAsync(item, cancellationToken);
+                        break;
+                    case PbftOperationType.PrepareChangeView:
+                        await _pbftConsensus.PrePrepareChangeView(item, cancellationToken);
+                        break;
+                    case PbftOperationType.PrepareChangeView:
+                        await _pbftConsensus.PrepareChangeView(item, cancellationToken);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

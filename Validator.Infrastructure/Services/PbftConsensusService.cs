@@ -6,6 +6,8 @@ using ElectronicVoting.Validator.Domain.Handler.Command.Consensu;
 using ElectronicVoting.Validator.Domain.Queue.Consensus;
 using ElectronicVoting.Validator.Domain.Table;
 using ElectronicVoting.Validator.Infrastructure.Helper;
+using Validator.Domain.Handler.Command.Consensu;
+using Validator.Domain.Models.Queue.Consensus;
 
 namespace ElectronicVoting.Infrastructure.Services
 {
@@ -14,6 +16,9 @@ namespace ElectronicVoting.Infrastructure.Services
         public Task CommitAsync(PbftOperationConsensus operation, CancellationToken cancellationToken);
         public Task PrepareAsync(PbftOperationConsensus operation, CancellationToken cancellationToken);
         public Task PrePrepareAsync(PbftOperationConsensus operation, CancellationToken cancellationToken);
+        public Task InitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken);
+        public Task CommitInitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken);
+        public Task PrepareInitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken);
     }
 
     public class PbftConsesusService : IPbftConsensusService
@@ -43,6 +48,11 @@ namespace ElectronicVoting.Infrastructure.Services
 
             await _transactionPendingRepository.AddAsync(transaction, cancellationToken);
             await _transactionPendingRepository.SaveAsync(cancellationToken);
+        }
+
+        public Task CommitInitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task PrepareAsync(PbftOperationConsensus operation, CancellationToken cancellationToken)
@@ -84,6 +94,42 @@ namespace ElectronicVoting.Infrastructure.Services
             foreach (var validator in validators)
                 await HttpHelper.PostAsync<Prepare>(validator.Address, Routes.Prepare, prepare, cancellationToken);
 
+        }
+
+        public async Task PrepareInitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("PrepareInitializationChangeView");
+
+            var validators = _validatorRepository.GetAll();
+
+            var item = ItemBodyHelper.DeserializeObject<ItemBodyInitializationChangeView>(operation.Body);
+
+            var initializationChangeView = new InitializationChangeView()
+            {
+               Round = item.Round,
+               TransactionId = item.TransactionId
+            };
+
+            foreach (var validator in validators)
+                await HttpHelper.PostAsync<InitializationChangeView>(validator.Address, Routes.PrepareChagneView, initializationChangeView, cancellationToken);
+        }
+
+
+        public async Task InitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken)
+        {
+            var validators = _validatorRepository.GetAll();
+
+            var item = ItemBodyHelper.DeserializeObject<ItemBodyInitializationChangeView>(operation.Body);
+
+            var commitInitializationChangeView = new CommitInitializationChangeView()
+            {
+                Round = item.Round,
+                Decision = item.Decision,
+                TransactionId = item.TransactionId
+            };
+
+            foreach (var validator in validators)
+                await HttpHelper.PostAsync<CommitInitializationChangeView>(validator.Address, Routes.PrepareChagneView, commitInitializationChangeView, cancellationToken);
         }
     }
 }
