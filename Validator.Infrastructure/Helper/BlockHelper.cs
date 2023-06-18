@@ -1,7 +1,7 @@
 ﻿
 using ProtoBuf;
 using System.Security.Cryptography;
-using ElectronicVoting.Validator.Domain.Table.BlockChain;
+using Validator.Domain.Table.Blockchain;
 
 namespace ElectronicVoting.Validator.Infrastructure.Helper;
 public static class BlockHelper

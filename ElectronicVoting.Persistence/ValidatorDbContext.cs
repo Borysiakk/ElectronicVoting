@@ -1,7 +1,9 @@
 ﻿
-using ElectronicVoting.Validator.Domain.Table;
-using ElectronicVoting.Validator.Domain.Table.BlockChain;
+using ElectronicVoting.Common.Domain.Table;
 using Microsoft.EntityFrameworkCore;
+using Validator.Domain.Table;
+using Validator.Domain.Table.Blockchain;
+using Validator.Domain.Table.ChangeView;
 
 namespace ElectronicVoting.Persistence;
 
@@ -14,12 +16,15 @@ public class ValidatorDbContext : DbContext
     public DbSet<TransactionConfirmed> TransactionsConfirmed { get; set; }
     public DbSet<PbftOperationConsensus> PbftOperationsConsensus { get; set; }
 
+    public DbSet<ChangeViewTransaction> ChangeViewTransactions { get; set; }
+    public DbSet<InitializationChangeViewTransaction> InitializationChangeViewTransactions { get; set; }
 
     public ValidatorDbContext(DbContextOptions<ValidatorDbContext> options) :base(options) { }
     
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+
         builder.Entity<TransactionPending>(a =>
         {
             a.HasKey(b => b.Id);
@@ -70,6 +75,19 @@ public class ValidatorDbContext : DbContext
              .WithMany(c => c.Transactions)
              .HasForeignKey(e => e.BlockId)
              .IsRequired();
+        });
+
+        builder.Entity<InitializationChangeViewTransaction>(a =>
+        {
+            a.HasKey(b => b.Id);
+        });
+
+        builder.Entity<ChangeViewTransaction>(a =>
+        {
+            a.HasKey(b => b.Id);
+            a.Property(b => b.Hash).IsRequired();
+            a.Property(b => b.ApproverId).IsRequired();
+            a.Property(b => b.SelectedApproverId).IsRequired();
         });
 
         base.OnModelCreating(builder);

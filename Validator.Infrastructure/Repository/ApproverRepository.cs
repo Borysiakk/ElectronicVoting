@@ -1,7 +1,6 @@
 ﻿using ElectronicVoting.Persistence;
 using Microsoft.EntityFrameworkCore;
 using ElectronicVoting.Common.Infrastructure;
-using ElectronicVoting.Validator.Domain.Table;
 using ElectronicVoting.Common.Domain.Table;
 
 namespace ElectronicVoting.Infrastructure.Repository;

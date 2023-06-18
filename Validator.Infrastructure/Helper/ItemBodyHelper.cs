@@ -1,6 +1,5 @@
-﻿using ElectronicVoting.Validator.Domain.Queue.Consensus;
-using Newtonsoft.Json;
-
+﻿using Newtonsoft.Json;
+using Validator.Domain.Queue.Consensus;
 
 namespace ElectronicVoting.Validator.Infrastructure.Helper;
 

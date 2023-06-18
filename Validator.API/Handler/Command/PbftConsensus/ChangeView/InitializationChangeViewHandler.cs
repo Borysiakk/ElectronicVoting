@@ -1,10 +1,10 @@
 ﻿using ElectronicVoting.Infrastructure.Repository;
-using ElectronicVoting.Validator.Domain.Enum;
-using ElectronicVoting.Validator.Domain.Table;
 using ElectronicVoting.Validator.Infrastructure.Helper;
 using MediatR;
+using Validator.Domain.Enum;
 using Validator.Domain.Handler.Command.Consensu;
-using Validator.Domain.Models.Queue.Consensus;
+using Validator.Domain.Models.Queue.Consensus.ChangeView;
+using Validator.Domain.Table;
 
 namespace Validator.API.Handler.Command.PbftConsensus
 {

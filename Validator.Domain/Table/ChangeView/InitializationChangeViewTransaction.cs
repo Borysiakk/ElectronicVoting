@@ -1,7 +1,7 @@
-﻿using MediatR;
+﻿using ElectronicVoting.Common.Domain;
+namespace Validator.Domain.Table.ChangeView;
 
-namespace Validator.Domain.Handler.Command.Consensu;
-public class CommitInitializationChangeView :IRequest
+public class InitializationChangeViewTransaction :BaseEntity
 {
     public int Round { get; set; }
     public bool Decision { get; set; }

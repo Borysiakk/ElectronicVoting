@@ -1,7 +1,8 @@
-﻿using ElectronicVoting.Common.Domain;
-using ElectronicVoting.Validator.Domain.Enum;
+﻿
+using ElectronicVoting.Common.Domain;
+using Validator.Domain.Enum;
 
-namespace ElectronicVoting.Validator.Domain.Table;
+namespace Validator.Domain.Table;
 
 public class PbftOperationConsensus :BaseEntity
 {

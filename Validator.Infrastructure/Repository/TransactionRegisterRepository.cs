@@ -1,10 +1,10 @@
 ﻿using ElectronicVoting.Cammon.Interface;
 using ElectronicVoting.Common.Infrastructure;
 using ElectronicVoting.Persistence;
-using ElectronicVoting.Validator.Domain.Table;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
+using Validator.Domain.Table;
 
 namespace ElectronicVoting.Infrastructure.Repository
 {

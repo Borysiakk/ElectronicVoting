@@ -1,13 +1,14 @@
 ﻿using ElectronicVoting.Common.Helper;
 using ElectronicVoting.Infrastructure.Repository;
-using ElectronicVoting.Validator.Domain;
-using ElectronicVoting.Validator.Domain.Contract.Request;
-using ElectronicVoting.Validator.Domain.Handler.Command.Consensu;
-using ElectronicVoting.Validator.Domain.Queue.Consensus;
-using ElectronicVoting.Validator.Domain.Table;
 using ElectronicVoting.Validator.Infrastructure.Helper;
+using Validator.Domain;
+using Validator.Domain.Contract.Request;
 using Validator.Domain.Handler.Command.Consensu;
-using Validator.Domain.Models.Queue.Consensus;
+using Validator.Domain.Models.Queue.Consensus.ChangeView;
+using Validator.Domain.Queue.Consensus;
+using Validator.Domain.Table;
+using Validator.Domain.Table.ChangeView;
+using Validator.Infrastructure.Repository;
 
 namespace ElectronicVoting.Infrastructure.Services
 {
@@ -26,12 +27,15 @@ namespace ElectronicVoting.Infrastructure.Services
         private readonly ApproverRepository _validatorRepository;
         private readonly IProofOfKnowledgeService _proofOfKnowledgeService;
         private readonly TransactionPendingRepository _transactionPendingRepository;
+        private readonly InitializationChangeViewTransactionRepository _initializationChangeViewTransactionRepository;
 
-        public PbftConsesusService(ApproverRepository validatorRepository, TransactionPendingRepository transactionPendingRepository, IProofOfKnowledgeService proofOfKnowledgeService)
+
+        public PbftConsesusService(ApproverRepository validatorRepository, TransactionPendingRepository transactionPendingRepository, IProofOfKnowledgeService proofOfKnowledgeService, InitializationChangeViewTransactionRepository initializationChangeViewTransactionRepository)
         {
             _validatorRepository = validatorRepository;
             _proofOfKnowledgeService = proofOfKnowledgeService;
             _transactionPendingRepository = transactionPendingRepository;
+            _initializationChangeViewTransactionRepository = initializationChangeViewTransactionRepository;
         }
 
 
@@ -48,11 +52,6 @@ namespace ElectronicVoting.Infrastructure.Services
 
             await _transactionPendingRepository.AddAsync(transaction, cancellationToken);
             await _transactionPendingRepository.SaveAsync(cancellationToken);
-        }
-
-        public Task CommitInitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task PrepareAsync(PbftOperationConsensus operation, CancellationToken cancellationToken)
@@ -100,36 +99,94 @@ namespace ElectronicVoting.Infrastructure.Services
         {
             Console.WriteLine("PrepareInitializationChangeView");
 
-            var validators = _validatorRepository.GetAll();
+            var transactionId = Guid.NewGuid().ToString();
+            var user = Environment.GetEnvironmentVariable("CONTAINER_NAME");
+
+            var validators = await _validatorRepository.GetAllWithoutMe(cancellationToken);
 
             var item = ItemBodyHelper.DeserializeObject<ItemBodyInitializationChangeView>(operation.Body);
 
             var initializationChangeView = new InitializationChangeView()
             {
                Round = item.Round,
-               TransactionId = item.TransactionId
+               TransactionId = transactionId,
+            };
+
+            var commitInitializationChangeView = new CommitInitializationChangeView()
+            {
+                Decision = true,
+                UserName = user,
+                Round = item.Round,
+                TransactionId = transactionId
+            };
+
+            var commit = new InitializationChangeViewTransaction()
+            {
+                Decision = true,
+                UserName = user,
+                Round = item.Round,
+                TransactionId = transactionId
             };
 
             foreach (var validator in validators)
-                await HttpHelper.PostAsync<InitializationChangeView>(validator.Address, Routes.PrepareChagneView, initializationChangeView, cancellationToken);
+                HttpHelper.PostAsync<InitializationChangeView>(validator.Address, Routes.InitializationChangeView, initializationChangeView, cancellationToken);
+
+            foreach (var validator in validators)
+                HttpHelper.PostAsync<CommitInitializationChangeView>(validator.Address, Routes.CommitInitializationChangeView, commitInitializationChangeView, cancellationToken);
+
+            await _initializationChangeViewTransactionRepository.AddAsync(commit, cancellationToken);
+            await _initializationChangeViewTransactionRepository.SaveAsync(cancellationToken);
         }
 
 
         public async Task InitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken)
         {
-            var validators = _validatorRepository.GetAll();
+            Console.WriteLine("InitializationChangeView");
+            var validators = await _validatorRepository.GetAllWithoutMe(cancellationToken);
+
+            var user = Environment.GetEnvironmentVariable("CONTAINER_NAME");
 
             var item = ItemBodyHelper.DeserializeObject<ItemBodyInitializationChangeView>(operation.Body);
 
             var commitInitializationChangeView = new CommitInitializationChangeView()
             {
+                UserName = user,
                 Round = item.Round,
                 Decision = item.Decision,
                 TransactionId = item.TransactionId
             };
 
+            var commit = new InitializationChangeViewTransaction()
+            {
+                Decision = true,
+                UserName = user,
+                Round = item.Round,
+                TransactionId = item.TransactionId
+            };
+
             foreach (var validator in validators)
-                await HttpHelper.PostAsync<CommitInitializationChangeView>(validator.Address, Routes.PrepareChagneView, commitInitializationChangeView, cancellationToken);
+                 HttpHelper.PostAsync<CommitInitializationChangeView>(validator.Address, Routes.CommitInitializationChangeView, commitInitializationChangeView, cancellationToken);
+
+            await _initializationChangeViewTransactionRepository.AddAsync(commit, cancellationToken);
+            await _initializationChangeViewTransactionRepository.SaveAsync(cancellationToken);
+        }
+
+        public async Task CommitInitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("CommitInitializationChangeView");
+            var item = ItemBodyHelper.DeserializeObject<ItemBodyCommitInitializationChangeView>(operation.Body);
+
+            var commit = new InitializationChangeViewTransaction()
+            {
+                Round = item.Round,
+                Decision = item.Decision,
+                UserName = item.UserName,
+                TransactionId = item.TransactionId
+            };
+
+            await _initializationChangeViewTransactionRepository.AddAsync(commit, cancellationToken);
+            await _initializationChangeViewTransactionRepository.SaveAsync(cancellationToken);
+
         }
     }
 }

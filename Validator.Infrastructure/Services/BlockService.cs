@@ -1,7 +1,5 @@
-﻿using System.Security.Cryptography;
-using ProtoBuf;
-using ElectronicVoting.Persistence;
-using ElectronicVoting.Validator.Domain.Table.BlockChain;
+﻿using ElectronicVoting.Persistence;
+using Validator.Domain.Table.Blockchain;
 
 namespace ElectronicVoting.Infrastructure.Services
 {

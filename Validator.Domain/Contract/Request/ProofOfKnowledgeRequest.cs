@@ -1,5 +1,5 @@
 ﻿using ProtoBuf;
-namespace ElectronicVoting.Validator.Domain.Contract.Request;
+namespace Validator.Domain.Contract.Request;
 
 [ProtoContract]
 public class ProofOfKnowledgeRequest : SerializationRequest

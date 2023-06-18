@@ -1,12 +1,13 @@
-﻿using ElectronicVoting.Common.Helper;
+﻿using MediatR;
+using Validator.Domain;
+using Validator.Domain.Enum;
+using Validator.Domain.Handler.Command.Consensu;
+using Validator.Domain.Queue.Consensus;
+using Validator.Domain.Table;
+using ElectronicVoting.Common.Helper;
 using ElectronicVoting.Infrastructure.Repository;
-using ElectronicVoting.Validator.Domain;
-using ElectronicVoting.Validator.Domain.Enum;
-using ElectronicVoting.Validator.Domain.Handler.Command.Consensu;
-using ElectronicVoting.Validator.Domain.Queue.Consensus;
-using ElectronicVoting.Validator.Domain.Table;
 using ElectronicVoting.Validator.Infrastructure.Helper;
-using MediatR;
+
 
 namespace ElectronicVoting.API.Handler.Command.PbftConsensus;
 public class PrePrepareHandler : IRequestHandler<PrePrepare>

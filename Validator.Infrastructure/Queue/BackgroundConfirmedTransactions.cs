@@ -1,8 +1,8 @@
 ﻿using ElectronicVoting.Infrastructure.Repository;
 using ElectronicVoting.Infrastructure.Services;
-using ElectronicVoting.Validator.Domain.Table.BlockChain;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Validator.Domain.Table.Blockchain;
 
 namespace ElectronicVoting.Infrastructure.Queue;
 

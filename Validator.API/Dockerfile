@@ -7,20 +7,21 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["ElectronicVoting.Validator/ElectronicVoting.Validator.csproj", "ElectronicVoting.Validator/"]
+COPY ["Validator.API/Validator.API.csproj", "Validator.API/"]
+COPY ["Validator.Infrastructure/Validator.Infrastructure.csproj", "Validator.Infrastructure/"]
 COPY ["ElectronicVoting.Persistence/ElectronicVoting.Persistence.csproj", "ElectronicVoting.Persistence/"]
-COPY ["ElectronicVoting.Domain/ElectronicVoting.Domain.csproj", "ElectronicVoting.Domain/"]
-COPY ["ElectronicVoting.Infrastructure/ElectronicVoting.Infrastructure.csproj", "ElectronicVoting.Infrastructure/"]
+COPY ["Main.Domain/Main.Domain.csproj", "Main.Domain/"]
 COPY ["ElectronicVoting.Common/ElectronicVoting.Common.csproj", "ElectronicVoting.Common/"]
-RUN dotnet restore "ElectronicVoting.Validator/ElectronicVoting.Validator.csproj"
+COPY ["Validator.Domain/Validator.Domain.csproj", "Validator.Domain/"]
+RUN dotnet restore "Validator.API/Validator.API.csproj"
 COPY . .
-WORKDIR "/src/ElectronicVoting.Validator"
-RUN dotnet build "ElectronicVoting.Validator.csproj" -c Release -o /app/build
+WORKDIR "/src/Validator.API"
+RUN dotnet build "Validator.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ElectronicVoting.Validator.csproj" -c Release -o /app/publish
+RUN dotnet publish "Validator.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ElectronicVoting.Validator.dll"]
+ENTRYPOINT ["dotnet", "Validator.API.dll"]

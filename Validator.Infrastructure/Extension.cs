@@ -1,13 +1,13 @@
 ﻿using ElectronicVoting.Infrastructure.Queue;
 using ElectronicVoting.Infrastructure.Repository;
 using ElectronicVoting.Infrastructure.Services;
-using ElectronicVoting.Infrastructure.Triggers;
 using ElectronicVoting.Persistence;
 using ElectronicVoting.Validator.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+using Validator.Infrastructure.Repository;
+using Validator.Infrastructure.Triggers;
 
 namespace ElectronicVoting.Infrastructure
 {
@@ -25,6 +25,8 @@ namespace ElectronicVoting.Infrastructure
             service.AddScoped<TransactionConfirmedRepository>();
             service.AddScoped<TransactionRegisterRepository>();
             service.AddScoped<PbftOperationsConsensusRepository>();
+            service.AddScoped<ChangeViewTransactionRepository>();
+            service.AddScoped<InitializationChangeViewTransactionRepository>();
             service.AddScoped<IPbftConsensusService, PbftConsesusService>();
             service.AddScoped<IProofOfKnowledgeService, ProofOfKnowledgeService>();
             service.AddTransient(typeof(IPipelineBehavior<,>), typeof(DbContextTransactionPipelineBehavior<,>));
@@ -36,6 +38,7 @@ namespace ElectronicVoting.Infrastructure
                 option.UseTriggers(triggers =>
                 {
                     triggers.AddTrigger<AfterCreateTransactionPending>();
+                    triggers.AddTrigger<AfterCreateInitializationChangeViewTransaction>();
                 });
             });
 

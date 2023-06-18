@@ -1,6 +1,5 @@
 ﻿using ElectronicVoting.Common.Domain.Table;
 using ElectronicVoting.Persistence;
-using ElectronicVoting.Validator.Domain.Table;
 using Microsoft.EntityFrameworkCore;
 
 

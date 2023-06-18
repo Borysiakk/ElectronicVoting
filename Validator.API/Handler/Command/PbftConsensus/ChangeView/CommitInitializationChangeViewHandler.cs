@@ -3,24 +3,26 @@ using ElectronicVoting.Validator.Infrastructure.Helper;
 using MediatR;
 using Validator.Domain.Enum;
 using Validator.Domain.Handler.Command.Consensu;
-using Validator.Domain.Queue.Consensus;
+using Validator.Domain.Models.Queue.Consensus.ChangeView;
 using Validator.Domain.Table;
 
-namespace ElectronicVoting.API.Handler.Command.PbftConsensus;
-public class PrepareHandler : IRequestHandler<Prepare>
+namespace Validator.API.Handler.Command.PbftConsensus.ChangeView;
+public class CommitInitializationChangeViewHandler : IRequestHandler<CommitInitializationChangeView>
 {
     private readonly PbftOperationsConsensusRepository _pbftOperationsConsensusRepository;
 
-    public PrepareHandler(PbftOperationsConsensusRepository pbftOperationsConsensusRepository)
+    public CommitInitializationChangeViewHandler(PbftOperationsConsensusRepository pbftOperationsConsensusRepository)
     {
         _pbftOperationsConsensusRepository = pbftOperationsConsensusRepository;
     }
 
-    public async Task Handle(Prepare request, CancellationToken cancellationToken)
+    public async Task Handle(CommitInitializationChangeView request, CancellationToken cancellationToken)
     {
-        var item = new ItemBodyPrepare()
+        var item = new ItemBodyCommitInitializationChangeView()
         {
-            Voice = request.Voice,
+            Round = request.Round,
+            UserName = request.UserName,
+            Decision = request.Decision,
             TransactionId = request.TransactionId,
         };
 
@@ -29,7 +31,7 @@ public class PrepareHandler : IRequestHandler<Prepare>
             Body = item.SerializeJson(),
             TransactionId = request.TransactionId,
             Status = PbftOperationStatus.NotReady,
-            Operations = PbftOperationType.Prepare,
+            Operations = PbftOperationType.CommitInitializationChangeView,
         };
 
         await _pbftOperationsConsensusRepository.AddAsync(operations, cancellationToken);

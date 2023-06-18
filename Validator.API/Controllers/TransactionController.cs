@@ -1,21 +1,17 @@
-﻿using ElectronicVoting.API.Handler.Command.Transaction;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Validator.Domain.Handler.Command;
 
-namespace ElectronicVoting.API.Controllers
+namespace Validator.API.Controllers;
+public class TransactionController : BaseController
 {
-    public class TransactionController : BaseController
+    public TransactionController(IMediator mediator) : base(mediator) {}
+
+    [HttpPost("Add")]
+    public async Task<IActionResult> Add(AddRegisteredTransaction command, CancellationToken ct)
     {
-        public TransactionController(IMediator mediator) : base(mediator) {}
+        await Mediator.Send(command, ct);
 
-        [HttpPost("Add")]
-        public async Task<IActionResult> Add(AddRegisteredTransaction command, CancellationToken ct)
-        {
-            await Mediator.Send(command, ct);
-
-            return Ok();
-        }
+        return Ok();
     }
 }

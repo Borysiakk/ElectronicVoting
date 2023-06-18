@@ -1,6 +1,6 @@
 ﻿using ElectronicVoting.Common.Domain;
 
-namespace ElectronicVoting.Validator.Domain.Table;
+namespace Validator.Domain.Table;
 public class TransactionConfirmed :BaseEntity
     {
         public long Voice { get; set; }

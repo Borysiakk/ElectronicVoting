@@ -1,4 +1,4 @@
-﻿namespace ElectronicVoting.Validator.Domain.Enum;
+﻿namespace Validator.Domain.Enum;
 public enum PbftOperationType
 {
     CommitInitializationChangeView,

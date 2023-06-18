@@ -1,6 +1,6 @@
 ﻿using ElectronicVoting.Persistence;
 using ElectronicVoting.Common.Infrastructure;
-using ElectronicVoting.Validator.Domain.Table;
+using Validator.Domain.Table;
 
 namespace ElectronicVoting.Infrastructure.Repository;
 

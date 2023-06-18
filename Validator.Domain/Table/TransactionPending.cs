@@ -1,7 +1,6 @@
-﻿
-using ElectronicVoting.Common.Domain;
+﻿using ElectronicVoting.Common.Domain;
 
-namespace ElectronicVoting.Validator.Domain.Table;
+namespace Validator.Domain.Table;
 
 public class TransactionPending : BaseEntity
 {

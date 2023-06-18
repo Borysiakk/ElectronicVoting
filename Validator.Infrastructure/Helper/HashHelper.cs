@@ -1,5 +1,5 @@
 ﻿using System.Security.Cryptography;
-using ElectronicVoting.Validator.Domain;
+using Validator.Domain.Table;
 
 namespace ElectronicVoting.Validator.Infrastructure.Helper;
 public class HashHelper

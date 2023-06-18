@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ElectronicVoting.Infrastructure.Repository;
 using ElectronicVoting.Infrastructure.Services;
 using System.Data;
-using ElectronicVoting.Validator.Domain.Enum;
+using Validator.Domain.Enum;
 
 namespace ElectronicVoting.Infrastructure.Queue;
 public class BackgroundPbftOperationsConsensus : BackgroundService
@@ -47,11 +47,14 @@ public class BackgroundPbftOperationsConsensus : BackgroundService
                     case PbftOperationType.Commit:
                         await _pbftConsensus.CommitAsync(item, cancellationToken);
                         break;
-                    case PbftOperationType.PrepareChangeView:
-                        await _pbftConsensus.PrePrepareChangeView(item, cancellationToken);
+                    case PbftOperationType.PreInitializationChangeView:
+                        await _pbftConsensus.PrepareInitializationChangeView(item, cancellationToken);
                         break;
-                    case PbftOperationType.PrepareChangeView:
-                        await _pbftConsensus.PrepareChangeView(item, cancellationToken);
+                    case PbftOperationType.InitializationChangeView:
+                        await _pbftConsensus.InitializationChangeView(item, cancellationToken);
+                        break;
+                    case PbftOperationType.CommitInitializationChangeView: 
+                        await _pbftConsensus.CommitInitializationChangeView(item, cancellationToken);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

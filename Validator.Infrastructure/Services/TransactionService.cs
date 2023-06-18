@@ -1,6 +1,4 @@
-﻿
-
-using ElectronicVoting.Validator.Domain.Table.BlockChain;
+﻿using Validator.Domain.Table.Blockchain;
 
 namespace ElectronicVoting.Infrastructure.Services;
 

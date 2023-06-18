@@ -1,4 +1,4 @@
-﻿namespace ElectronicVoting.Validator.Domain;
+﻿namespace Validator.Domain.Table;
 public class Serialization
 {
     public byte[] Serialize()

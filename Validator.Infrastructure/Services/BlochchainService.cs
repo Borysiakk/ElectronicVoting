@@ -1,6 +1,6 @@
 ﻿using ElectronicVoting.Persistence;
-using ElectronicVoting.Validator.Domain.Table.BlockChain;
 using ElectronicVoting.Validator.Infrastructure.Helper;
+using Validator.Domain.Table.Blockchain;
 
 namespace ElectronicVoting.Infrastructure.Services;
 public interface IBlochchainService

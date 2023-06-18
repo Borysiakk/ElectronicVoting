@@ -1,6 +1,6 @@
-﻿using ElectronicVoting.Validator.Domain.Contract.Request;
-using ElectronicVoting.Validator.Domain.Contract.Result;
-using ElectronicVoting.Validator.Infrastructure.Helper;
+﻿using ElectronicVoting.Validator.Infrastructure.Helper;
+using Validator.Domain.Contract.Request;
+using Validator.Domain.Contract.Result;
 
 namespace ElectronicVoting.Infrastructure.Services;
 public interface IProofOfKnowledgeService

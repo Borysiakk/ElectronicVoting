@@ -1,11 +1,11 @@
 ﻿using ElectronicVoting.Infrastructure.Repository;
-using ElectronicVoting.Validator.Domain.Enum;
-using ElectronicVoting.Validator.Domain.Queue.Consensus;
-using ElectronicVoting.Validator.Domain.Table;
 using EntityFrameworkCore.Triggered;
 using Newtonsoft.Json;
+using Validator.Domain.Enum;
+using Validator.Domain.Queue.Consensus;
+using Validator.Domain.Table;
 
-namespace ElectronicVoting.Infrastructure.Triggers;
+namespace Validator.Infrastructure.Triggers;
 public class AfterCreateTransactionPending : IAfterSaveTrigger<TransactionPending>
 {
     private readonly ISettingRepository _settingRepository;
@@ -47,6 +47,9 @@ public class AfterCreateTransactionPending : IAfterSaveTrigger<TransactionPendin
                     TransactionId = addedItem.TransactionId,
                     Voice = JsonConvert.DeserializeObject<ItemBodyPrepare>(pbftOperation.Body).Voice,
                 };
+
+
+                ///Dodać wstawienie do blockcheinu tutaj a nie w osobnym background
 
                 await _transactionConfirmedRepository.AddAsync(transactionConfirmed, cancellationToken);
                 await _transactionConfirmedRepository.SaveAsync(cancellationToken);

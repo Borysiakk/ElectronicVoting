@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace ElectronicVoting.Validator.Domain.Contract.Result;
+namespace Validator.Domain.Contract.Result;
 
 [ProtoContract]
 public class ProofOfKnowledgeResult :SerializationResult

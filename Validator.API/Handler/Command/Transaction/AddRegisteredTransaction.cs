@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using ElectronicVoting.Infrastructure.Repository;
 using Validator.Domain.Handler.Command;
-using ElectronicVoting.Validator.Domain.Table;
+using Validator.Domain.Table;
 
 namespace ElectronicVoting.API.Handler.Command.Transaction
 {
