@@ -1,5 +1,4 @@
 ﻿
-using ElectronicVoting.Common.Domain.Table;
 using Microsoft.EntityFrameworkCore;
 using Validator.Domain.Table;
 using Validator.Domain.Table.Blockchain;
@@ -24,6 +23,31 @@ public class ValidatorDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+
+        builder.Entity<Approver>(a =>
+        {
+            a.HasKey(b => b.Id);
+            a.Property(b => b.Name).IsRequired();
+            a.Property(b => b.Address).IsRequired();
+
+            a.Property(b => b.Id).ValueGeneratedOnAdd();
+
+            a.HasData(new Approver[]
+            {
+                    new Approver()
+                    {
+                        Id = 1,
+                        Name = "ValidatorA",
+                        Address = "http://validatorA:80",
+                    },
+                    new Approver()
+                    {
+                        Id = 2,
+                        Name = "ValidatorB",
+                        Address = "http://ValidatorB:80",
+                    }
+            });
+        });
 
         builder.Entity<TransactionPending>(a =>
         {
@@ -80,12 +104,26 @@ public class ValidatorDbContext : DbContext
         builder.Entity<InitializationChangeViewTransaction>(a =>
         {
             a.HasKey(b => b.Id);
+            a.HasOne<Approver>(b => b.Approver)
+             .WithOne(b => b.InitializationChangeViewTransaction)
+             .HasForeignKey<InitializationChangeViewTransaction>(c => c.ApproverId)
+             .IsRequired();
         });
 
         builder.Entity<ChangeViewTransaction>(a =>
         {
             a.HasKey(b => b.Id);
-            a.Property(b => b.Hash).IsRequired();
+            a.HasOne<Approver>(b=>b.Approver)
+             .WithOne(b=>b.ChangeViewTransaction)
+             .HasForeignKey<ChangeViewTransaction> (c => c.ApproverId)
+             .IsRequired();
+
+            a.HasOne<Approver>(c => c.SelectedApprover)
+             .WithOne(b => b.ChangeViewTransaction)
+             .HasForeignKey<ChangeViewTransaction>(c => c.SelectedApproverId)
+             .IsRequired();
+
+
             a.Property(b => b.ApproverId).IsRequired();
             a.Property(b => b.SelectedApproverId).IsRequired();
         });

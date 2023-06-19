@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ElectronicVoting.Common\ElectronicVoting.Common.csproj" />
+    <Compile Remove="Table\**" />
+    <EmbeddedResource Remove="Table\**" />
+    <None Remove="Table\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Table\" />
+    <ProjectReference Include="..\ElectronicVoting.Common\ElectronicVoting.Common.csproj" />
   </ItemGroup>
 
 </Project>

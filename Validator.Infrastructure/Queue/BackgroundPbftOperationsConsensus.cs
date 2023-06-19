@@ -33,7 +33,6 @@ public class BackgroundPbftOperationsConsensus : BackgroundService
             await _pbftOperationsConsensusRepository.SaveAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
             
-            ///Spróbowac dodać tablice Tasków które bedą wykonywane asynchronicznie oraz wykonać to na transakcji w bazie danych -- przyszłość
             foreach (var item in itemOperations) 
             {
                 switch (item.Operations)

@@ -12,7 +12,7 @@ public interface IApproverRepository
 
 public class ApproverRepository : Repository<Approver>, IApproverRepository
 {
-    public ApproverRepository(CommonDbContext dbContext) : base(dbContext) {}
+    public ApproverRepository(ValidatorDbContext dbContext) : base(dbContext) {}
 
     public async Task<IEnumerable<Approver>> GetAllWithoutMe(CancellationToken cancellationToken)
     {

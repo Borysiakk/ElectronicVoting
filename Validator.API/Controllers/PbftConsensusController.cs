@@ -52,4 +52,11 @@ public class PbftConsensusController : BaseController
         await Mediator.Send(command, ct);
         return Ok();
     }
+
+    [HttpPost("")]
+    public async Task<IActionResult> ChangeView(ChangeView command, CancellationToken ct)
+    {
+        await Mediator.Send(command, ct);
+        return Ok();
+    }
 }

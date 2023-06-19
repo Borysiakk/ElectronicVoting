@@ -12,7 +12,6 @@ namespace Validator.Infrastructure.Triggers
     {
         public async Task AfterSave(ITriggerContext<InitializationChangeViewTransaction> context, CancellationToken cancellationToken)
         {
-            ///Kiedy validatorzy przeglosują zmiane lidera, zostaje uruchomione glosowanie nad jego zmianą 
             throw new NotImplementedException();
         }
     }
