@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using ElectronicVoting.Infrastructure.Repository;
 using ElectronicVoting.Validator.Infrastructure.Helper;
-using Validator.Domain.Handler.Command.Consensu;
 using Validator.Domain.Table;
 using Validator.Domain.Enum;
 using Validator.Domain.Models.Queue.Consensus.ChangeView;
+using Validator.Domain.Handler.Command.Consensu.ChangeLeader;
 
-namespace Validator.API.Handler.Command.PbftConsensus;
+namespace Validator.API.Handler.Command.PbftConsensus.ChangeLeader;
 
 public class PreInitializationChangeViewHandler : IRequestHandler<PreInitializationChangeView>
 {

@@ -3,7 +3,8 @@ namespace Validator.Domain.Models.Queue.Consensus.ChangeView;
 
 public class ItemBodyCommitInitializationChangeView :ItemBody
 {
-    public bool Decision { get; set; }
+
     public int Round { get; set; }
-    public string UserName { get; set; }
+    public int ApproverId { get; set; }
+    public bool Decision { get; set; }
 }

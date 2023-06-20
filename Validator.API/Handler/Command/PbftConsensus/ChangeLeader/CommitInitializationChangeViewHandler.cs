@@ -6,7 +6,7 @@ using Validator.Domain.Handler.Command.Consensu;
 using Validator.Domain.Models.Queue.Consensus.ChangeView;
 using Validator.Domain.Table;
 
-namespace Validator.API.Handler.Command.PbftConsensus.ChangeView;
+namespace Validator.API.Handler.Command.PbftConsensus.ChangeLeader;
 public class CommitInitializationChangeViewHandler : IRequestHandler<CommitInitializationChangeView>
 {
     private readonly PbftOperationsConsensusRepository _pbftOperationsConsensusRepository;
@@ -21,8 +21,8 @@ public class CommitInitializationChangeViewHandler : IRequestHandler<CommitIniti
         var item = new ItemBodyCommitInitializationChangeView()
         {
             Round = request.Round,
-            UserName = request.UserName,
             Decision = request.Decision,
+            ApproverId = request.ApproverId,
             TransactionId = request.TransactionId,
         };
 

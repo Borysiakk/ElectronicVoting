@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Validator.Domain.Handler.Command.Consensu;
+using Validator.Domain.Handler.Command.Consensu.ChangeLeader;
 
 namespace Validator.API.Controllers;
 public class PbftConsensusController : BaseController

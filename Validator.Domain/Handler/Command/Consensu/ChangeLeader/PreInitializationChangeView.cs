@@ -1,5 +1,6 @@
 ﻿using MediatR;
-namespace Validator.Domain.Handler.Command.Consensu;
+
+namespace Validator.Domain.Handler.Command.Consensu.ChangeLeader;
 
 public class PreInitializationChangeView : IRequest
 {

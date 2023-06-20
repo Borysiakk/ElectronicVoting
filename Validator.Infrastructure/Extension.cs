@@ -38,7 +38,6 @@ namespace ElectronicVoting.Infrastructure
                 option.UseTriggers(triggers =>
                 {
                     triggers.AddTrigger<AfterCreateTransactionPending>();
-                    triggers.AddTrigger<AfterCreateInitializationChangeViewTransaction>();
                 });
             });
 
