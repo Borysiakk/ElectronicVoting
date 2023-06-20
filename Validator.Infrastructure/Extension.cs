@@ -1,4 +1,5 @@
-﻿using ElectronicVoting.Infrastructure.Queue;
+﻿using ElectronicVoting.Common.Infrastructure;
+using ElectronicVoting.Infrastructure.Queue;
 using ElectronicVoting.Infrastructure.Repository;
 using ElectronicVoting.Infrastructure.Services;
 using ElectronicVoting.Persistence;
@@ -15,6 +16,8 @@ namespace ElectronicVoting.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection service)
         {
+            service.AddMemoryCache();
+            service.AddScoped<ICacheService, CacheService>();
             service.AddScoped<IBlockService, BlockService>();
             service.AddScoped<ITransactionService, TransactionService>();
             service.AddScoped<IBlochchainService, BlochchainService>();

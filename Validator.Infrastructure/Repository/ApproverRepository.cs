@@ -2,27 +2,51 @@
 using Microsoft.EntityFrameworkCore;
 using ElectronicVoting.Common.Infrastructure;
 using Validator.Domain.Table;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ElectronicVoting.Infrastructure.Repository;
 
 public interface IApproverRepository
 {
-    Task<Approver> GetByName(string name, CancellationToken cancellationToken);
+    Task<Approver?> GetByName(string name, CancellationToken cancellationToken);
     Task<IEnumerable<Approver>> GetAllWithoutMe(CancellationToken cancellationToken);
 }
 
 public class ApproverRepository : Repository<Approver>, IApproverRepository
 {
-    public ApproverRepository(ValidatorDbContext dbContext) : base(dbContext) {}
+    private readonly ICacheService _cacheService;
+    public ApproverRepository(ValidatorDbContext dbContext, ICacheService cacheService) : base(dbContext)
+    {
+        _cacheService = cacheService;
+    }
 
     public async Task<IEnumerable<Approver>> GetAllWithoutMe(CancellationToken cancellationToken)
     {
-        var name = Environment.GetEnvironmentVariable("CONTAINER_NAME");
-        return await this._dbSet.Where(a => a.Name != name).ToListAsync(cancellationToken);
+        var approvers = _cacheService.GetFromCache<List<Approver>>("ApproverRepository", "GetAllWithoutMe");
+
+        if (approvers == null)
+        {
+            var name = Environment.GetEnvironmentVariable("CONTAINER_NAME");
+            approvers = await this._dbSet.Where(a => a.Name != name).ToListAsync(cancellationToken);
+            _cacheService.AddToCache("ApproverRepository", "GetAllWithoutMe", approvers, TimeSpan.FromDays(1));
+
+            return approvers;
+        }
+
+        return approvers;
     }
 
-    public async Task<Approver> GetByName(string name, CancellationToken cancellationToken)
+    public async Task<Approver?> GetByName(string name, CancellationToken cancellationToken)
     {
-        return await _dbSet.FirstOrDefaultAsync(a => a.Name == name, cancellationToken);
+        var keyCache = "ApproverRepository.GetByName";
+        var approve = _cacheService.GetFromCache<Approver>(keyCache, name);
+
+        if(approve == null)
+        {
+            approve = await _dbSet.FirstOrDefaultAsync(a => a.Name == name, cancellationToken);
+            _cacheService.AddToCache(keyCache, name, approve, TimeSpan.FromDays(1));
+        }
+
+        return approve;
     }
 }

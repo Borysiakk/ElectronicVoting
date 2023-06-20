@@ -19,6 +19,8 @@ namespace ElectronicVoting.Infrastructure.Services
         public Task CommitAsync(PbftOperationConsensus operation, CancellationToken cancellationToken);
         public Task PrepareAsync(PbftOperationConsensus operation, CancellationToken cancellationToken);
         public Task PrePrepareAsync(PbftOperationConsensus operation, CancellationToken cancellationToken);
+
+        public Task ChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken);
         public Task InitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken);
         public Task CommitInitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken);
         public Task PrepareInitializationChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken);
@@ -190,6 +192,11 @@ namespace ElectronicVoting.Infrastructure.Services
 
             await _initializationChangeViewTransactionRepository.AddAsync(commit, cancellationToken);
             await _initializationChangeViewTransactionRepository.SaveAsync(cancellationToken);
+        }
+
+        public Task ChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("ChangeView");
         }
     }
 }

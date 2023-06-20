@@ -4,6 +4,7 @@ public enum PbftOperationType
     CommitInitializationChangeView,
     PreInitializationChangeView,
     InitializationChangeView,
+    ChangeView,
     PrePrepare,
     Prepare,
     Commit,
