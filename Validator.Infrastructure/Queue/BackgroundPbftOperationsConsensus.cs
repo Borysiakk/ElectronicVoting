@@ -55,6 +55,9 @@ public class BackgroundPbftOperationsConsensus : BackgroundService
                     case PbftOperationType.CommitInitializationChangeView: 
                         await _pbftConsensus.CommitInitializationChangeView(item, cancellationToken);
                         break;
+                    case PbftOperationType.ChangeView:
+                        await _pbftConsensus.ChangeView(item, cancellationToken);
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
