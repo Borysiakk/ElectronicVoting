@@ -33,10 +33,6 @@ namespace Validator.Infrastructure.Triggers
                 var validators = _approverRepository.GetAll();
                 acceptableNumberValidators = validators.Count() / 2;
             }
-            else
-            {
-                acceptableNumberValidators = Int64.Parse(setting.Value);
-            }
 
             var approvedChangeLeader = await _initializationChangeViewTransactionRepository.GetCountByTransactionIdAndDecision(addedItem.TransactionId, cancellationToken);
 

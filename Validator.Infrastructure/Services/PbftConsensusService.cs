@@ -194,7 +194,7 @@ namespace ElectronicVoting.Infrastructure.Services
             await _initializationChangeViewTransactionRepository.SaveAsync(cancellationToken);
         }
 
-        public async Task ChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken)
+        public Task ChangeView(PbftOperationConsensus operation, CancellationToken cancellationToken)
         {
             Console.WriteLine("ChangeView");
         }

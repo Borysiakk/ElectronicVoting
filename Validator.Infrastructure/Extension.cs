@@ -7,7 +7,6 @@ using ElectronicVoting.Validator.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Validator.Domain.Table.ChangeView;
 using Validator.Infrastructure.Repository;
 using Validator.Infrastructure.Triggers;
 
@@ -42,7 +41,6 @@ namespace ElectronicVoting.Infrastructure
                 option.UseTriggers(triggers =>
                 {
                     triggers.AddTrigger<AfterCreateTransactionPending>();
-                    triggers.AddTrigger<AfterCreateInitializationChangeViewTransaction>();
                 });
             });
 
