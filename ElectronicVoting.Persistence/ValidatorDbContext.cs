@@ -16,8 +16,8 @@ public class ValidatorDbContext : DbContext
     public DbSet<TransactionConfirmed> TransactionsConfirmed { get; set; }
     public DbSet<PbftOperationConsensus> PbftOperationsConsensus { get; set; }
 
-    public DbSet<ChangeViewTransaction> ChangeViewTransactions { get; set; }
-    public DbSet<InitializationChangeViewTransaction> InitializationChangeViewTransactions { get; set; }
+    public DbSet<ElectionVote> ElectionVotes { get; set; }
+    public DbSet<PreElectionVote> PreElectionVotes { get; set; }
 
     public ValidatorDbContext(DbContextOptions<ValidatorDbContext> options) :base(options) { }
     
@@ -81,15 +81,15 @@ public class ValidatorDbContext : DbContext
         builder.Entity<Approver>(a =>
         {
             a.HasKey(b => b.Id);
-            a.HasMany(e => e.InitializationChangeViewTransaction)
+            a.HasMany(e => e.PreElectionVote)
              .WithOne(e => e.Approver)
              .HasForeignKey(e => e.ApproverId);
 
-            a.HasMany(e => e.ChangeViewTransaction)
+            a.HasMany(e => e.ElectionVotes)
              .WithOne(e => e.Approver)
              .HasForeignKey(e => e.ApproverId);
 
-            a.HasMany(e => e.SelectedChangeViewTransaction)
+            a.HasMany(e => e.SelectedElectionVotes)
              .WithOne(e => e.SelectedApprover)
              .HasForeignKey(e => e.SelectedApproverId)
              .OnDelete(DeleteBehavior.Restrict);
@@ -115,27 +115,27 @@ public class ValidatorDbContext : DbContext
             });
         });
 
-        builder.Entity<InitializationChangeViewTransaction>(a =>
+        builder.Entity<PreElectionVote>(a =>
         {
             a.HasKey(b => b.Id);
             a.HasOne(e => e.Approver)
-             .WithMany(e => e.InitializationChangeViewTransaction)
+             .WithMany(e => e.PreElectionVote)
              .HasForeignKey(e => e.ApproverId)
              .IsRequired(false);
 
         });
 
-        builder.Entity<ChangeViewTransaction>(a =>
+        builder.Entity<ElectionVote>(a =>
         {
             a.HasKey(b => b.Id);
             a.HasOne(e => e.Approver)
-             .WithMany(e => e.ChangeViewTransaction)
+             .WithMany(e => e.ElectionVotes)
              .HasForeignKey(e => e.ApproverId)
              .IsRequired(false)
              .OnDelete(DeleteBehavior.Restrict);
 
             a.HasOne(e => e.SelectedApprover)
-             .WithMany(e => e.SelectedChangeViewTransaction)
+             .WithMany(e => e.SelectedElectionVotes)
              .HasForeignKey(e => e.SelectedApproverId)
              .IsRequired(false)
              .OnDelete(DeleteBehavior.Restrict);

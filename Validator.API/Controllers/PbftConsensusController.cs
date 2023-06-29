@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Validator.Domain.Handler.Command.Consensu;
-using Validator.Domain.Handler.Command.Consensu.ChangeLeader;
 
 namespace Validator.API.Controllers;
 public class PbftConsensusController : BaseController
@@ -33,31 +32,4 @@ public class PbftConsensusController : BaseController
         return Ok();
     }
 
-    [HttpPost("Pre-Initialization-ChangeView")] 
-    public async Task<IActionResult> PreInitializationChangeView(PreInitializationChangeView command, CancellationToken ct)
-    {
-        await Mediator.Send(command, ct);
-        return Ok();
-    }
-
-    [HttpPost("Initialization-ChangeView")]
-    public async Task<IActionResult> InitializationChangeView(InitializationChangeView command, CancellationToken ct)
-    {
-        await Mediator.Send(command, ct);
-        return Ok();
-    }
-
-    [HttpPost("Commit-Initialization-ChangeView")]
-    public async Task<IActionResult> CommitInitializationChangeView(CommitInitializationChangeView command, CancellationToken ct)
-    {
-        await Mediator.Send(command, ct);
-        return Ok();
-    }
-
-    [HttpPost("")]
-    public async Task<IActionResult> ChangeView(ChangeView command, CancellationToken ct)
-    {
-        await Mediator.Send(command, ct);
-        return Ok();
-    }
 }

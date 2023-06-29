@@ -2,9 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using ElectronicVoting.Common.Infrastructure;
 using Validator.Domain.Table;
-using Microsoft.Extensions.Caching.Memory;
 
-namespace ElectronicVoting.Infrastructure.Repository;
+namespace Validator.Infrastructure.Repository;
 
 public interface IApproverRepository
 {

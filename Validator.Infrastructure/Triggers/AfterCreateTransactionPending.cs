@@ -49,7 +49,7 @@ public class AfterCreateTransactionPending : IAfterSaveTrigger<TransactionPendin
                 };
 
 
-                ///Dodać wstawienie do blockcheinu tutaj a nie w osobnym background
+                ///Dodać wstawianie prze lidera a nie jeżeli wiekszośc zostanie potwierdzona
 
                 await _transactionConfirmedRepository.AddAsync(transactionConfirmed, cancellationToken);
                 await _transactionConfirmedRepository.SaveAsync(cancellationToken);

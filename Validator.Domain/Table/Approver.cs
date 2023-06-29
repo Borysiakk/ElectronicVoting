@@ -8,7 +8,7 @@ public class Approver :BaseEntity
     public String Name { get; set; }
     public String Address { get; set; }
 
-    public virtual ICollection<ChangeViewTransaction> ChangeViewTransaction { get; set; }
-    public virtual ICollection<ChangeViewTransaction> SelectedChangeViewTransaction { get; set; }
-    public virtual ICollection<InitializationChangeViewTransaction> InitializationChangeViewTransaction { get; set; }
+    public virtual ICollection<PreElectionVote> PreElectionVote { get; set; }
+    public virtual ICollection<ElectionVote> ElectionVotes { get; set; }
+    public virtual ICollection<ElectionVote> SelectedElectionVotes { get; set; }
 }

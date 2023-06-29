@@ -28,8 +28,8 @@ namespace ElectronicVoting.Infrastructure
             service.AddScoped<TransactionConfirmedRepository>();
             service.AddScoped<TransactionRegisterRepository>();
             service.AddScoped<PbftOperationsConsensusRepository>();
-            service.AddScoped<ChangeViewTransactionRepository>();
-            service.AddScoped<InitializationChangeViewTransactionRepository>();
+            service.AddScoped<ElectionVoteRepository>();
+            service.AddScoped<PreElectionVoteRepository>();
             service.AddScoped<IPbftConsensusService, PbftConsesusService>();
             service.AddScoped<IProofOfKnowledgeService, ProofOfKnowledgeService>();
             service.AddTransient(typeof(IPipelineBehavior<,>), typeof(DbContextTransactionPipelineBehavior<,>));

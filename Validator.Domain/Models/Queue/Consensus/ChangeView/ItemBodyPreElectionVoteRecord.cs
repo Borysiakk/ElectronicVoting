@@ -1,7 +1,7 @@
 ﻿using Validator.Domain.Queue.Consensus;
 namespace Validator.Domain.Models.Queue.Consensus.ChangeView;
 
-public class ItemBodyCommitInitializationChangeView :ItemBody
+public class ItemBodyPreElectionVoteRecord : ItemBody
 {
 
     public int Round { get; set; }

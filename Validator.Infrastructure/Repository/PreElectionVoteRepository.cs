@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore;
 using Validator.Domain.Table.ChangeView;
 
 namespace Validator.Infrastructure.Repository;
-public interface IInitializationChangeViewTransactionRepository
+public interface IPreElectionVoteRepository
 {
     Task<int> GetCountByTransactionIdAndDecision(string transactionId, CancellationToken cancellationToken);
 }
-public class InitializationChangeViewTransactionRepository : Repository<InitializationChangeViewTransaction>, IInitializationChangeViewTransactionRepository
+public class PreElectionVoteRepository : Repository<PreElectionVote>, IPreElectionVoteRepository
 {
-    public InitializationChangeViewTransactionRepository(ValidatorDbContext dbContext) : base(dbContext) {}
+    public PreElectionVoteRepository(ValidatorDbContext dbContext) : base(dbContext) {}
 
     public async Task<int> GetCountByTransactionIdAndDecision(string transactionId, CancellationToken cancellationToken)
     {
         return await _dbSet.CountAsync(a=>a.TransactionId == transactionId && a.Decision == true, cancellationToken);
     }
-}
+} 
