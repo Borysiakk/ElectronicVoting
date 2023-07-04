@@ -7,6 +7,7 @@ namespace Validator.Infrastructure.Repository;
 
 public interface IApproverRepository
 {
+    Task<Approver?> GetFirst(CancellationToken cancellationToken);
     Task<Approver?> GetByName(string name, CancellationToken cancellationToken);
     Task<IEnumerable<Approver>> GetAllWithoutMe(CancellationToken cancellationToken);
 }
@@ -47,5 +48,10 @@ public class ApproverRepository : Repository<Approver>, IApproverRepository
         }
 
         return approve;
+    }
+
+    public async Task<Approver?> GetFirst(CancellationToken cancellationToken)
+    {
+        return await _dbSet.OrderBy(a=>a.Id).FirstOrDefaultAsync(cancellationToken);
     }
 }

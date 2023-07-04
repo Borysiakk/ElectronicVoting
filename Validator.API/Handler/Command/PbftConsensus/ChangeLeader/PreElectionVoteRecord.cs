@@ -30,8 +30,6 @@ namespace Validator.API.Handler.Command.PbftConsensus.ChangeLeader
                 ApproverId = approver.Id,
                 TransactionId = request.TransactionId
             };
-
-
         }
     }
 }

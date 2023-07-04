@@ -6,6 +6,6 @@ public class PreElectionVoteRecord : IRequest
 {
     public int Round { get; set; }
     public bool Decision { get; set; }
-    public int ApproverId { get; set; }
+    public Int64 ApproverId { get; set; }
     public string TransactionId { get; set; }
 }

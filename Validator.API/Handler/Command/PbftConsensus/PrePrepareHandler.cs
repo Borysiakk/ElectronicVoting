@@ -47,5 +47,7 @@ public class PrePrepareHandler : IRequestHandler<PrePrepare>
             await _pbftOperationsConsensusRepository.AddAsync(operations, cancellationToken);
             await _pbftOperationsConsensusRepository.SaveAsync(cancellationToken);
         }
+
+
     }
 }
