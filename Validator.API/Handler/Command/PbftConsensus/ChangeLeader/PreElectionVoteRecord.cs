@@ -1,6 +1,7 @@
 ﻿using ElectronicVoting.Infrastructure.Repository;
 using MediatR;
 using Validator.Domain.Handler.Command.Consensu.ChangeLeader;
+using Validator.Domain.Table.ChangeView;
 using Validator.Infrastructure.Repository;
 
 namespace Validator.API.Handler.Command.PbftConsensus.ChangeLeader
@@ -23,13 +24,17 @@ namespace Validator.API.Handler.Command.PbftConsensus.ChangeLeader
             var user = Environment.GetEnvironmentVariable("CONTAINER_NAME");
             var approver = await _approverRepository.GetByName(user, cancellationToken);
 
-            var preElectionVoteRecord = new PreElectionVoteRecord
+            PreElectionVote electionVote = new PreElectionVote
             {
                 Decision = true,
                 Round = request.Round,
-                ApproverId = approver.Id,
+                ApproverId = request.ApproverId,
                 TransactionId = request.TransactionId
             };
+
+            await _preElectionVoteRepository.AddAsync(electionVote, cancellationToken);
+            await _preElectionVoteRepository.SaveAsync(cancellationToken);
+
         }
     }
 }

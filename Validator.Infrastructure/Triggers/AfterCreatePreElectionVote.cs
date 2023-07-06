@@ -8,13 +8,14 @@ namespace Validator.Infrastructure.Triggers
 {
     public class AfterCreatePreElectionVote : IAfterSaveTrigger<PreElectionVoteRecord>
     {
-        private readonly IMediator mediator;
+        private readonly IMediator _mediator;
         private readonly ISettingRepository _settingRepository;
         private readonly ApproverRepository _approverRepository;
         private readonly PreElectionVoteRepository _preElectionVoteRepository;
 
-        public AfterCreatePreElectionVote(ISettingRepository settingRepository, ApproverRepository approverRepository, PreElectionVoteRepository preElectionVoteRepository)
+        public AfterCreatePreElectionVote(ISettingRepository settingRepository, ApproverRepository approverRepository, PreElectionVoteRepository preElectionVoteRepository, IMediator mediator)
         {
+            _mediator = mediator;
             _settingRepository = settingRepository;
             _approverRepository = approverRepository;
             _preElectionVoteRepository = preElectionVoteRepository;
@@ -30,11 +31,11 @@ namespace Validator.Infrastructure.Triggers
 
             if (approvedChangeLeader >= acceptableNumberValidators)
             {
-                var initializatioElectionPreparationHandler = new InitializatioElectionPreparation()
+                var electionPreparation = new ElectionPreparation()
                 {
                     TransactionId = addedItem.TransactionId
                 };
-                await mediator.Send(initializatioElectionPreparationHandler, cancellationToken);
+                await _mediator.Send(electionPreparation, cancellationToken);
             }
 
         }

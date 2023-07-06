@@ -44,9 +44,6 @@ namespace Validator.API.Handler.Command.PbftConsensus.ChangeLeader
                 TransactionId = request.TransactionId,
             };
 
-            await _preElectionVoteRepository.AddAsync(preElectionVote, cancellationToken);
-            await _preElectionVoteRepository.SaveAsync(cancellationToken);
-
             var preElectionVoteRecord = new PreElectionVoteRecord
             {
                 Decision = true,
@@ -64,6 +61,9 @@ namespace Validator.API.Handler.Command.PbftConsensus.ChangeLeader
                 foreach (var validator in validators)
                     await HttpHelper.PostAsync<PreElectionPreparation>(validator.Address, Routes.PreElectionPreparation, request, cancellationToken);
             }
+
+            await _preElectionVoteRepository.AddAsync(preElectionVote, cancellationToken);
+            await _preElectionVoteRepository.SaveAsync(cancellationToken);
 
         }
     }
