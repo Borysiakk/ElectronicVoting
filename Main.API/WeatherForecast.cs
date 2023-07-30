@@ -1,4 +1,4 @@
-namespace ElectronicVoting.Main
+namespace Main.API
 {
     public class WeatherForecast
     {

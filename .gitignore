@@ -1,5 +1,11 @@
-﻿/.idea/.idea.ElectronicVoting/.idea/
-.vs
-bin
-ElectronicVoting.API/obj
+﻿ElectronicVoting.Persistence/bin
+ElectronicVoting.Persistence/obj
+Main.API/bin
+Main.API/obj
 obj
+Validator.API/bin
+Validator.Domain/bin
+Validator.Infrastructure/bin
+Validator.Test/bin
+bin
+.vs

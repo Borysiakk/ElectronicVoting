@@ -1,16 +1,12 @@
-﻿using ElectronicVoting.Common.Infrastructure;
-using ElectronicVoting.Infrastructure.Queue;
-using ElectronicVoting.Infrastructure.Repository;
-using ElectronicVoting.Infrastructure.Services;
-using ElectronicVoting.Persistence;
-using ElectronicVoting.Validator.Infrastructure;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Validator.Infrastructure.Hangfire;
 using Validator.Infrastructure.Repository;
-using Validator.Infrastructure.Triggers;
+using Validator.Infrastructure.Repository.ChangeLeader;
+using Validator.Infrastructure.Repository.Election;
+using Validator.Infrastructure.Service;
+using Validator.Infrastructure.Service.ChangeLeader;
 
-namespace ElectronicVoting.Infrastructure
+namespace Validator.Infrastructure
 {
     public static class Extension
     {
@@ -18,31 +14,28 @@ namespace ElectronicVoting.Infrastructure
         {
             service.AddMemoryCache();
             service.AddScoped<ICacheService, CacheService>();
-            service.AddScoped<IBlockService, BlockService>();
-            service.AddScoped<ITransactionService, TransactionService>();
-            service.AddScoped<IBlochchainService, BlochchainService>();
-            service.AddScoped<ISettingRepository,SettingRepository>();
-            service.AddScoped<ApproverRepository>();
-            service.AddScoped<TransactionRepository>();
-            service.AddScoped<TransactionPendingRepository>();
-            service.AddScoped<TransactionConfirmedRepository>();
-            service.AddScoped<TransactionRegisterRepository>();
-            service.AddScoped<PbftOperationsConsensusRepository>();
-            service.AddScoped<ElectionVoteRepository>();
-            service.AddScoped<PreElectionVoteRepository>();
-            service.AddScoped<IPbftConsensusService, PbftConsesusService>();
-            service.AddScoped<IProofOfKnowledgeService, ProofOfKnowledgeService>();
-            service.AddTransient(typeof(IPipelineBehavior<,>), typeof(DbContextTransactionPipelineBehavior<,>));
-            service.AddHostedService<BackgroundPbftOperationsConsensus>();
-            service.AddHostedService<BackgroundConfirmedTransactions>();
+            service.AddScoped<IApproverRepository, ApproverRepository>();
+            service.AddScoped<IApproverService, ApproverService>();
+            service.AddScoped<IPreChangeLeaderService, PreChangeLeaderService>();
+            service.AddScoped<IPreLocalVoteChangeLeaderService, PreLocalVoteChangeLeaderService>();
+            service.AddScoped<IPreLeaderVoteChangeLeaderService, PreLeaderVoteChangeLeaderService>();
+            service.AddScoped<ISettingRepository, SettingRepository>();
+            service.AddScoped<IPreLocalVoteChangeLeaderRepository, PreLocalVoteChangeLeaderRepository>();
+            service.AddScoped<IPreLeaderVoteChangeLeaderRepository, PreLeaderVoteChangeLeaderRepository>();
+            service.AddScoped<IPreLocalVoteChangeLeaderHistoryRepository, PreLocalVoteChangeLeaderHistoryRepository>();
+            service.AddScoped<IPreLeaderVoteChangeLeaderHistoryRepository, PreLeaderVoteChangeLeaderHistoryRepository>();
+            service.AddScoped<ILeaderRepository, LeaderRepository>();
+            service.AddScoped<ILeaderService, LeaderService>();
+            service.AddScoped<ILocalVoteChangeLeaderRepository, LocalVoteChangeLeaderRepository>();
+            service.AddScoped<ILeaderVoteChangeLeaderRepository, LeaderVoteChangeLeaderRepository>();
+            service.AddScoped<ILocalVoteChangeLeaderService, LocalVoteChangeLeaderService>();
+            service.AddScoped<ILeaderVoteChangeLeaderService, LeaderVoteChangeLeaderService>();
+            service.AddScoped<ILocalVoteChangeLeaderHistoryRepository, LocalVoteChangeLeaderHistoryRepository>();
+            service.AddScoped<ILeaderVoteChangeLeaderHistoryRepository, LeaderVoteChangeLeaderHistoryRepository>();
 
-            service.AddDbContext<ValidatorDbContext>( option =>
-            {
-                option.UseTriggers(triggers =>
-                {
-                    triggers.AddTrigger<AfterCreateTransactionPending>();
-                });
-            });
+            service.AddScoped<IVoteRecordRepository, VoteRecordRepository>();
+
+            service.AddTransient<IBackgroundJobMediatorClient, BackgroundJobMediatorClient>();
 
             return service;
         }

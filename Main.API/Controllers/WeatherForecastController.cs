@@ -1,7 +1,6 @@
-using ElectronicVoting.Persistence;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ElectronicVoting.Main.Controllers
+namespace Main.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -12,13 +11,11 @@ namespace ElectronicVoting.Main.Controllers
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-        private readonly MainDbContext _mainDbContext;
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, MainDbContext mainDbContext)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
-            _mainDbContext = mainDbContext;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]

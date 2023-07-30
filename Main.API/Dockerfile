@@ -8,10 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Main.API/Main.API.csproj", "Main.API/"]
-COPY ["ElectronicVoting.Persistence/ElectronicVoting.Persistence.csproj", "ElectronicVoting.Persistence/"]
-COPY ["Main.Domain/Main.Domain.csproj", "Main.Domain/"]
-COPY ["ElectronicVoting.Common/ElectronicVoting.Common.csproj", "ElectronicVoting.Common/"]
-COPY ["ElectronicVoting.Domain/Validator.Domain.csproj", "ElectronicVoting.Domain/"]
 RUN dotnet restore "Main.API/Main.API.csproj"
 COPY . .
 WORKDIR "/src/Main.API"

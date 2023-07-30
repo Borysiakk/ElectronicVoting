@@ -10,8 +10,6 @@ WORKDIR /src
 COPY ["Validator.API/Validator.API.csproj", "Validator.API/"]
 COPY ["Validator.Infrastructure/Validator.Infrastructure.csproj", "Validator.Infrastructure/"]
 COPY ["ElectronicVoting.Persistence/ElectronicVoting.Persistence.csproj", "ElectronicVoting.Persistence/"]
-COPY ["Main.Domain/Main.Domain.csproj", "Main.Domain/"]
-COPY ["ElectronicVoting.Common/ElectronicVoting.Common.csproj", "ElectronicVoting.Common/"]
 COPY ["Validator.Domain/Validator.Domain.csproj", "Validator.Domain/"]
 RUN dotnet restore "Validator.API/Validator.API.csproj"
 COPY . .
@@ -20,7 +18,7 @@ RUN dotnet build "Validator.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "Validator.API.csproj" -c Release -o /app/publish
-
+RUN dotnet dev-certs https
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
