@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Validator.Infrastructure.Hangfire;
+using System.Reflection;
 using Validator.Infrastructure.Repository;
 using Validator.Infrastructure.Repository.ChangeLeader;
 using Validator.Infrastructure.Repository.Election;
 using Validator.Infrastructure.Service;
 using Validator.Infrastructure.Service.ChangeLeader;
+using Validator.Infrastructure.Service.Election;
 
 namespace Validator.Infrastructure
 {
@@ -32,10 +33,16 @@ namespace Validator.Infrastructure
             service.AddScoped<ILeaderVoteChangeLeaderService, LeaderVoteChangeLeaderService>();
             service.AddScoped<ILocalVoteChangeLeaderHistoryRepository, LocalVoteChangeLeaderHistoryRepository>();
             service.AddScoped<ILeaderVoteChangeLeaderHistoryRepository, LeaderVoteChangeLeaderHistoryRepository>();
-
+            service.AddScoped<IPendingLocalVoteRepository, PendingLocalVoteRepository>();
             service.AddScoped<IVoteRecordRepository, VoteRecordRepository>();
-
-            service.AddTransient<IBackgroundJobMediatorClient, BackgroundJobMediatorClient>();
+            service.AddScoped<IProofOfKnowledgeService, ProofOfKnowledgeService>();
+            service.AddScoped<IVoteRecordService, VoteRecordService>();
+            service.AddScoped<IPendingLocalVoteRepository, PendingLocalVoteRepository>();
+            service.AddScoped<IPendingLocalVoteService, PendingLocalVoteService>();
+            service.AddScoped<IPendingLocalVoteHistoryRepository, PendingLocalVoteHistoryRepository>();
+            service.AddScoped<IPendingLeaderVoteRepository, PendingLeaderVoteRepository>();
+            
+            service.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             return service;
         }

@@ -9,7 +9,7 @@ public interface IPreVoteChangeLeaderHistoryRepository : IBaseRepository<PreVote
     Task<bool> IsVoteCompleted(string preElectionId, CancellationToken cancellationToken);
 }
 
-public class PreVoteChangeLeaderdHistoryRepository<T> : GenericRepository<PreVoteChangeLeaderHistory>, IPreVoteChangeLeaderHistoryRepository where T : PreVoteChangeLeaderHistory
+public abstract class PreVoteChangeLeaderdHistoryRepository<T> : GenericRepository<PreVoteChangeLeaderHistory>, IPreVoteChangeLeaderHistoryRepository where T : PreVoteChangeLeaderHistory
 {
 
     public PreVoteChangeLeaderdHistoryRepository(ValidatorDbContext validatorDbContext) : base(validatorDbContext){}

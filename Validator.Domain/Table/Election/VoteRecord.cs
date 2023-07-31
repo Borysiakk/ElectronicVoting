@@ -9,6 +9,11 @@ public class VoteRecord
     public bool IsInserted {get;set;}
     public string VoteProcessId { get; set; }
     public DateTime CreateDate { get; set; }
+
+    public VoteRecord()
+    {
+        CreateDate = DateTime.Now;
+    }
 }
 
 
@@ -19,6 +24,6 @@ public class VoteRecordConfiguration : IEntityTypeConfiguration<VoteRecord>
         builder.HasKey(a => a.Id);
         builder.Property(a => a.VoteProcessId).IsRequired();
         builder.Property(a => a.IsInserted).HasDefaultValue(false);
-        builder.Property(a => a.CreateDate).HasDefaultValue("getdate()");
+        builder.Property(a => a.CreateDate).IsRequired();
     }
 }

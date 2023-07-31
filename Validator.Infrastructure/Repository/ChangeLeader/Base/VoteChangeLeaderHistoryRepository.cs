@@ -8,7 +8,7 @@ namespace Validator.Infrastructure.Repository.ChangeLeader.Base
     {
         Task<bool> IsVoteCompleted(string electionId, CancellationToken cancellationToken);
     }
-    public class VoteChangeLeaderHistoryRepository<T> : GenericRepository<VoteChangeLeaderHistory>, IVoteChangeLeaderHistoryRepository where T : VoteChangeLeaderHistory
+    public abstract class VoteChangeLeaderHistoryRepository<T> : GenericRepository<VoteChangeLeaderHistory>, IVoteChangeLeaderHistoryRepository where T : VoteChangeLeaderHistory
     {
         public VoteChangeLeaderHistoryRepository(ValidatorDbContext validatorDbContext) : base(validatorDbContext){}
 
