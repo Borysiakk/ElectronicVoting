@@ -9,7 +9,7 @@ public interface IVoteChangeLeaderRepository : IBaseRepository<VoteChangeLeader>
     Task<long> GetCountByIdAndVote(string electionId, Int64 vote, CancellationToken cancellationToken);
 }
 
-public class VoteChangeLeaderRepository<T> : GenericRepository<VoteChangeLeader>, IVoteChangeLeaderRepository where T : VoteChangeLeader
+public abstract class VoteChangeLeaderRepository<T> : GenericRepository<VoteChangeLeader>, IVoteChangeLeaderRepository where T : VoteChangeLeader
 {
     public VoteChangeLeaderRepository(ValidatorDbContext validatorDbContext) : base(validatorDbContext) {}
 

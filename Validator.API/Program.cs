@@ -19,7 +19,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure();
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.AddValidatorPersistence(option=> option.UseSqlServer(DatebaseConnectionStrings).UseTriggers(triggerOptions=> triggerOptions.AddAssemblyTriggers()));
 
 

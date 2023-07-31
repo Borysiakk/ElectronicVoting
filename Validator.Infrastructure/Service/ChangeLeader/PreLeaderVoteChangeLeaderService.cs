@@ -28,9 +28,6 @@ public class PreLeaderVoteChangeLeaderService : IPreLeaderVoteChangeLeaderServic
         var acceptableCount = Int64.Parse(setting.Value);
         var countVote = await _preLeaderVoteChangeLeaderRepository.GetCountByIdAndDecision(prelectionId, decision, cancellationToken);
 
-        if( countVote >= acceptableCount)
-            return true;
-
-        return false;
+        return countVote >= acceptableCount;
     }
 }
