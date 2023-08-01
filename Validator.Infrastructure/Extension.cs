@@ -41,6 +41,8 @@ namespace Validator.Infrastructure
             service.AddScoped<IPendingLocalVoteService, PendingLocalVoteService>();
             service.AddScoped<IPendingLocalVoteHistoryRepository, PendingLocalVoteHistoryRepository>();
             service.AddScoped<IPendingLeaderVoteRepository, PendingLeaderVoteRepository>();
+            service.AddScoped<IPendingLeaderVoteService, PendingLeaderVoteService>();
+            service.AddScoped<IPendingLeaderHistoryRepository, PendingLeaderHistoryRepository>();
             
             service.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 

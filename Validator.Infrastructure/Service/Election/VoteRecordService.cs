@@ -25,10 +25,7 @@ namespace Validator.Infrastructure.Service.Election
         public async Task PublishVote(string voteProcessId, CancellationToken cancellationToken)
         {
             var includeSender = true;
-            var voteRecord = new VoteRecord()
-            {
-                VoteProcessId = voteProcessId,
-            };
+            var voteRecord = new VoteRecord(voteProcessId);
 
             await _approverService.SendPostToApprovers(Routes.RegisterVote, voteRecord, includeSender,cancellationToken);
         }

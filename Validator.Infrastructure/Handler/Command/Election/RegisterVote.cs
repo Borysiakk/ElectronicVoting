@@ -7,6 +7,10 @@ namespace Validator.Infrastructure.Handler.Command.Election
     public class RegisterVote :IRequest
     {
         public string VoteProcessId { get; set; }
+        public RegisterVote(string voteProcessId)
+        {
+            VoteProcessId = voteProcessId;
+        }
     }
 
     public class RegisterVoteHandler : IRequestHandler<RegisterVote>
@@ -20,11 +24,7 @@ namespace Validator.Infrastructure.Handler.Command.Election
 
         public async Task Handle(RegisterVote request, CancellationToken cancellationToken)
         {
-            VoteRecord voteRecord = new VoteRecord()
-            {
-                VoteProcessId = request.VoteProcessId,
-            };
-
+            var voteRecord = new VoteRecord(request.VoteProcessId);
             await _voteRecordRepository.Add(voteRecord, cancellationToken);
         }
     }

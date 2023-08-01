@@ -17,6 +17,7 @@ namespace Validator.Domain
         public const string ValidateLocalVote = "/api/Election/validate-local-vote";
         public const string FinalizeLocalVoting = "/api/Election/finalize-local-voting";
         public const string NotifyLocalVotingCompleted = "/api/Election/notify-local-voting-completed";
+        public const string RecordAcceptedVote = "/api/Election/record-accepted-vote";
 
         public const string PreElectionVoteRecord = "api/Election/ChangeLeader/pre-election-vote-record";
         public const string PreElectionPreparation = "api/Election/ChangeLeader/pre-election-preparation";

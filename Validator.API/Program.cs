@@ -1,11 +1,9 @@
 using ElectronicVoting.Persistence;
-using EntityFrameworkCore.Triggered;
 using Hangfire;
 using Hangfire.Redis.StackExchange;
 using Microsoft.EntityFrameworkCore;
-using ProtoBuf.Meta;
-using System.Reflection;
 using Validator.Infrastructure;
+using Validator.Infrastructure.Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +23,6 @@ builder.Services.AddValidatorPersistence(option=> option.UseSqlServer(DatebaseCo
 builder.Services.AddHangfire(config =>
 config.UseRedisStorage(RedisConnectionStrings, new RedisStorageOptions
 {
-    Prefix = "{hangfire}:"
 }));
 
 builder.Services.AddHangfireServer();
@@ -48,7 +45,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
-app.UseHangfireDashboard();
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = new[] { new HangfireOpenAuthorizationFilter() }
+});
 app.MapControllers();
 
 app.UseCors(builder =>

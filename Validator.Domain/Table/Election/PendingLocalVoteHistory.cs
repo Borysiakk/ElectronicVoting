@@ -7,7 +7,10 @@ using Validator.Domain.Table.Election.Base;
 namespace Validator.Domain.Table.Election;
 public class PendingLocalVoteHistory : PendingVoteHistory
 {
+    public PendingLocalVoteHistory()
+    {
 
+    }
 }
 
 public class PendingLocalVoteHistoryConfiguration : IEntityTypeConfiguration<PendingLocalVoteHistory>

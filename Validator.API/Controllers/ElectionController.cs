@@ -49,4 +49,11 @@ public class ElectionController : BaseController
         _backgroundJobClient.Enqueue<IMediator>(a => a.Send(command, ct));
         return Ok();
     }
+
+    [HttpPost("record-accepted-vote")]
+    public IActionResult RecordAcceptedVote(RecordAcceptedVote command, CancellationToken ct)
+    {
+        _backgroundJobClient.Enqueue<IMediator>(a => a.Send(command, ct));
+        return Ok();
+    }
 }

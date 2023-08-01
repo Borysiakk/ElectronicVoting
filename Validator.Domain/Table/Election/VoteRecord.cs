@@ -10,9 +10,10 @@ public class VoteRecord
     public string VoteProcessId { get; set; }
     public DateTime CreateDate { get; set; }
 
-    public VoteRecord()
+    public VoteRecord(string voteProcessId)
     {
         CreateDate = DateTime.Now;
+        VoteProcessId = voteProcessId;
     }
 }
 
