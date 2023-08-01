@@ -1,4 +1,7 @@
 ﻿using MediatR;
+using System.Linq;
+using Validator.Domain.Table.Election;
+using Validator.Infrastructure.Repository.Election;
 
 namespace Validator.Infrastructure.Handler.Command.Election;
 
@@ -16,8 +19,18 @@ public class RecordAcceptedVote :IRequest
 
 public class RecordAcceptedVoteHandler : IRequestHandler<RecordAcceptedVote>
 {
+    private readonly IVoteRecordRepository _voteRecordRepository;
+    private readonly IVoteConfirmedRepository _voteConfirmedRepository;
+
+    public RecordAcceptedVoteHandler(IVoteRecordRepository voteRecordRepository, IVoteConfirmedRepository voteConfirmedRepository)
+    {
+        _voteRecordRepository = voteRecordRepository;
+        _voteConfirmedRepository = voteConfirmedRepository;
+    }
+
     public async Task Handle(RecordAcceptedVote request, CancellationToken cancellationToken)
     {
-        Console.WriteLine("Głos został potwierdzony przez wszystkich i został dodany do wyniku, brawo");
+        var voteConfirmeds = await _voteConfirmedRepository.GetVoteConfirmationsInInsertionOrder(cancellationToken);
+        
     }
 }

@@ -13,6 +13,7 @@ public class ValidatorDbContext : DbContext
 
     //Election
     public DbSet<VoteRecord> VoteRecords { get; set; }
+    public DbSet<VoteConfirmed> VotesConfirmed { get; set; }
     public DbSet<PendingLocalVote> PendingLocalVotes { get; set; }
     public DbSet<PendingLeaderVote> PendingLeaderVotes { get; set; }
     public DbSet<PendingLocalVoteHistory> PendingLocalVoteHistories { get; set; }
@@ -50,6 +51,8 @@ public class ValidatorDbContext : DbContext
         modelBuilder.ApplyConfiguration(new LocalVoteChangeLeaderHistoryConfiguration());
         modelBuilder.ApplyConfiguration(new LeaderVoteChangeLeaderHistoryConfiguration());
         //Election
+        modelBuilder.ApplyConfiguration(new VoteConfirmedConfiguration());
+
         modelBuilder.ApplyConfiguration(new VoteRecordConfiguration());
         modelBuilder.ApplyConfiguration(new PendingLocalVoteConfiguration());
         modelBuilder.ApplyConfiguration(new PendingLeaderVoteConfiguration());

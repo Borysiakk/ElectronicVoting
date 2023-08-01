@@ -43,6 +43,8 @@ namespace Validator.Infrastructure
             service.AddScoped<IPendingLeaderVoteRepository, PendingLeaderVoteRepository>();
             service.AddScoped<IPendingLeaderVoteService, PendingLeaderVoteService>();
             service.AddScoped<IPendingLeaderHistoryRepository, PendingLeaderHistoryRepository>();
+            service.AddScoped<IVoteConfirmedRepository, VoteConfirmedRepository>();
+            service.AddScoped<IVoteRecordRepository, VoteRecordRepository>();
             
             service.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
