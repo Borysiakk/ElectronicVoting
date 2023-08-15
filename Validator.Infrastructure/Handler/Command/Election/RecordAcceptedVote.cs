@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System.Linq;
 using Validator.Domain.Table.Election;
 using Validator.Infrastructure.Repository.Election;
 
@@ -7,11 +6,13 @@ namespace Validator.Infrastructure.Handler.Command.Election;
 
 public class RecordAcceptedVote :IRequest
 {
+    public Int64 Vote { get; set; }
     public byte[] Hash { get; set; }
     public string VoteProcessId { get; set; }
 
-    public RecordAcceptedVote(string voteProcessId, byte[] hash)
+    public RecordAcceptedVote(Int64 vote, string voteProcessId, byte[] hash)
     {
+        Vote = vote;
         Hash = hash;
         VoteProcessId = voteProcessId;
     }
@@ -30,7 +31,8 @@ public class RecordAcceptedVoteHandler : IRequestHandler<RecordAcceptedVote>
 
     public async Task Handle(RecordAcceptedVote request, CancellationToken cancellationToken)
     {
-        var voteConfirmeds = await _voteConfirmedRepository.GetVoteConfirmationsInInsertionOrder(cancellationToken);
-        
+        var voteConfirmed = new VoteConfirmed(request.Vote, request.Hash, request.VoteProcessId);
+
+        await _voteConfirmedRepository.Add(voteConfirmed,cancellationToken);
     }
 }

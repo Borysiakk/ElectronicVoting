@@ -39,6 +39,7 @@ public class ValidateLocalVoteHandler : IRequestHandler<ValidateLocalVote>
         var resultValidation = await _proofOfKnowledgeService.Validation(requestProofOfKnowledge, cancellationToken);
         var finalizeVoting = new FinalizeLocalVoting()
         {
+            Vote = request.Vote,
             Hash = resultValidation.Hash,
             VoteProcessId = request.VoteProcessId
         };

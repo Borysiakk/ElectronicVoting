@@ -14,6 +14,7 @@ public interface ITransaction
 public interface IBaseRepository<T> where T : class
 {
     Task<T> Add (T entity, CancellationToken cancellationToken);
+    Task AddRange (IEnumerable<T> entites, CancellationToken cancellationToken); 
 }
 
 public class GenericRepository<T> : IBaseRepository<T>, ITransaction where T : class
@@ -44,5 +45,11 @@ public class GenericRepository<T> : IBaseRepository<T>, ITransaction where T : c
         await _validatorDbContext.SaveChangesAsync(cancellationToken);
 
         return entityResult.Entity;
+    }
+
+    public async Task AddRange(IEnumerable<T> entites, CancellationToken cancellationToken)
+    {
+        await _validatorDbContext.AddRangeAsync(entites, cancellationToken);
+        await _validatorDbContext.SaveChangesAsync(cancellationToken);
     }
 }

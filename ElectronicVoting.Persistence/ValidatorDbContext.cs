@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Validator.Domain.Table;
 using Validator.Domain.Table.ChangeLeader;
-using Validator.Domain.Table.ChangeLeader.Base;
 using Validator.Domain.Table.Election;
 
 namespace ElectronicVoting.Persistence;
@@ -10,6 +9,9 @@ public class ValidatorDbContext : DbContext
 {
     public DbSet<Setting> Settings { get; set; }
     public DbSet<Approver> Approvers { get; set; }
+    //Blockchain
+    public DbSet<Block> Blocks { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
 
     //Election
     public DbSet<VoteRecord> VoteRecords { get; set; }
@@ -50,6 +52,7 @@ public class ValidatorDbContext : DbContext
         modelBuilder.ApplyConfiguration(new LocalVoteChangeLeaderConfiguration());
         modelBuilder.ApplyConfiguration(new LocalVoteChangeLeaderHistoryConfiguration());
         modelBuilder.ApplyConfiguration(new LeaderVoteChangeLeaderHistoryConfiguration());
+
         //Election
         modelBuilder.ApplyConfiguration(new VoteConfirmedConfiguration());
 
@@ -59,6 +62,10 @@ public class ValidatorDbContext : DbContext
 
         modelBuilder.ApplyConfiguration(new PendingLocalVoteHistoryConfiguration());
         modelBuilder.ApplyConfiguration(new PendingLeaderVoteHistoryConfiguration());
+
+        //Blockchain
+        modelBuilder.ApplyConfiguration(new BlockConfiguration());
+        modelBuilder.ApplyConfiguration(new TransactionConfiguration());
     }
 
 }

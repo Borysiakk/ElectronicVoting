@@ -34,7 +34,7 @@ public class ElectionLeaderThresholdTrigger : IAfterSaveTrigger<PendingLeaderVot
         if (!resultVoteCounter)
             return;
 
-        var recordAcceptedVote = new RecordAcceptedVote(addedItem.VoteProcessId, addedItem.Hash);
+        var recordAcceptedVote = new RecordAcceptedVote(addedItem.Vote, addedItem.VoteProcessId, addedItem.Hash);
         var pendingLeaderVoteHistory = new PendingLeaderVoteHistory(addedItem.VoteProcessId);
 
         await _pendingLeaderHistoryRepository.Add(pendingLeaderVoteHistory, cancellationToken);

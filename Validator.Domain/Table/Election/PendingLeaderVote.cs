@@ -2,7 +2,10 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Validator.Domain.Table.Election;
 
-public class PendingLeaderVote : PendingVote {}
+public class PendingLeaderVote : PendingVote 
+{
+    public Int64 Vote { get; set; }
+}
 
 
 public class PendingLeaderVoteConfiguration : IEntityTypeConfiguration<PendingLeaderVote>
@@ -10,6 +13,7 @@ public class PendingLeaderVoteConfiguration : IEntityTypeConfiguration<PendingLe
     public void Configure(EntityTypeBuilder<PendingLeaderVote> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Vote).IsRequired();
         builder.Property(x => x.VoteProcessId).IsRequired();
 
         builder.HasIndex(x => x.VoteProcessId);

@@ -22,4 +22,8 @@
     <ProjectReference Include="..\ElectronicVoting.Persistence\ElectronicVoting.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Blockchain\" />
+  </ItemGroup>
+
 </Project>

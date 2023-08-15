@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Validator.Infrastructure.Repository;
+using Validator.Infrastructure.Repository.Blockchain;
 using Validator.Infrastructure.Repository.ChangeLeader;
 using Validator.Infrastructure.Repository.Election;
 using Validator.Infrastructure.Service;
+using Validator.Infrastructure.Service.Blockchain;
 using Validator.Infrastructure.Service.ChangeLeader;
 using Validator.Infrastructure.Service.Election;
 
@@ -45,6 +47,9 @@ namespace Validator.Infrastructure
             service.AddScoped<IPendingLeaderHistoryRepository, PendingLeaderHistoryRepository>();
             service.AddScoped<IVoteConfirmedRepository, VoteConfirmedRepository>();
             service.AddScoped<IVoteRecordRepository, VoteRecordRepository>();
+            service.AddScoped<IBlockRepository, BlockRepository>();
+            service.AddScoped<IBlockService, BlockService>();
+            service.AddScoped<ITransactionRepository, TransactionRepository>();
             
             service.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 

@@ -1,7 +1,12 @@
-﻿using ProtoBuf;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ProtoBuf;
 
 namespace Validator.Domain.Table;
 
+// When we add a new block its hash is calculated in the BeforeCreateBlockTrigger.cs trigger
+
+[ProtoContract]
 public class Block
 {
     [ProtoMember(1)]
@@ -12,6 +17,30 @@ public class Block
     public byte[]? PreviousHash { get; set; }
     [ProtoMember(4)]
     public Int64 TransactionsId { get; set; }
-    [ProtoMember(5)]
+    [ProtoIgnore]
     public ICollection<Transaction> Transactions { get; set; }
+    public Block()
+    {
+        Transactions = new List<Transaction>();
+    }
+
+    public Block(byte[] previousHash)
+    {
+        PreviousHash = previousHash;
+        Transactions = new List<Transaction>();
+    }
+}
+
+public class BlockConfiguration : IEntityTypeConfiguration<Block>
+{
+    public void Configure(EntityTypeBuilder<Block> builder)
+    {
+        builder.HasKey(b => b.BlockId);
+        builder.HasIndex(b => b.BlockId);
+        builder.Property(b => b.PreviousHash);
+        builder.HasMany<Transaction>(b => b.Transactions)
+               .WithOne(c => c.Block)
+               .HasForeignKey(c => c.BlockId)
+               .IsRequired();
+    }
 }

@@ -8,7 +8,7 @@ using Validator.Infrastructure.Hangfire;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+var hangfireJobsInitializer = new HangfireJobsInitializer();
 var validatorName = Environment.GetEnvironmentVariable("CONTAINER_NAME");
 string RedisConnectionStrings = Environment.GetEnvironmentVariable("REDIS_URL");
 string DatebaseConnectionStrings = Environment.GetEnvironmentVariable("ConnectionStrings_Database");
@@ -26,8 +26,8 @@ config.UseRedisStorage(RedisConnectionStrings, new RedisStorageOptions
 }));
 
 builder.Services.AddHangfireServer();
-
 var app = builder.Build();
+
 
 
 using (var scope = app.Services.CreateScope())
@@ -58,4 +58,5 @@ app.UseCors(builder =>
            .AllowAnyHeader();
 });
 
+hangfireJobsInitializer.InitializeJobs();
 app.Run();

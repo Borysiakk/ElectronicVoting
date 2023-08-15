@@ -28,7 +28,7 @@ public class InitiateVotingProcessHandler : IRequestHandler<InitiateVotingProces
         var voteProcessId = Guid.NewGuid().ToString();
         var validateVotes = new ValidateLocalVote(request.Vote, voteProcessId);
 
-        await _voteRecordService.PublishVote(voteProcessId, cancellationToken);
+        await _voteRecordService.PublishVote(request.Vote, voteProcessId, cancellationToken);
         await _approverService.SendPostToApprovers(Routes.ValidateLocalVote, validateVotes, includeSender, cancellationToken);
     }
 }

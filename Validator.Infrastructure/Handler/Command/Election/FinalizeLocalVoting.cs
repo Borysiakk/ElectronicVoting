@@ -5,6 +5,7 @@ using Validator.Infrastructure.Repository.Election;
 namespace Validator.Infrastructure.Handler.Command.Election;
 public class FinalizeLocalVoting : IRequest
 {
+    public Int64 Vote { get; set; }
     public byte[] Hash { get; set; }
     public string VoteProcessId { get; set; }
 }
@@ -22,6 +23,7 @@ public class FinalizeLocalVotingHandler : IRequestHandler<FinalizeLocalVoting>
         var pendingLocalVote = new PendingLocalVote()
         {
             Hash = request.Hash,
+            
             VoteProcessId = request.VoteProcessId,
         };
 
