@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Blockchain\bin\**" />
+    <EmbeddedResource Remove="Blockchain\bin\**" />
+    <None Remove="Blockchain\bin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<PackageReference Include="EntityFrameworkCore.Triggered" Version="3.2.2" />
 	<PackageReference Include="EntityFrameworkCore.Triggered.Abstractions" Version="3.2.2" />
 	<PackageReference Include="EntityFrameworkCore.Triggered.Extensions" Version="3.2.2" />

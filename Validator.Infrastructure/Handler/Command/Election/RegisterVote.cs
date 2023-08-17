@@ -8,8 +8,9 @@ namespace Validator.Infrastructure.Handler.Command.Election
     {
         public Int64 Vote { get; set; }
         public string VoteProcessId { get; set; }
-        public RegisterVote(string voteProcessId)
+        public RegisterVote(Int64 vote, string voteProcessId)
         {
+            Vote = vote;
             VoteProcessId = voteProcessId;
         }
     }

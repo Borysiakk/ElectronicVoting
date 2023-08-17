@@ -30,7 +30,7 @@ public class CommitConfirmedVotesHandler : IRequestHandler<CommitConfirmedVotes>
         Console.WriteLine("Zaczynamy wstawianie glosów do blockchain");
 
         var block = await _blockService.Create(cancellationToken);
-        var confirmedVotes = (await _voteConfirmedRepository.GetVoteConfirmationsInInsertionOrder(cancellationToken)).ToList();
+        var confirmedVotes = await _voteConfirmedRepository.GetAndUpdateByInInserted(cancellationToken);
 
         confirmedVotes.ForEach(a => block.Transactions.Add(new Transaction(a.Vote)));
 
