@@ -4,11 +4,11 @@ using Validator.Infrastructure.Helper;
 
 namespace Validator.API.Triggers.Blockchain;
 
-public class BeforeCreateBlockTrigger : IBeforeSaveTrigger<Block>
+public class BeforeCreateBlockTrigger : IAfterSaveTrigger<Block>
 {
-    public Task BeforeSave(ITriggerContext<Block> context, CancellationToken cancellationToken)
+    public Task AfterSave(ITriggerContext<Block> context, CancellationToken cancellationToken)
     {
-        if(context.ChangeType == ChangeType.Added || context.ChangeType == ChangeType.Modified)
+        if (context.ChangeType == ChangeType.Added || context.ChangeType == ChangeType.Modified)
         {
             var block = context.Entity;
             block.Hash = HashHelper.ComputeHash(block);

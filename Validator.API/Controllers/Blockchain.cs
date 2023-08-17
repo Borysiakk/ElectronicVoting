@@ -17,5 +17,12 @@ namespace Validator.API.Controllers
             return Ok(await _mediator.Send(query, ct));
         }
 
+        [HttpPost("transaction/all")]
+        public async Task<IActionResult> GetTransactions(GetTransactions query, CancellationToken ct)
+        {
+            return Ok(await _mediator.Send(query, ct));
+        }
+
+
     }
 }
