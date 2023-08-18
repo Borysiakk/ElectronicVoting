@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProtoBuf;
+using System.Text.Json.Serialization;
 
 namespace Validator.Domain.Table;
 
@@ -14,6 +15,7 @@ public class Transaction
     [ProtoMember(3)]
     public Int64 BlockId { get; set; }
     [ProtoIgnore]
+    [JsonIgnore]
     public Block Block { get; set; }
 
     public Transaction(Int64 vote)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProtoBuf;
+using System.Text.Json.Serialization;
 
 namespace Validator.Domain.Table;
 
@@ -15,6 +16,9 @@ public class Block
     public byte[] Hash { get; set; }
     [ProtoMember(3)]
     public byte[]? PreviousHash { get; set; }
+    [ProtoMember(4)]
+    [JsonIgnore]
+    public Int64 TransactionsId { get; set; }
     [ProtoIgnore]
     public ICollection<Transaction> Transactions { get; set; }
     public Block()
@@ -34,9 +38,11 @@ public class BlockConfiguration : IEntityTypeConfiguration<Block>
     public void Configure(EntityTypeBuilder<Block> builder)
     {
         builder.HasKey(b => b.BlockId);
+
         builder.Property(b => b.PreviousHash);
         builder.HasMany<Transaction>(b => b.Transactions)
                .WithOne(c => c.Block)
+               .HasForeignKey(c => c.BlockId)
                .IsRequired();
     }
 }

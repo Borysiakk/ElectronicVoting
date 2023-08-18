@@ -18,7 +18,14 @@ public class BlockRepository : GenericRepository<Block>, IBlockRepository
 
     public async Task<IEnumerable<Block>> GetAll(CancellationToken cancellationToken)
     {
-       return await _validatorDbContext.Blocks.ToListAsync(cancellationToken);
+        try
+        {
+            return await _validatorDbContext.Blocks.Include(a => a.Transactions).ToListAsync(cancellationToken);
+        }
+        catch(Exception ex)
+        {
+            throw;
+        }
     }
 
     public async Task<Block> GetLastBlock(CancellationToken cancellationToken)

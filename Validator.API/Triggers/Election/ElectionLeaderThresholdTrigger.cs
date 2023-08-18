@@ -23,21 +23,24 @@ public class ElectionLeaderThresholdTrigger : IAfterSaveTrigger<PendingLeaderVot
 
     public async Task AfterSave(ITriggerContext<PendingLeaderVote> context, CancellationToken cancellationToken)
     {
-        var includeSender = true;
-        var addedItem = context.Entity;
+        if (context.ChangeType == ChangeType.Added)
+        {
+            var includeSender = true;
+            var addedItem = context.Entity;
 
-        var isVoteCompleted = await _pendingLeaderHistoryRepository.IsVoteCompleted(addedItem.VoteProcessId, cancellationToken);
-        if (isVoteCompleted)
-            return;
+            var isVoteCompleted = await _pendingLeaderHistoryRepository.IsVoteCompleted(addedItem.VoteProcessId, cancellationToken);
+            if (isVoteCompleted)
+                return;
 
-        var resultVoteCounter = await _pendingLeaderVoteService.IsVoteCountGreaterThanThreshold(addedItem.VoteProcessId, addedItem.Hash, cancellationToken);
-        if (!resultVoteCounter)
-            return;
+            var resultVoteCounter = await _pendingLeaderVoteService.IsVoteCountGreaterThanThreshold(addedItem.VoteProcessId, addedItem.Hash, cancellationToken);
+            if (!resultVoteCounter)
+                return;
 
-        var recordAcceptedVote = new RecordAcceptedVote(addedItem.VoteProcessId, addedItem.Hash);
-        var pendingLeaderVoteHistory = new PendingLeaderVoteHistory(addedItem.VoteProcessId);
+            var recordAcceptedVote = new RecordAcceptedVote(addedItem.VoteProcessId, addedItem.Hash);
+            var pendingLeaderVoteHistory = new PendingLeaderVoteHistory(addedItem.VoteProcessId);
 
-        await _pendingLeaderHistoryRepository.Add(pendingLeaderVoteHistory, cancellationToken);
-        await _approverService.SendPostToApprovers(Routes.RecordAcceptedVote, recordAcceptedVote, includeSender, cancellationToken);
+            await _pendingLeaderHistoryRepository.Add(pendingLeaderVoteHistory, cancellationToken);
+            await _approverService.SendPostToApprovers(Routes.RecordAcceptedVote, recordAcceptedVote, includeSender, cancellationToken);
+        }
     }
 }

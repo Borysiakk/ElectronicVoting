@@ -27,7 +27,7 @@ public class CommitConfirmedVotesHandler : IRequestHandler<CommitConfirmedVotes>
 
     public async Task Handle(CommitConfirmedVotes request, CancellationToken cancellationToken)
     {
-        var confirmedVotes = await _voteConfirmedRepository.GetAndUpdateByInInserted(cancellationToken);
+        var confirmedVotes = (await _voteConfirmedRepository.GetAndUpdateByInInserted(cancellationToken));
         if (confirmedVotes == null || !confirmedVotes.Any())
             return;
 

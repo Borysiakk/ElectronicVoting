@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Validator.Domain.Table.Election;
+using Validator.Infrastructure.Comparer;
 
 namespace Validator.Infrastructure.Repository.Election;
 
@@ -16,12 +17,20 @@ public class VoteConfirmedRepository : GenericRepository<VoteConfirmed>, IVoteCo
 
     public async Task<List<VoteConfirmed>> GetAndUpdateByInInserted(CancellationToken cancellationToken)
     {
-        string sql = @"
-        UPDATE VotesConfirmed
-        SET IsInserted = 1
-        OUTPUT inserted.*
-        WHERE IsInserted = 0";
+        try
+        {
+            string sql = @"
+            UPDATE VotesConfirmed
+            SET IsInserted = 1
+            OUTPUT inserted.*
+            WHERE IsInserted = 0";
 
-        return await _validatorDbContext.VotesConfirmed.FromSqlRaw(sql).ToListAsync(cancellationToken);
+            var items =  await _validatorDbContext.VotesConfirmed.FromSqlRaw(sql).ToListAsync(cancellationToken);
+            return items.Distinct(new VoteConfirmedByVoteIdComparer()).ToList();
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 }

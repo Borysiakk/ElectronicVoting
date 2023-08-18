@@ -4,9 +4,10 @@ using Validator.Infrastructure.Helper;
 
 namespace Validator.API.Triggers.Blockchain;
 
-public class BeforeCreateBlockTrigger : IAfterSaveTrigger<Block>
+public class BeforeCreateBlockTrigger : IBeforeSaveTrigger<Block>
 {
-    public Task AfterSave(ITriggerContext<Block> context, CancellationToken cancellationToken)
+
+    public Task BeforeSave(ITriggerContext<Block> context, CancellationToken cancellationToken)
     {
         if (context.ChangeType == ChangeType.Added || context.ChangeType == ChangeType.Modified)
         {
