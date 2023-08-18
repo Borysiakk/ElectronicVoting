@@ -7,6 +7,17 @@ services:
       context: .
       dockerfile: Main.API/Dockerfile
 
+  main-Database:
+    container_name: main-Database
+    ports:
+        - "8095:1433"
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+        SA_PASSWORD: "LitwoOjczyznoMoja1234@"
+        ACCEPT_EULA: "Y"
+    networks:
+        - redis-network
+
   Validator1-redis:
     image: redis:latest
     command: redis-server

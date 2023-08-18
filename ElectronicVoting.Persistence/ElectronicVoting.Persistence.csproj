@@ -17,6 +17,7 @@
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
 </ItemGroup>
 <ItemGroup>
+  <ProjectReference Include="..\Main.Domain\Main.Domain.csproj" />
   <ProjectReference Include="..\Validator.Domain\Validator.Domain.csproj" />
 </ItemGroup>
 </Project>

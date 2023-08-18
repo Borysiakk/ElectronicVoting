@@ -17,20 +17,13 @@ public class VoteConfirmedRepository : GenericRepository<VoteConfirmed>, IVoteCo
 
     public async Task<List<VoteConfirmed>> GetAndUpdateByInInserted(CancellationToken cancellationToken)
     {
-        try
-        {
-            string sql = @"
-            UPDATE VotesConfirmed
-            SET IsInserted = 1
-            OUTPUT inserted.*
-            WHERE IsInserted = 0";
+        string sql = @"
+        UPDATE VotesConfirmed
+        SET IsInserted = 1
+        OUTPUT inserted.*
+        WHERE IsInserted = 0";
 
-            var items =  await _validatorDbContext.VotesConfirmed.FromSqlRaw(sql).ToListAsync(cancellationToken);
-            return items.Distinct(new VoteConfirmedByVoteIdComparer()).ToList();
-        }
-        catch (Exception ex)
-        {
-            throw;
-        }
+        var items =  await _validatorDbContext.VotesConfirmed.FromSqlRaw(sql).ToListAsync(cancellationToken);
+        return items.Distinct(new VoteConfirmedByVoteIdComparer()).ToList();
     }
 }
