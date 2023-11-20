@@ -1,74 +1,57 @@
-﻿using ElectronicVoting.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Validator.Domain.Table;
-using Validator.Infrastructure.Service;
+﻿using Microsoft.EntityFrameworkCore;
+using Validator.Domain.Table.Electronic;
+using Validator.Infrastructure.EntityFramework;
 
-namespace Validator.Infrastructure.Repository;
-
-public interface IApproverRepository : IBaseRepository<Approver>
+namespace Validator.Infrastructure.Repository
 {
-    public Task<Int64> GetLastId(CancellationToken cancellationToken);
-    public Task<Approver?> GetbyId(Int64 id, CancellationToken cancellationToke);
-    public Task<Approver?> GetByName(string name, CancellationToken cancellationToken);
-    public Task<IEnumerable<Approver>> GetAll(CancellationToken cancellationToken);
-    public Task<IEnumerable<Approver>> GetAllWithout(string exceptApprover, CancellationToken cancellationToken);
-}
-
-public class ApproverRepository : GenericRepository<Approver>, IApproverRepository
-{
-    private readonly ICacheService _cacheService;
-    public ApproverRepository(ValidatorDbContext validatorDbContext, ICacheService cacheService) : base(validatorDbContext)
+    public interface IApproverRepository
     {
-        _cacheService = cacheService;
+        Task<long> GetLastId(CancellationToken cancellationToken);
+        Task<Approver> GetById(long id, CancellationToken cancellationToken); 
+        Task<Approver> GetByName(string name, CancellationToken cancellationToken);
+        Task<IEnumerable<Approver>> GetAll(CancellationToken cancellationToken);
+        Task<IEnumerable<Approver>> GetAllWithoutMe(string exceptApprover, CancellationToken cancellationToken);
+
+        Task<Approver> GetApproverWhoIsLeader(CancellationToken cancellationToken);
     }
 
-    public async Task<IEnumerable<Approver>> GetAll(CancellationToken cancellationToken)
+    public sealed class ApproverRepository : GenericRepository<Approver>, IApproverRepository
     {
-        var approvers = _cacheService.GetFromCache<List<Approver>>("ApproverRepository", "GetAll");
-        if(approvers == null)
+        public ApproverRepository(ElectionDatabaseContext electionContext) : base(electionContext)
         {
-            approvers = await _validatorDbContext.Approvers.ToListAsync(cancellationToken);
-            _cacheService.AddToCache("ApproverRepository", "GetAll", approvers, TimeSpan.FromDays(1));
+
         }
 
-        return approvers;
-    }
-
-    public async Task<IEnumerable<Approver>> GetAllWithout(string exceptApprover, CancellationToken cancellationToken)
-    {
-        var approvers = _cacheService.GetFromCache<List<Approver>>("ApproverRepository", "GetAllWithout");
-
-        if (approvers == null)
+        public Task<Approver> GetById(long id, CancellationToken cancellationToken)
         {
-            var name = Environment.GetEnvironmentVariable("CONTAINER_NAME");
-            approvers = await _validatorDbContext.Approvers.Where(a => a.Name != exceptApprover).ToListAsync(cancellationToken);
-            _cacheService.AddToCache("ApproverRepository", "GetAllWithout", approvers, TimeSpan.FromDays(1));
+            throw new NotImplementedException();
         }
 
-        return approvers;
-    }
-
-    public async Task<Approver?> GetbyId(Int64 id, CancellationToken cancellationToken)
-    {
-        return await _validatorDbContext.Approvers.FirstOrDefaultAsync(a => a.ApproverId == id, cancellationToken);
-    }
-
-    public async Task<Approver?> GetByName(string name, CancellationToken cancellationToken)
-    {
-        var keyCache = "ApproverRepository.GetByName";
-        var approve = _cacheService.GetFromCache<Approver>(keyCache, name);
-
-        if (approve == null)
+        public async Task<Approver> GetByName(string name, CancellationToken cancellationToken)
         {
-            approve = await _validatorDbContext.Approvers.FirstOrDefaultAsync(a=>a.Name == name, cancellationToken);
-            _cacheService.AddToCache(keyCache, name, approve, TimeSpan.FromDays(1));
+            return await ElectionContext.Approvers.FirstOrDefaultAsync(a => a.Name == name, cancellationToken);
         }
 
-        return approve;
-    }
+        public async Task<IEnumerable<Approver>> GetAll(CancellationToken cancellationToken)
+        {
+            return await ElectionContext.Approvers.ToListAsync(cancellationToken);
+        }
 
-    public Task<Int64> GetLastId(CancellationToken cancellationToken)
-    {
-        return _validatorDbContext.Approvers.MaxAsync(a=>a.ApproverId, cancellationToken);
+        public async Task<IEnumerable<Approver>> GetAllWithoutMe(string exceptApprover, CancellationToken cancellationToken)
+        {
+            return await ElectionContext.Approvers.Where(a => a.Name != exceptApprover).ToListAsync(cancellationToken);
+        }
+
+        public async Task<long> GetLastId(CancellationToken cancellationToken)
+        {
+            return await ElectionContext.Approvers.MaxAsync(a => a.ApproverId, cancellationToken);
+        }
+
+        public async Task<Approver> GetApproverWhoIsLeader(CancellationToken cancellationToken)
+        {
+            var leaderId = await ElectionContext.Leaders.MaxAsync(a => a.LeaderId, cancellationToken);
+            var approverId  = await ElectionContext.Leaders.Where(a=>a.LeaderId == leaderId).Select(a=>a.ApproverId).FirstOrDefaultAsync(cancellationToken);
+            return await ElectionContext.Approvers.FirstOrDefaultAsync(a => a.ApproverId == approverId, cancellationToken);
+        }
     }
 }

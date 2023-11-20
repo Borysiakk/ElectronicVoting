@@ -1,10 +1,13 @@
-﻿using Hangfire.Dashboard;
-namespace Validator.Infrastructure.Hangfire;
+﻿using Hangfire.Annotations;
+using Hangfire.Dashboard;
 
-public class HangfireOpenAuthorizationFilter : IDashboardAuthorizationFilter
+namespace Validator.Infrastructure.Hangfire
 {
-    public bool Authorize(DashboardContext context)
+    public class HangfireOpenAuthorizationFilter : IDashboardAuthorizationFilter
     {
-        return true; // Zawsze zwracaj true
+        public bool Authorize([NotNull] DashboardContext context)
+        {
+            return true;
+        }
     }
 }

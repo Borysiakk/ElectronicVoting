@@ -1,35 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Blockchain\bin\**" />
-    <EmbeddedResource Remove="Blockchain\bin\**" />
-    <None Remove="Blockchain\bin\**" />
+    <PackageReference Include="EntityFrameworkCore.Triggered" Version="3.2.2" />
+    <PackageReference Include="EntityFrameworkCore.Triggered.Abstractions" Version="3.2.2" />
+    <PackageReference Include="EntityFrameworkCore.Triggered.Extensions" Version="3.2.2" />
+    <PackageReference Include="Hangfire" Version="1.8.6" />
+    <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.9.0" />
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
+    <PackageReference Include="Refit" Version="7.0.0" />
+    <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="Sentry.AspNetCore" Version="3.36.0" />
+    <PackageReference Include="Sentry.Serilog" Version="3.36.0" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="EntityFrameworkCore.Triggered" Version="3.2.2" />
-	<PackageReference Include="EntityFrameworkCore.Triggered.Abstractions" Version="3.2.2" />
-	<PackageReference Include="EntityFrameworkCore.Triggered.Extensions" Version="3.2.2" />
-	<PackageReference Include="Hangfire.Core" Version="1.8.4" />
-	<PackageReference Include="MediatR" Version="12.1.1" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
-	<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
-	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-	  <PackageReference Include="RestSharp" Version="110.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ElectronicVoting.Persistence\ElectronicVoting.Persistence.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Blockchain\" />
+    <ProjectReference Include="..\Validator.Domain\Validator.Domain.csproj" />
   </ItemGroup>
 
 </Project>

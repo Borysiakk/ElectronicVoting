@@ -1,20 +1,19 @@
-﻿using ElectronicVoting.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Validator.Domain.Table.Election;
+﻿using Microsoft.EntityFrameworkCore;
+using Validator.Domain.Table.Electronic.Base;
+using Validator.Infrastructure.EntityFramework;
 
 namespace Validator.Infrastructure.Repository.Election.Base;
-
-public interface IPendingVoteRepository: IBaseRepository<PendingVote>
+public interface IPendingVoteRepository :IBaseRepository<PendingVoteBase>
 {
-    Task<Int64> GetCountByVoteProcessIdAndVoteHash(string voteProcessId, byte[] hash, CancellationToken cancellationToken);
+    Task<long> GetCountByHashVerificationAndSession (byte[] hash, bool verifyVote, string sessionElectionId, CancellationToken cancellationToken);
 }
 
-public abstract class PendingVoteRepository<T> : GenericRepository<PendingVote>, IPendingVoteRepository where T : PendingVote
+public abstract class PendingVoteRepository<T> : GenericRepository<PendingVoteBase>, IPendingVoteRepository where T : PendingVoteBase
 {
-    public PendingVoteRepository(ValidatorDbContext validatorDbContext) : base(validatorDbContext) { }
+    protected PendingVoteRepository(ElectionDatabaseContext electionContext) : base(electionContext) {}
 
-    public async Task<Int64> GetCountByVoteProcessIdAndVoteHash(string voteProcessId, byte[] hash, CancellationToken cancellationToken)
+    public async Task<long> GetCountByHashVerificationAndSession(byte[] hash, bool verifyVote, string sessionElectionId, CancellationToken cancellationToken)
     {
-        return await _validatorDbContext.Set<T>().LongCountAsync(a => a.VoteProcessId == voteProcessId && a.Hash.SequenceEqual(hash), cancellationToken);
+        return await ElectionContext.Set<T>().LongCountAsync(a => a.SessionElectionId == sessionElectionId && a.Hash.SequenceEqual(hash), cancellationToken);
     }
 }

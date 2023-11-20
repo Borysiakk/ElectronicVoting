@@ -1,4 +1,4 @@
-version: '4'
+version: '3.4'
 
 services:
   main.api:
@@ -6,87 +6,8 @@ services:
     build:
       context: .
       dockerfile: Main.API/Dockerfile
-
-  main-Database:
-    container_name: main-Database
-    ports:
-        - "8095:1433"
-    image: mcr.microsoft.com/mssql/server:2017-latest
-    environment:
-        SA_PASSWORD: "LitwoOjczyznoMoja1234@"
-        ACCEPT_EULA: "Y"
     networks:
-        - redis-network
-
-  Validator1-redis:
-    image: redis:latest
-    command: redis-server
-    container_name: Validator1-redis
-    volumes:
-      - Validator1-redis:/var/lib/redis
-      - Validator1-redis-config:/usr/local/etc/redis/redis.conf
-    networks:
-      - redis-network
-    ports:
-      - 6370:6379
-
-  Validator2-redis:
-    image: redis:latest
-    command: redis-server
-    container_name: Validator2-redis
-    volumes:
-      - Validator2-redis:/var/lib/redis
-      - Validator2-redis-config:/usr/local/etc/redis/redis.conf
-    networks:
-      - redis-network
-    ports:
-      - 6371:6379
-
-  Validator3-redis:
-    image: redis:latest
-    command: redis-server
-    container_name: Validator3-redis
-    volumes:
-      - Validator3-redis:/var/lib/redis
-      - Validator3-redis-config:/usr/local/etc/redis/redis.conf
-    networks:
-      - redis-network
-    ports:
-      - 6379:6379
-      
-  Validator1-Database:
-        container_name: Validator1-Database
-        ports:
-          - "8092:1433"
-        image: mcr.microsoft.com/mssql/server:2017-latest
-        environment:
-          SA_PASSWORD: "LitwoOjczyznoMoja1234@"
-          ACCEPT_EULA: "Y"
-        networks:
-          - redis-network
-
-  Validator2-Database:
-        container_name: Validator2-Database
-        ports:
-          - "8093:1433"
-        image: mcr.microsoft.com/mssql/server:2017-latest
-        environment:
-          SA_PASSWORD: "LitwoOjczyznoMoja1234@"
-          ACCEPT_EULA: "Y"
-        networks:
-          - redis-network
-  
-  Validator3-Database:
-        container_name: Validator3-Database
-        ports:
-          - "8094:1433"
-        image: mcr.microsoft.com/mssql/server:2017-latest
-        environment:
-          SA_PASSWORD: "LitwoOjczyznoMoja1234@"
-          ACCEPT_EULA: "Y"
-        networks:
-          - redis-network
-
+        - word-network
   validatorA:
         container_name: ValidatorA
         image: electronicvotingvalidator
@@ -98,11 +19,12 @@ services:
           - ASPNETCORE_ENVIRONMENT=Development
           - ASPNETCORE_URLS=https://+:443;http://+:80
           - REDIS_URL=Validator1-redis:6379
-          - ConnectionStrings_Database=Server=Validator1-Database;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
+          - DATABASE_CONNECTION_STRING=Server=Validator1-Database;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
         depends_on:
           - Validator1-Database
+          - Validator1-redis
         networks:
-          - redis-network
+          - word-network
         ports:
           - "9000:80"
           - "9001:443"
@@ -118,12 +40,12 @@ services:
           - ASPNETCORE_ENVIRONMENT=Development
           - ASPNETCORE_URLS=https://+:443;http://+:80
           - REDIS_URL=Validator2-redis:6379
-          - ConnectionStrings_Database=Server=Validator2-Database;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
+          - DATABASE_CONNECTION_STRING=Server=Validator2-Database;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
         depends_on:
           - Validator2-redis
           - Validator2-Database
         networks:
-          - redis-network
+          - word-network
         ports:
           - "9002:80"
           - "9003:443"
@@ -139,20 +61,87 @@ services:
         - ASPNETCORE_ENVIRONMENT=Development
         - ASPNETCORE_URLS=https://+:443;http://+:80
         - REDIS_URL=Validator3-redis:6379
-        - ConnectionStrings_Database=Server=Validator3-Database;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
+        - DATABASE_CONNECTION_STRING=Server=Validator3-Database;User Id=sa;Password=LitwoOjczyznoMoja1234@;TrustServerCertificate=true
     depends_on:
         - Validator3-redis
         - Validator3-Database
     networks:
-      - redis-network
+          - word-network
     ports:
         - "9004:80"
         - "9005:443"
         - "5003:5000"
 
+  Validator1-Database:
+        container_name: Validator1-Database
+        ports:
+          - "8092:1433"
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        environment:
+          SA_PASSWORD: "LitwoOjczyznoMoja1234@"
+          ACCEPT_EULA: "Y"
+        networks:
+          - word-network
+  Validator2-Database:
+        container_name: Validator2-Database
+        ports:
+          - "8093:1433"
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        environment:
+          SA_PASSWORD: "LitwoOjczyznoMoja1234@"
+          ACCEPT_EULA: "Y"
+        networks:
+           - word-network
+  
+  Validator3-Database:
+        container_name: Validator3-Database
+        ports:
+          - "8094:1433"
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        environment:
+          SA_PASSWORD: "LitwoOjczyznoMoja1234@"
+          ACCEPT_EULA: "Y"
+        networks:
+          - word-network
+
+  Validator1-redis:
+        image: redis:latest
+        command: redis-server
+        container_name: Validator1-redis
+        volumes:
+          - Validator1-redis:/var/lib/redis
+          - Validator1-redis-config:/usr/local/etc/redis/redis.conf
+        networks:
+          - word-network
+        ports:
+          - 6370:6379
+  Validator2-redis:
+    image: redis:latest
+    command: redis-server
+    container_name: Validator2-redis
+    volumes:
+      - Validator2-redis:/var/lib/redis
+      - Validator2-redis-config:/usr/local/etc/redis/redis.conf
+    networks:
+          - word-network
+    ports:
+      - 6371:6379
+
+  Validator3-redis:
+    image: redis:latest
+    command: redis-server
+    container_name: Validator3-redis
+    volumes:
+      - Validator3-redis:/var/lib/redis
+      - Validator3-redis-config:/usr/local/etc/redis/redis.conf
+    networks:
+          - word-network
+    ports:
+      - 6379:6379
 networks:
-  redis-network:
+  word-network:
     driver: bridge
+
 
 volumes:
   Validator1-redis:

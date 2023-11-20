@@ -1,30 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>b353b748-ebc0-4305-9f77-11e53f66bb63</UserSecretsId>
+    <UserSecretsId>488eb771-0ec3-4720-8e80-e1ec34b4c9be</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Hangfire" Version="1.8.4" />
-		<PackageReference Include="Hangfire.Redis.StackExchange" Version="1.9.4-beta" />
-		<PackageReference Include="MediatR" Version="12.1.1" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\Validator.Infrastructure\Validator.Infrastructure.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Refit" Version="7.0.0" />
+    <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
+    <PackageReference Include="Sentry.AspNetCore" Version="3.36.0" />
+    <PackageReference Include="Sentry.Serilog" Version="3.41.0" />
+    <PackageReference Include="Serilog" Version="3.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <Content Update="appsettings.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	</ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\Validator.Application\Validator.Application.csproj" />
+    <ProjectReference Include="..\Validator.Infrastructure\Validator.Infrastructure.csproj" />
+  </ItemGroup>
 
 </Project>

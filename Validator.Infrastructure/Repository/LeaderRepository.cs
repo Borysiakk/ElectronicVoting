@@ -1,21 +1,22 @@
-﻿using ElectronicVoting.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Validator.Domain.Table.ChangeLeader;
+﻿using Microsoft.EntityFrameworkCore;
+using Validator.Domain.Table.Electronic;
+using Validator.Infrastructure.EntityFramework;
 
-namespace Validator.Infrastructure.Repository;
-
-public interface ILeaderRepository :IBaseRepository<Leader>
+namespace Validator.Infrastructure.Repository
 {
-    Task<Int64> GetApproverIdForLatestLeader(CancellationToken cancellationToken);
-}
-
-public class LeaderRepository : GenericRepository<Leader>, ILeaderRepository
-{
-    public LeaderRepository(ValidatorDbContext validatorDbContext) : base(validatorDbContext) {}
-
-    public async Task<Int64> GetApproverIdForLatestLeader(CancellationToken cancellationToken)
+    public interface ILeaderRepository
     {
-        return await _validatorDbContext.Leaders.MaxAsync(a => a.LeaderId, cancellationToken);
+        Task<long> GetApproverIdForLatestLeader(CancellationToken cancellationToken);
     }
 
+    public sealed class LeaderRepository : GenericRepository<Leader>, ILeaderRepository
+    {
+
+        public LeaderRepository(ElectionDatabaseContext electionContext) : base(electionContext) { }
+
+        public async Task<long> GetApproverIdForLatestLeader(CancellationToken cancellationToken)
+        {
+            return await ElectionContext.Leaders.MaxAsync(a => a.LeaderId, cancellationToken);
+        }
+    }
 }

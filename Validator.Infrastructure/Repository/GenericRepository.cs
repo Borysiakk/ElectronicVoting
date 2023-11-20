@@ -1,55 +1,26 @@
-﻿using ElectronicVoting.Persistence;
-using Microsoft.EntityFrameworkCore.Storage;
-
+﻿using Validator.Infrastructure.EntityFramework;
 namespace Validator.Infrastructure.Repository;
 
-public interface ITransaction
-{
-    IDbContextTransaction OpenTransaction();
-
-    void CommitTransaction(IDbContextTransaction transaction);
-
-    void RollbackTransaction(IDbContextTransaction transaction);
-}
 public interface IBaseRepository<T> where T : class
 {
-    Task<T> Add (T entity, CancellationToken cancellationToken);
-    Task AddRange (IEnumerable<T> entites, CancellationToken cancellationToken); 
+    Task<T> Add(T entity, CancellationToken cancellationToken);
 }
 
-public class GenericRepository<T> : IBaseRepository<T>, ITransaction where T : class
+public class GenericRepository<T> : IBaseRepository<T> where T : class
 {
-    protected ValidatorDbContext _validatorDbContext { get; set; }
-    public GenericRepository(ValidatorDbContext validatorDbContext)
+    protected ElectionDatabaseContext ElectionContext { get; set; }
+    public GenericRepository(ElectionDatabaseContext electionContext)
     {
-        _validatorDbContext = validatorDbContext;
-    }
-    public void CommitTransaction(IDbContextTransaction transaction)
-    {
-        transaction.Commit();
+        ElectionContext = electionContext;
     }
 
-    public IDbContextTransaction OpenTransaction()
-    {
-        return _validatorDbContext.Database.BeginTransaction();
-    }
 
-    public void RollbackTransaction(IDbContextTransaction transaction)
-    {
-        transaction.Rollback();
-    }
-
+    /// <inheritdoc />
     public async Task<T> Add(T entity, CancellationToken cancellationToken)
     {
-        var entityResult = await _validatorDbContext.AddAsync<T>(entity, cancellationToken);
-        await _validatorDbContext.SaveChangesAsync(cancellationToken);
+        var entityResult = await ElectionContext.AddAsync<T>(entity, cancellationToken);
+        await ElectionContext.SaveChangesAsync(cancellationToken);
 
         return entityResult.Entity;
-    }
-
-    public async Task AddRange(IEnumerable<T> entites, CancellationToken cancellationToken)
-    {
-        await _validatorDbContext.AddRangeAsync(entites, cancellationToken);
-        await _validatorDbContext.SaveChangesAsync(cancellationToken);
     }
 }

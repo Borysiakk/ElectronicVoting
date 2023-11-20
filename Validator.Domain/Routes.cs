@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Validator.Domain
+﻿namespace Validator.Domain
 {
-    public static class Routes
+    public static  class Routes
     {
-        public const string Reply = "api/PbftConsensus/Reply";
-        public const string Commit = "api/PbftConsensus/Commit";
-        public const string Prepare = "api/PbftConsensus/Prepare";
-        public const string PrePrepare = "api/PbftConsensus/Pre-Prepare";
-
         public const string RegisterVote = "/api/Election/register-vote";
-        public const string ValidateLocalVote = "/api/Election/validate-local-vote";
-        public const string FinalizeLocalVoting = "/api/Election/finalize-local-voting";
-        public const string NotifyLocalVotingCompleted = "/api/Election/notify-local-voting-completed";
+        public const string VerifyLocalVote = "/api/Election/verify-local-vote";
+        public const string FinalizeLocalVoting = "/api/Election/finalize-local-vote";
+        public const string NotifyLocalVoteVerificationCompleted = "/api/Election/notify-local-vote-verification-completed";
         public const string RecordAcceptedVote = "/api/Election/record-accepted-vote";
 
         public const string PreElectionVoteRecord = "api/Election/ChangeLeader/pre-election-vote-record";
@@ -29,7 +18,5 @@ namespace Validator.Domain
         public const string ElectionPreparationInitialization = "api/Election/ChangeLeader/election-preparation-initialization";
 
         public const string ElectionSetNewLeader = "api/Election/ChangeLeader/set-new-leader";
-
-
     }
 }
