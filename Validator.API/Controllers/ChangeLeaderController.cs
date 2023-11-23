@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static System.Collections.Specialized.BitVector32;
+using Validator.Application.Handler.Command.ChangeLeader;
 
 namespace Validator.API.Controllers
 {
@@ -19,6 +19,12 @@ namespace Validator.API.Controllers
         public ActionResult PreElectionPreparation(PreElectionPreparation command, CancellationToken ct)
         {
             return Ok();
+        }
+
+        [HttpPost("leadership-change-assessment")]
+        public IActionResult LeadershipChangeAssessment(CancellationToken ct)
+        {
+
         }
     }
 }
