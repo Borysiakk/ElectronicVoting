@@ -10,13 +10,13 @@ namespace Validator.API.Controllers
         public ChangeLeaderController(IMediator mediator) : base(mediator) {}
 
         [HttpPost("init-pre-election-preparation")]
-        public IActionResult InitPreElectionPreparation(InitPreElectionPreparation command, CancellationToken cancellationToken)
+        public IActionResult InitPreElectionPreparation(CancellationToken cancellationToken)
         {
             return Ok();
         }
 
         [HttpPost("pre-election-preparation")]
-        public ActionResult PreElectionPreparation(PreElectionPreparation command, CancellationToken ct)
+        public ActionResult PreElectionPreparation(CancellationToken ct)
         {
             return Ok();
         }

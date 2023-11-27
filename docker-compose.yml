@@ -8,6 +8,17 @@ services:
       dockerfile: Main.API/Dockerfile
     networks:
         - word-network
+  Main-Database:
+    container_name: Main-Database
+    ports:
+        - "8095:1433"
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+        SA_PASSWORD: "LitwoOjczyznoMoja1234@"
+        ACCEPT_EULA: "Y"
+    networks:
+        - word-network
+  
   validatorA:
         container_name: ValidatorA
         image: electronicvotingvalidator

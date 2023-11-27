@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Validator.API.Controllers;
+namespace Main.API.Controller;
 
 [Route("api/[controller]")]
-public class BaseController :ControllerBase
+public class BaseController : ControllerBase
 {
     protected readonly IMediator Mediator;
 
