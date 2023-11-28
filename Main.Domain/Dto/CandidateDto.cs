@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Main.Domain.Dto;
 
-namespace Main.Domain.Dto
+public class CandidateDto
 {
-    internal class CandidateDto
-    {
-    }
+    public long CandidateId { get; set; }
+    public string Name { get; set; }
+    public long Value { get; set; }
 }

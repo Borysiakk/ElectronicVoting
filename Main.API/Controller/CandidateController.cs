@@ -10,8 +10,14 @@ public class CandidateController : BaseController
 {
     public CandidateController(IMediator mediator) : base(mediator){}
 
-    [HttpPost("")]
-    Task<IActionResult> AddCandidate(AddCandidate addCandidate, CancellationToken cancellationToken)
+    [HttpPost("add")]
+    public async Task<IActionResult> AddCandidate(AddCandidate addCandidate, CancellationToken cancellationToken)
+    {
+        return Ok();
+    }
+
+    [HttpGet("all")]
+    public async Task<IActionResult> GetCandidates(CancellationToken cancellationToken)
     {
 
     }
